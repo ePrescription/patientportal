@@ -1,4 +1,4 @@
-<?php namespace App\prescription\utilities;
+<?php namespace App\patientportal\utilities;
 
 
 class UserType {

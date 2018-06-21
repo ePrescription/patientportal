@@ -26,7 +26,7 @@ class UserProfileServiceProvider extends ServiceProvider
     {
         $this->app->bind('UserService', function($app){
             //return new HospitalService($app->make('App\Treatin\Repositories\RepoInterface\HospitalProfileInterface'));
-            $userProfileService = new UserProfileService($app->make('App\patientportal\repositories\repointerface\UserProfileInterface'));
+            $userProfileService = new UserProfileService($app->make('App\patientportal\repositories\repoInterface\UserInterface'));
             return $userProfileService;
 
         });

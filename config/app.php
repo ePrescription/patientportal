@@ -222,6 +222,7 @@ return [
         'JWTAuth'   => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Indipay' => Softon\Indipay\Facades\Indipay::class,
+         'repository'=>App\Providers\RepositoriesServiceProvider::class,
 
         'UserFacade' => App\patientportal\facades\UserFacade::class,
 

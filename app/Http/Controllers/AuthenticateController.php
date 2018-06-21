@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\patientportal\modal\Hospital;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Exception;
 
-use App\prescription\common\ResponsePrescription;
-use App\prescription\utilities\ErrorEnum\ErrorEnum;
+use App\patientportal\common\ResponsePrescription;
+use App\patientportal\utilities\ErrorEnum\ErrorEnum;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -18,70 +23,44 @@ class AuthenticateController extends Controller
 {
     public function authenticateUser(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        //dd($credentials);
-
+        $email=$request->Email;
+        $pass=$request->Password;
         try {
-            // verify the credentials and create a token for the user
+            $hash1 = bcrypt($email);
+            $hash2 = bcrypt($email);
+           $use=User::first()->take(1)->where('email',$email)->where('password',$pass)->get();
+           if(count($use)>0) {
+               $mail = $request->get("Email");
+               $pass = $request->get("Password");
 
-            //$token = JWTAuth::attempt($credentials);
+                   session(['userID' => $use[0]['name']]);
+                   session(['patient_id' => $use[0]['id']]);
+                   session(['email' => $request->Email]);
+                   session(['logintime' => time()]);
+                   session(['methode' => 'Doctor']);
+                   $hospitals=Hospital::all();
+                  // dd($use[0]['name']);
 
-            //$input = $request->all();
+                   return redirect()->intended('index')->with('hospitals',$hospitals);
 
-            //dd($request->email);
-
-            //Auth::attempt(['email' => $request->email, 'password' => $request->password]);
-
-            /*if (!Auth::attempt(['email' => $request->email, 'password' => $request->password]))
-            {
-                $userSession=Auth::user();
-                //dd('OK');
-
-                $token = JWTAuth::fromUser($userSession);
-
-                return response()->json(compact('token'));
-                //return Response::json(compact('token'));
-            }
-            else
-            {
-                dd('Inside else');
-            }*/
-
-            //$token = JWTAuth::attempt($input);
-            //dd($token);
-            //dd($input);
-            /*if (!$token = JWTAuth::attempt($input)) {
-                return response()->json(['result' => 'wrong email or password.']);
-            }*/
-            //return response()->json(['result' => $token]);
-
-            //dd($token);
-
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 401);
-            }
-
-            $responseJson = new ResponsePrescription(ErrorEnum::SUCCESS);
-            $responseJson->setObj(compact('token'));
-            $responseJson->sendSuccessResponse();
-
-            return $responseJson;
-            //return response()->json(compact('token'));
+           }else{
+               $hospitals=Hospital::all();
+               return redirect()->intended('login')->with('hospitals',$hospitals)->with('msg','invalid login details');
+           }
 
         }
         catch (JWTException $e) {
-            //dd($e);
+            dd($e);
             // something went wrong
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         catch(Exception $ex)
         {
+            dd($ex);
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
-        // if no errors are encountered we can return a JWT
-        //return response()->json(compact('token'));
-        //return $responseJson;
+
     }
 
     public function generateToken()

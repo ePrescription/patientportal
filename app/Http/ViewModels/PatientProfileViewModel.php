@@ -45,6 +45,7 @@ class PatientProfileViewModel
     private $referralType;
     private $paymentType;
     private $paymentStatus;
+    private $password;
 
     private $createdBy;
     private $updatedBy;
@@ -647,6 +648,14 @@ class PatientProfileViewModel
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+    }
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    public function setPassword($password)
+    {
+        $this->password = $password;
     }
 
 }

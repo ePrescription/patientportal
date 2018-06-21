@@ -25,8 +25,8 @@
         "classmap": [
           "app/patientportal/facades",
           "app/patientportal/model/entities",
-          "app/patientportal/repositories/repoimpl",
-          "app/patientportal/repositories/repointerface",
+          "app/patientportal/repositories/repositoryImpl",
+          "app/patientportal/repositories/repoInterface",
           "app/patientportal/serviceprovider/reposerviceprovider",
           "app/patientportal/serviceprovider/servicesserviceprovider",
           "app/patientportal/services",

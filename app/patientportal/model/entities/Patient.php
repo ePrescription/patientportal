@@ -1,6 +1,6 @@
 <?php
 
-namespace App\patientportal\model\entities;
+namespace App\patientportal\modal;
 
 use Illuminate\Database\Eloquent\Model;
 
