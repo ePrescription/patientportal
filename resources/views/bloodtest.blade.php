@@ -37,7 +37,7 @@ $time_array = array(
 
 <div class="row">
  <div class="col-sm-6 col-md-offset-2"></div>
-<div class="col-sm-8">
+<div class="col-sm-12">
 <div class="panel panel-primary">
 <div class="panel-body" style="width: 100%;">
     <style>

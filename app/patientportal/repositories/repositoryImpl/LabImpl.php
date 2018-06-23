@@ -317,12 +317,14 @@ class LabImpl implements LabInterface
             $query->join('dental_category as dc', 'dc.id', '=', 'dei.dental_category_id');
             $query->select('dei.id', 'dei.examination_name', 'dc.id as category_id', 'dc.category_name');
 
+
             $dentalExaminations = $query->get();
+
             $hospitals = Hospital::all();
 
             foreach ($dentalExaminations as $dentalExamination) {
-                //dd($dentalExamination['category_id']);
-                $dentalExaminationCategory[$dentalExamination['category_id']] = $dentalExamination['category_name'];
+               // dd($dentalExamination);
+                $dentalExaminationCategory[$dentalExamination->category_id] = $dentalExamination->category_name;
                 // dd($dentalExaminationCategory);
             }
 
@@ -359,7 +361,7 @@ class LabImpl implements LabInterface
 
             $hospitals = Hospital::all();
             foreach ($xrayExaminations as $xrayExamination) {
-                $xrayExaminationCategory[$xrayExamination['category']] = $xrayExamination['examination_name'];
+                $xrayExaminationCategory[$xrayExamination->category] = $xrayExamination->examination_name;
             }
 
 

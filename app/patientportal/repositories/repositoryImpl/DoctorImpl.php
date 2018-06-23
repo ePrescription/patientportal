@@ -645,7 +645,7 @@ public function getPharmacyAppointments()
         }
         return $specialty;
     }
-
+/*To Save Patient Question */
 
      public function saveQuestion($request) {
 
@@ -778,6 +778,9 @@ public function getPharmacyAppointments()
 
         return $randomString;
     }
+
+    /*To Get Single Doctor Selected Information*/
+
 
     public function getSingleDoctor($request)
     {

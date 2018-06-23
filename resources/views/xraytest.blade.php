@@ -256,15 +256,15 @@ $time_array = array(
                                     </div>
 
                                     @foreach($xrayExaminations as $xrayExaminationsValue)
-                                        @if($xrayExaminationsValue['category']== $key)
+                                        @if($xrayExaminationsValue->category== $key)
 
                                             <div class="form-group col-sm-6">
-                                                <label class="col-sm-8 control-label">{{$xrayExaminationsValue['examination_name']}}</label>
+                                                <label class="col-sm-8 control-label">{{$xrayExaminationsValue->examination_name}}</label>
                                                 <div class="col-sm-4">
-                                                    <input type="hidden" class="form-control" name="xrayExaminations[{{$i}}][xrayExaminationId]" value="{{$xrayExaminationsValue['id']}}" required="required" />
+                                                    <input type="hidden" class="form-control" name="xrayExaminations[{{$i}}][xrayExaminationId]" value="{{$xrayExaminationsValue->id}}" required="required" />
                                                     <input type="hidden" class="form-control" name="xrayExaminations[{{$i}}][xrayExaminationDate]" id="TestDates" value="{{date('Y-m-d')}}" required="required" />
                                                     <input type="hidden" class="form-control" name="xrayExaminations[{{$i}}][examinationTime]" id="TestTimes" value="{{date('h:i:s')}}" required="required" />
-                                                    <input type="checkbox" class="form-controlX" name="xrayExaminations[{{$i}}][xrayExaminationName]" value="{{$xrayExaminationsValue['examination_name']}}" style="height: 20px;width: 20px;margin: 8px 0px 0px 0px;" />
+                                                    <input type="checkbox" class="form-controlX" name="xrayExaminations[{{$i}}][xrayExaminationName]" value="{{$xrayExaminationsValue->examination_name}}" style="height: 20px;width: 20px;margin: 8px 0px 0px 0px;" />
                                                     <?php /* ?>
 <div class="radio radio-info radio-inline">
 <input type="radio" id="xrayExaminations{{$xrayExaminationsValue->id}}1" value="1" name="xrayExaminations[{{$i}}][isValueSet]">

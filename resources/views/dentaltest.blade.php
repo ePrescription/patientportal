@@ -256,15 +256,15 @@ $time_array = array(
 </div>
 
 @foreach($dentalExaminations as $dentalExaminationsValue)
-@if($dentalExaminationsValue['category_id'] == $key)
+@if($dentalExaminationsValue->category_id == $key)
 
 <div class="form-group col-sm-6">
-<label class="col-sm-8 control-label">{{$dentalExaminationsValue['examination_name']}}</label>
+<label class="col-sm-8 control-label">{{$dentalExaminationsValue->examination_name}}</label>
 <div class="col-sm-4">
-    <input type="hidden" class="form-control" name="dentalExaminations[{{$i}}][dentalExaminationId]" value="{{$dentalExaminationsValue['id']}}" required="required" />
+    <input type="hidden" class="form-control" name="dentalExaminations[{{$i}}][dentalExaminationId]" value="{{$dentalExaminationsValue->id}}" required="required" />
 <input type="hidden" class="form-control" name="dentalExaminations[{{$i}}][dentalExaminationDate]" id="TestDates" value="{{date('Y-m-d')}}" required="required" />
 <input type="hidden" class="form-control" name="dentalExaminations[{{$i}}][examinationTime]" id="TestTimes" value="{{date('h:i:s')}}" required="required" />
-<input type="checkbox" class="form-controlX" name="dentalExaminations[{{$i}}][dentalExaminationName]" value="{{$dentalExaminationsValue['examination_name']}}" style="height: 20px;width: 20px;margin: 8px 0px 0px 0px;" />
+<input type="checkbox" class="form-controlX" name="dentalExaminations[{{$i}}][dentalExaminationName]" value="{{$dentalExaminationsValue->examination_name}}" style="height: 20px;width: 20px;margin: 8px 0px 0px 0px;" />
 
 </div>
 </div>

@@ -53,42 +53,8 @@ class UserController extends Controller
 
         //return $responseJson;
     }
-    public function welcome()
-    {
 
-        $hospitals = Hospital::all();
-        dd($hospitals);
-
-        return view('welcome')->with('hospitals', $hospitals)->with('sessionmsg', 'Session timed out Please Login again');
-    }
-
-
-    public function registerPatient(Request $request)
-    {
-        //dd($request);
-        $otp = 1;
-        try {
-            //  dd($request);
-            $otp = $this->userService->registerPatientDetails($request);
-
-
-        } catch (Exception $userExc) {
-
-            $errorMsg = $userExc->getMessageForCode();
-
-            $msg = AppendMessage::appendMessage($userExc);
-
-        } catch (Exception $exc) {
-            //dd($exc);
-            $msg = AppendMessage::appendGeneralException($exc);
-            //error_log($status);
-            //$msg->sendUnExpectedExpectionResponse($exc);
-        }
-
-        $msg = 'Enter otp';
-        return view('otp', compact('msg', 'otp'));
-
-    }
+   /*OTP Confirmation From User*/
 
     public function otpConfirm(Request $request)
     {
@@ -120,6 +86,8 @@ class UserController extends Controller
         }
 
     }
+    /*To Register a New User For The First Time*/
+
     public function saveNewPatientProfile(PatientProfileRequest $patientProfileRequest)
     {
         //return "HI";

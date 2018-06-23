@@ -21,27 +21,21 @@
                         photo = 'steth.jpg';
                     }
 
-
-                    list = list + '<li class="cbp-item psychiatrist" display:inline; >'
+                    list = list + '<li class="cbp-item psychiatrist" style="position: relative;">'
                             + '<a href="singledoctor?doctorid=' + msg[i]['doctor_id'] + '" class="cbp-caption ">'
                             + ' <div class="cbp-caption-defaultWrap">'
-                            + ' <img src="{{URL::to('/')}}/public/doctors/' + photo + '" alt="" width="100%" height="100%">'
-                            + '    </div>'
-                            + ' <div class="cbp-caption-activeWrap">'
-                            + '   <div class="cbp-l-caption-alignCenter">'
-                            + '   <div class="cbp-l-caption-body">'
-                            + '           <div class="cbp-l-caption-text">VIEW PROFILE</div>'
-                            + '       </div>'
-                            + '  </div>'
-                            + '    </div>'
-                            + ' </a>'
+                            + '<img src="{{URL::to('/')}}/public/doctors/' + photo + '" alt="" width="100%" height="100%"></div>'
+                            + '<div class="cbp-caption-activeWrap"><div class="cbp-l-caption-alignCenter"><div class="cbp-l-caption-body">'
+                            + '<div class="cbp-l-caption-text">VIEW PROFILE</div>'
+                            + '</div></div></div></a>'
                             + ' <p>' + msg[i]['name'] + '(' + msg[i]['designation'] + ')</p>'
-                            + '<p >' + msg[i]['qualifications'] + '</p></li><br>';
+                            + '<p >' + msg[i]['qualifications'] + '</p></li>';
 
 
                     // list = list + '<div class="blog-grid-w3-agileits"><div><img src=storage/doctors/' + photo + ' style="height: 200px; width:200px;"> </div> <div class="blog-info-w3layouts"><h6>' + msg[i]['name'] + '</h6> <div class="inner-info">\n\
 //<h3>' + msg[i]['designation'] + '</h3><p class="para-wthree">' + msg[i]['qualifications'] + '.</p></div><a href="singledoctor?doctorid=' + msg[i]['doctor_id'] + '" class="blog-more-agile" >Read More</a></div> <div class="clearfix"></div></div>';
                 }
+               //list=list;
 
                 $("#doctlist").html(list);
             }
@@ -92,7 +86,7 @@
                     <ul id="doctlist">
                         @foreach ($doctors as $doctor) 
                         <li class="cbp-item psychiatrist">
-                            <a href="singledoctor?doctorid={{$doctor->doctor_id}}" class="cbp-caption ">
+                            <a href="singledoctor?doctorid={{$doctor->doctor_id}}" class="cbp-caption">
                                 <div class="cbp-caption-defaultWrap">
                                     <img src="{{URL::to('/')}}/public/doctors/{{$doctor->doctor_photo}}" alt="" width="100%" height="100%">
                                 </div>

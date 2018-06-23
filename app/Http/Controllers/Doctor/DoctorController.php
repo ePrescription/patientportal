@@ -40,6 +40,7 @@ class DoctorController extends Controller
         $this->doctorService = $doctorService;
     }
 
+    /*To Book Patient Appointment From PSSP*/
     public function BookDoctorAppointment(Request $patientProfileRequest)
     {
         $patientProfileVM = null;
@@ -121,6 +122,7 @@ class DoctorController extends Controller
         //return $jsonResponse;
 
     }
+    /*TO GET ALL Doctors Information*/
     public function getDoctors(Request $request){
 
         $doctors=null;
@@ -143,7 +145,7 @@ class DoctorController extends Controller
     }
 
 
-
+    /*Load Hospitals By DoctorId*/
 
     public function getHospitals(Request $request){
 
@@ -217,6 +219,9 @@ class DoctorController extends Controller
         return $timeslots;
 
     }
+
+    /*To Get Appointment View Page*/
+
       public function getAppointment(Request $request){
 
           $appointment=null;
@@ -277,7 +282,7 @@ class DoctorController extends Controller
         }
         return $pharmacyappointments;
     }
-
+   /**/
     public function getAskQuestions(){
         $askquestions=null;
         try{
@@ -293,6 +298,16 @@ class DoctorController extends Controller
         }
         return $askquestions;
     }
+
+    /*TO Get All History Of User
+    1.All Questions
+    2.All Doctor Appointments
+    3.All Pharmacy Appointments
+    4.All Lab Appointments
+
+    */
+
+
     public function getHistory(){
         $askquestions=null;
         $labappointments=null;
@@ -307,11 +322,7 @@ class DoctorController extends Controller
             $pharmacyappointments=$this->doctorService->getPharmacyAppointments();
             $examinationDates=$this->doctorService->getLabDates();
             $doctorappointments=$this->doctorService->getDoctorAppointment();
-
-
-
-
-        } catch (Exception $userExc) {
+    } catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
             $msg = AppendMessage::appendMessage($userExc);
         } catch (Exception $exc) {
@@ -321,6 +332,8 @@ class DoctorController extends Controller
         }
         return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates);
     }
+
+
 
 
     public function AskQuestionPage(){
@@ -341,6 +354,8 @@ class DoctorController extends Controller
     }
 
 
+
+
     public function saveQuestion(Request $request){
         $status=null;
         try{
@@ -357,6 +372,8 @@ class DoctorController extends Controller
         }
         return redirect()->back()->with('msg', 'Your Query is submited Successfully !');
     }
+
+
 
 
     public function SingleDoctor(Request $request){
@@ -380,6 +397,9 @@ class DoctorController extends Controller
         return view('singledoctor')->with('hospitals', $hospitals)->with('doctorinfo', $totaldoctorinfo)->with('hospital', $hospital)->with('doctors', $doctors);
     }
 
+
+
+
     public function SecondOptionPage(){
         $specialty=null;
         try{
@@ -396,6 +416,10 @@ class DoctorController extends Controller
         }
         return view('secondoption')->with('specialty', $specialty)->with('hospitals', $hospitals);
     }
+
+
+
+
     public function DoctorsPage(){
         $specialty=null;
         try{
