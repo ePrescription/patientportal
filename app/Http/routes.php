@@ -69,7 +69,7 @@ Route::get('/', function () {
 
 
 Route::get('/index', function () {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
 
         $hospitals = App\patientportal\modal\Hospital::all();
         return view('index')->with('hospitals', $hospitals);
@@ -173,7 +173,7 @@ Route::get("/loadappointmentdetails",function(\Illuminate\Http\Request $request)
 
 
 Route::get('/appointmentlabel', function(\Illuminate\Http\Request $request) {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
 
         $id = $request->input("id");
 
@@ -188,14 +188,14 @@ Route::get('/appointmentlabel', function(\Illuminate\Http\Request $request) {
 
 
 //Route::get('/lab_appointmentmsg', function(\Illuminate\Http\Request $request) {
-//   if (session('userID') && time() - session('logintime') < 300) {
+//   if (session('userID') && time() - session('logintime') < 900) {
 
 // }
 //});
 
 
 Route::get('/pharmacy_appointmentmsg', function(\Illuminate\Http\Request $request) {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         $id = $request->input("id");
         $pharmacyappointments = PharmacyAppointment::join('pharmacy', 'pharmacy.pharmacy_id', '=', 'pharmacy_appointment.pharmacy_id')->join('hospital', 'hospital.hospital_id', '=', 'pharmacy_appointment.hospital_id')->where('pharmacy_appointment.patient_id', '=', session('patient_id'))->where('pharmacy_appointment.id', '=', $id)->select('pharmacy_appointment.filepath as prescription', 'pharmacy_appointment.id', 'pharmacy.address as pharmacyaddress', 'pharmacy.name as pharmacy', 'pharmacy_appointment.appointment_date', 'pharmacy_appointment.briefnote as brief_history', 'hospital.hospital_name', 'hospital.email', 'hospital.address as hsaddress', 'hospital.telephone')->paginate(10);
 
@@ -219,7 +219,7 @@ Route::post('/makelabappointment', 'LabappointmentController@insert');
 
 
 Route::get("loadpharmacy", function(Illuminate\Http\Request $request) {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         $hospital_id = $request->input("hospital_id");
         //$hospitals= App\HospitalDoctor ::where('doctor_id','=',$doctor_id)->select('hospital_id')->get()->toArray();
         $pharmacy = App\patientportal\modal\HospitalPharmacy::where('hospital_id', '=', $hospital_id)->join('pharmacy', 'pharmacy.pharmacy_id', '=', 'hospital_pharmacy.pharmacy_id')->get();
@@ -235,7 +235,7 @@ Route::post('/makepharmacyappointment', 'Pharma\PharmaController@save');
 
 
 Route::get("doctoravailability", function(Illuminate\Http\Request $request) {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         $specialty = $request->input("specialty");
         $doctor_id = $request->input("doctor_id");
         $hsp_id = $request->input("hsp_id");
@@ -256,7 +256,7 @@ Route::get("doctoravailability", function(Illuminate\Http\Request $request) {
 
 /* diagnostics routes */
 Route::get('/diagnostics', function() {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         return view('diagnostics');
     } else {
         $hospitals = App\patientportal\modal\Hospital::all();
@@ -266,7 +266,7 @@ Route::get('/diagnostics', function() {
 
 /* diagnostics routes */
 Route::get('/pharmacies', function() {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         return view('pharmacies');
     } else {
         $hospitals =  App\patientportal\modal\Hospital::all();
@@ -278,7 +278,7 @@ Route::get('/pharmacies', function() {
 
 
 Route::get('/clinicshospitalsdoctors', function() {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         return view('search');
     } else {
         $hospitals = App\patientportal\modal\Hospital::all();
@@ -288,7 +288,7 @@ Route::get('/clinicshospitalsdoctors', function() {
 
 /*
 Route::get('/secondoption', function() {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         $hospitals = App\patientportal\modal\Hospital::all();
         $specialty =  App\patientportal\modal\Doctor::select('specialty')->distinct()->get();
         return view('secondoption')->with('specialty', $specialty)->with('hospitals', $hospitals);
@@ -299,7 +299,7 @@ Route::get('/secondoption', function() {
 });*/
 
 Route::get('/otpconfirm', function() {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         $hospitals =  App\patientportal\modal\Hospital::all();
         return view('index')->with('hospitals', $hospitals);
     } else {
@@ -312,7 +312,7 @@ Route::get('/otpconfirm', function() {
 
 
 Route::get('/articles', function() {
-    if (session('userID') && time() - session('logintime') < 300) {
+    if (session('userID') && time() - session('logintime') < 900) {
         $hospitals = App\patientportal\modal\Hospital::all();
         return view('articles')->with('hospitals', $hospitals);
     } else {

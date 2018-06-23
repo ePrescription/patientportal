@@ -9,6 +9,13 @@
         .red {
             color: red;
         }
+
+        @media (max-width:480px) {
+            .text-width{
+                width:100%;
+
+            }
+        }
     </style>
     <?php
     $time_array = array(
@@ -474,7 +481,7 @@
                                         </div>-->
 
                                         <h4 class="m-t-0 m-b-30">Appointment Info</h4>
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>AppointmentType<span class="red">*</span></label>
                                                 <select name="appointmentCategory" id="appointmentCategory"
@@ -488,10 +495,10 @@
                                         </div>
 
 
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Date<span class="red">*</span></label>
-                                                <input type="date" class="form-control" name="appointmentDate"
+                                                <input type="text" class="form-control" name="appointmentDate"
                                                        id="TestDate" value="{{date('Y-m-d')}}"
                                                        style="line-height: 20px;" required="required"
                                                        onchange="javascript:appointmentTypePatient(); "/>
@@ -499,7 +506,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Hospital</label>
                                                 <select name="hospitalId" id="hospitalId"
@@ -516,7 +523,7 @@
                                                 <div class="validation"></div>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Doctor</label>
                                                 <select name="doctorId" id="doctorId"
@@ -530,10 +537,10 @@
                                         </div>
 
 
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Appointment Time<span class="red">*</span></label>
-                                                <select class="form-control" name="appointmentTime" id="appointmentTime"
+                                                <select class="form-control text-width" name="appointmentTime" id="appointmentTime"
                                                         required="required"
                                                         onchange="javascript:getTokenId(this.value);">
 
@@ -549,7 +556,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-xs-6 col-sm-6 col-md-6" id="token" style="display: none">
+                                        <div class="col-xs-12 col-sm-6 col-md-6" id="token" style="display: none">
                                             <div class="form-group">
                                                 <b>Your Token ID:</b>
                                                 <p name="tokenId" id="tokenId" required="required" readonly
@@ -612,7 +619,7 @@
 
 
                                         <div class="row">
-                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <div class="col-xs-12 col-sm-6 col-md-6 ">
                                                 <div class="form-group">
                                                     <label>Briefnote</label>
                                                     <textarea id="briefnote" name="briefnote"
@@ -676,13 +683,13 @@
                                                             value="">
                                                  </div>
                                              </div>-->
-
-                                            <input type="submit" value="Book Appointment" class="btn btn-skin btn-block">
+                                            <div class="col-xs-12 col-sm-6 col-md-6 ">
+                                           <center> <input type="submit" value="Book Appointment" class="btn btn-skin btn-block" style="width: 50% font-size:14px;"></center>
 
 
                                 </form>
                             </div>
-
+                        </div>
 
                         </div>
 
@@ -767,7 +774,14 @@
 
     </script>
     <script>
-        window.onload = function () {
+
+        $('#TestDate').datepicker({
+            dateFormat: "mm/dd/yy",
+        });
+
+
+
+    window.onload = function () {
             var dateValue = $("#appointmentDate").val();
 
         };

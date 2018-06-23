@@ -294,7 +294,7 @@
                                 <form action="askquestsendmail" method="post" id="registration" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <div class="row">
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Hospital</label>
                                                 <input class="name" type="hidden" value="{{ $doctors[0]->doctor_id}}"
@@ -309,7 +309,7 @@
                                                 <div class="validation"></div>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Priority</label>
                                                 <select class="form-control input-md name" style="width:100%;"
@@ -327,7 +327,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Subject</label>
                                                 <input style="width:100%;" class="form-control input-md name"
@@ -343,7 +343,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Upload Related Documents</label>
 
@@ -386,7 +386,7 @@
                                     {{ csrf_field() }}
                                     <div class="row">
 
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>AppointmentType<span class="red">*</span></label>
                                                 <select name="appointmentCategory" id="appointmentCategory"
@@ -398,7 +398,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Hospital</label>
                                                 <input type="hidden" value="{{ $doctors[0]->doctor_id}}" name='doctorId'
@@ -416,16 +416,16 @@
                                         </div>
 
 
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Select Date<span class="red">*</span></label>
-                                            <input type="date" class="form-control" name="appointmentDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:appointmentTypePatient(); " />
+                                            <input type="text" class="form-control" name="appointmentDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:appointmentTypePatient(); " />
                                             <div class="validation"></div>
                                         </div>
                                     </div>
 
 
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Appointment Time<span class="red">*</span></label>
                                             <select class="form-control" name="appointmentTime" id="appointmentTime"
@@ -444,7 +444,7 @@
                                     </div>
 
 
-                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Briefnote</label>
                                                 <textarea style="width:100%;" class="name" id="briefnote"
@@ -490,6 +490,17 @@
 
                     </div>
                 </div>
+                <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                <link rel="stylesheet" href="/resources/demos/style.css">
+                <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $('#TestDate').datepicker({
+        dateFormat: "mm/dd/yy",
+    });
+
+</script>
+
 
 
                 <!--ddd-->
@@ -501,7 +512,7 @@
 
     <script>
         window.onload = function() {
-            var dateValue=$("#appointmentDate").val();
+            var dateValue=$("#appointmentDate").val({minDate: new Date()});
 
         };
 

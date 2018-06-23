@@ -2,7 +2,9 @@
 @section('title','Daiwik Pharmacy Pickup')
 @section('styletext')
 <script>
-
+    $('#datepicker3').datepicker({
+        dateFormat: "mm/dd/yy",
+    });
 
     jQuery(document).ready(function ($) {
         $(".scroll").click(function (event) {
@@ -246,10 +248,11 @@
         };
 
 
-        $("#datepicker3").datetimepicker(pickerOpts);
+       // $("#datepicker3").datetimepicker(pickerOpts);
         // $("#toDate").datetimepicker(pickerOpts1);
 
     });
+
 
 </script>
 
@@ -330,9 +333,8 @@
                                     <div class="col-xs-6 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Req Date and Time of pick up</label>
-                                            <input  id="datepicker3" name="date" name="Text" type="text"  class="form-control input-md"value="" onfocus="this.value = '';" onblur="if (this.value == '') {
-                                                        ;
-                                                    }" placeholder="Req Date and Time of pick up" required=""><br><br><br>
+                                            <input  id="datepicker3" name="date" name="Text" type="date"  class="form-control input-md"
+                                                   placeholder="Req Date" required=""><br><br><br>
 
 
 

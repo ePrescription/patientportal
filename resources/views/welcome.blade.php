@@ -216,7 +216,7 @@
                     <input type="password" name="password" password="password" placeholder="Password" required=""/>
                     <input type="file" class="form-controlx" name="patient_photo" placeholder="patient_photo"/>
                     <input type="text" name="telephone" id="telephone" placeholder="MobileNumber" required=""/>
-                    <input name="dob" id="dob"  class="form-control" type="date" value="" style="line-height: 20px;" required="">
+                    <input name="dob" id="dob"  class="form-control" type="text" value="" style="line-height: 20px;" required="">
                     <input type="radio" class="form-controlx" id="gender1" name="gender" value="1" required="required"/>&nbsp;&nbsp;Male
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="radio" class="form-controlx" id="gender2" name="gender" value="2" required="required"/>&nbsp;&nbsp;Female
@@ -423,9 +423,19 @@
 <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 <script>
+    $('#dob').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: "mm/dd/yy",
+        yearRange: "-90:+00"
+    });
     // Wait for the DOM to be ready
     $(function () {
 

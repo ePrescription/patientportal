@@ -71,7 +71,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label">Test Date</label>
         <div class="col-sm-4">
-            <input type="date" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:UpdateTestDates(this.value);" />
+            <input type="text" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:UpdateTestDates(this.value);" />
             @if ($errors->has('examinationDate'))<p class="error" style="">{!!$errors->first('examinationDate')!!}</p>@endif
         </div>
         <div class="col-sm-4">
@@ -90,9 +90,9 @@ $time_array = array(
     </div>
 <?php $i=0; ?>
 @foreach($bloodTests as $patientBloodTestValue)
-<div class="col-sm-6 form-group">
-<label class="col-sm-6 control-label">{{$patientBloodTestValue->examination_name}}</label>
-<div class="col-sm-6">
+<div class="col-xs-12 col-sm-6 form-group">
+<label class="col-xs-12 col-sm-6 control-label">{{$patientBloodTestValue->examination_name}}</label>
+<div class="col-xs-12 col-sm-6">
 <input type="hidden" class="form-control" name="bloodExaminations[{{$i}}][examinationId]" value="{{$patientBloodTestValue->id}}" required="required" />
 <input type="hidden" class="form-control" name="bloodExaminations[{{$i}}][examinationDate]" id="TestDates" value="{{date('Y-m-d')}}" required="required" />
 <input type="hidden" class="form-control" name="bloodExaminations[{{$i}}][examinationTime]" id="TestTimes" value="{{date('h:i:s')}}" required="required" />
@@ -349,6 +349,9 @@ $time_array = array(
 
 </script>
 <script>
+    $('#TestDate').datepicker({
+        dateFormat: "mm/dd/yy",
+    });
     window.onload = function () {
         var dateValue = $("#appointmentDate").val();
 

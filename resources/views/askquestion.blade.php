@@ -93,7 +93,7 @@
                                 {{ csrf_field() }}
 
                                 <div class="row">
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Select Speciality</label>
                                             <select name="specialist" id="specialist" class="form-control input-md" placeholder="Specialist" >
@@ -107,7 +107,7 @@
                                             <div class="validation"></div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label >Select Doctor</label>
                                             <select name="doctor" id ="doctor" class="form-control input-md" placeholder="Doctor">
@@ -118,7 +118,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Select Hospital</label>
                                             <select name="hospital" id="hospital" class="form-control input-md" placeholder="Hospital">
@@ -128,7 +128,7 @@
                                             <div class="validation"></div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Select Priority Level</label>
                                             <select name="expectedtime" id="expectedtime" class="form-control input-md" placeholder="Hospital">
@@ -144,14 +144,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Subject</label>
                                             <input type="text" name="Subject" placeholder="Subject" class="form-control input-md" required="">
                                             <div class="validation"></div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Detailed Description</label>
                                             <textarea name="Message"  placeholder="Message" class="form-control input-md"  required=""></textarea>
@@ -160,7 +160,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>Upload Related Documents</label>
 
@@ -173,7 +173,7 @@
                                             <div class="validation"></div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label></label>
                                             <input type="hidden" name="questiontype" value="Ask A Question" class="form-control input-md"/>
@@ -182,9 +182,9 @@
                                     </div>
                                 </div>
 
-
+                                <div class="col-xs-12 col-sm-6 col-md-6">
                                 <input type="submit" value="Submit" class="btn btn-skin btn-block btn-lg">
-
+                                </div>
 
                             </form>
                         </div>

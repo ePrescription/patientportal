@@ -20,18 +20,9 @@
             // showSeconds: true,
             showMonthAfterYear: true,
         }
-        $("#input#TestDate").datetimepicker(pickerOpts);
-        // $("#input#TestTIme").datetimepicker(pickerOpts1);
-
     });
-    $("input#TestTime").timepicker({
-        timeFormat: 'HH:mm:ss',
-        interval: 60,
-        defaultTime: '{{date('H:i:s')}}',
-        startTime: '00:00',
-        dynamic: false,
-        dropdown: true,
-        scrollbar: true
+    $('#TestDate').datepicker({
+        dateFormat: "mm/dd/yy",
     });
     function changeValues(did) {
 
@@ -235,7 +226,7 @@ $time_array = array(
     </div>
         <label class="col-sm-4 control-label">Test Date</label>
         <div class="col-sm-4">
-            <input type="date" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:UpdateTestDates(this.value);" />
+            <input type="text" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:UpdateTestDates(this.value);" />
             @if ($errors->has('examinationDate'))<p class="error" style="">{!!$errors->first('examinationDate')!!}</p>@endif
         </div>
         <div class="col-sm-4">

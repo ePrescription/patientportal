@@ -199,6 +199,9 @@ $time_array = array(
 
 
        }
+       $('#TestDate').datepicker({
+           dateFormat: "mm/dd/yy",
+       });
    </script>
      
 @if(count($dentalExaminations)>0)
@@ -231,7 +234,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label">Test Date</label>
         <div class="col-sm-4">
-            <input type="date" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:UpdateTestDates(this.value);" />
+            <input type="text" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:UpdateTestDates(this.value);" />
             @if ($errors->has('examinationDate'))<p class="error" style="">{!!$errors->first('examinationDate')!!}</p>@endif
         </div>
         <div class="col-sm-4">
