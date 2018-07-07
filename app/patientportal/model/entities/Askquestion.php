@@ -34,7 +34,7 @@ use  Eloquent;
  */
 class Askquestion extends Eloquent
 {
-	protected $table = 'askquestion';
+	protected $table = 'patient_ask_question';
 
 	protected $casts = [
 		'doctor_id' => 'int',
@@ -46,10 +46,11 @@ class Askquestion extends Eloquent
 		'doctor_id',
 		'hospital_id',
 		'patient_id',
-		'priority',
+		'priority_id',
+        'specialty_id',
 		'subject',
-		'message',
-                'question_type',
+		//'message',
+        'question_type',
 		'created_by',
 		'modified_by'
 	];

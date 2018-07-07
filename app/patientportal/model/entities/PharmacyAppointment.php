@@ -31,7 +31,7 @@ use  Eloquent;
  */
 class PharmacyAppointment extends Eloquent
 {
-	protected $table = 'pharmacy_appointment';
+	protected $table = 'pharmacy_pickup';
 
 	protected $casts = [
 		'patient_id' => 'int',
@@ -50,7 +50,7 @@ class PharmacyAppointment extends Eloquent
 		'hospital_id',
 		'pharmacy_id',
 		'briefnote',
-                'doctor_name',
+        'doctor_name',
 		'appointment_date',
 		'appointment_time',
 		'appointment_type',
