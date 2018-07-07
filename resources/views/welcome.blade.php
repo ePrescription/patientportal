@@ -216,7 +216,7 @@
                     <input type="password" name="password" password="password" placeholder="Password" required=""/>
                     <input type="file" class="form-controlx" name="patient_photo" placeholder="patient_photo"/>
                     <input type="text" name="telephone" id="telephone" placeholder="MobileNumber" required=""/>
-                    <input name="dob" id="dob"  class="form-control" type="text" value="" style="line-height: 20px;" required="">
+                    <input name="dob" id="dob1"  class="form-control" type="date" value="" style="line-height: 20px;" required="">
                     <input type="radio" class="form-controlx" id="gender1" name="gender" value="1" required="required"/>&nbsp;&nbsp;Male
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="radio" class="form-controlx" id="gender2" name="gender" value="2" required="required"/>&nbsp;&nbsp;Female

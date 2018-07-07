@@ -269,7 +269,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             <th>Appointment Date </th>
             <th>Appointment Time </th>
             <th>More Details</th>
-            <th>Reappointment</th>
+            {{--<th>Reappointment</th>--}}
             </thead><tbody>
                 @foreach ($doctorappointments as $appointment)
                 <tr><td>{{ $count}}</td>
@@ -307,7 +307,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             <th>Appointment Time </th>
             {{--<th>Hospital ID</th>--}}
             <th>More Details</th>
-            <th>Reappointment</th>
+            {{--<th>Reappointment</th>--}}
             </thead><tbody>
             @foreach ($examinationDates["bloodTestDates"] as $appointment)
                 <tr>
@@ -317,7 +317,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                     <td>{{ $appointment->examination_time}}</td>
                     {{--<td>{{ $appointment->hospital_id}}</td>--}}
                     <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
-                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                    {{--<td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>--}}
 
                 </tr>
                 <?php $count=0;?>
@@ -335,7 +335,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             <th>Appointment Time </th>
             {{--<th>Hospital ID</th>--}}
             <th>More Details</th>
-            <th>Reappointment</th>
+            {{--<th>Reappointment</th>--}}
             </thead><tbody>
             @foreach ($examinationDates["motionTestDates"] as $appointment)
                 <tr>
@@ -345,7 +345,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                     <td>{{ $appointment->examination_time}}</td>
                     {{--<td>{{ $appointment->hospital_id}}</td>--}}
                     <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
-                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                    {{--<td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>--}}
 
                 </tr>
                 <?php $count++;?>
@@ -363,7 +363,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             <th>Appointment Time </th>
             {{--<th>Hospital ID</th>--}}
             <th>More Details</th>
-            <th>Reappointment</th>
+            {{--<th>Reappointment</th>--}}
             </thead><tbody>
             @foreach ($examinationDates["urineTestDates"] as $appointment)
                 <tr>
@@ -373,7 +373,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                     <td>{{ $appointment->examination_time}}</td>
                     {{--<td>{{ $appointment->hospital_id}}</td>--}}
                     <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
-                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                    {{--<td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>--}}
 
                 </tr>
                 <?php $count++;?>

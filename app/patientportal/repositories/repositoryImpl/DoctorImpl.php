@@ -5,6 +5,7 @@ namespace App\patientportal\repositories\repositoryImpl;
 use App\Http\ViewModels\NewAppointmentViewModel;
 use App\Http\ViewModels\PatientProfileViewModel;
 use App\patientportal\modal\Askquestion;
+use App\patientportal\model\AskQuestionDocumentItems;
 use App\patientportal\modal\Doctor;
 use App\patientportal\modal\DoctorAppointment;
 use App\patientportal\modal\Hospital;
@@ -14,6 +15,8 @@ use App\patientportal\modal\Labtest;
 use App\patientportal\modal\Patient;
 use App\patientportal\modal\PharmacyAppointment;
 use App\patientportal\modal\Role;
+use App\patientportal\model\SecondOpinion;
+use App\patientportal\model\SecondOpinionItems;
 use App\patientportal\modal\Sms;
 use App\User;
 use App\patientportal\repositories\repoInterface\DoctorInterface;
@@ -493,10 +496,10 @@ public function getAskQuestions()
 {
     $askquestions=null;
     try{
-        $askquestions =  Askquestion::join('doctor', 'doctor.doctor_id', '=', 'askquestion.doctor_id')
-            ->join('hospital', 'hospital.hospital_id', '=', 'askquestion.hospital_id')
-            ->where('askquestion.patient_id', '=', session('patient_id'))
-            ->select('askquestion.response_date','askquestion.question_type','askquestion.created_at', 'doctor.name', 'doctor.doctor_id', 'hospital.hospital_name', 'doctor.specialty')
+        $askquestions =  Askquestion::join('doctor', 'doctor.doctor_id', '=', 'patient_ask_question.doctor_id')
+            ->join('hospital', 'hospital.hospital_id', '=', 'patient_ask_question.hospital_id')
+            ->where('patient_ask_question.patient_id', '=', session('patient_id'))
+            ->select('patient_ask_question.created_at', 'doctor.name', 'doctor.doctor_id', 'hospital.hospital_name', 'doctor.specialty')
             ->paginate(10);
 
 
@@ -516,10 +519,10 @@ public function getPharmacyAppointments()
 {
     $pharmacyappointments=null;
     try{
-        $pharmacyappointments =  PharmacyAppointment::join('pharmacy', 'pharmacy.pharmacy_id', '=', 'pharmacy_appointment.pharmacy_id')
-            ->join('hospital', 'hospital.hospital_id', '=', 'pharmacy_appointment.hospital_id')
-            ->where('pharmacy_appointment.patient_id', '=', session('patient_id'))
-            ->select('pharmacy_appointment.id', 'pharmacy.name', 'pharmacy_appointment.appointment_date', 'hospital.hospital_name')
+        $pharmacyappointments =  DB::table('pharmacy_pickup')->join('pharmacy_pickup_documents', 'pharmacy_pickup.id', '=', 'pharmacy_pickup_documents.pharmacy_pickup_id')
+            ->join('hospital', 'hospital.hospital_id', '=', 'pharmacy_pickup.hospital_id')
+            ->where('pharmacy_pickup.patient_id', '=', session('patient_id'))
+            ->select('pharmacy_pickup.id', 'pharmacy_pickup.breif_notes', 'pharmacy_pickup.appointment_date', 'hospital.hospital_name')
             ->paginate(10);
 
 
@@ -629,7 +632,7 @@ public function getPharmacyAppointments()
         $specialty=null;
         try{
 
-            $specialty = Doctor::select('specialty')->distinct()->get();
+            $specialty = DB::table('specialty')->select('id','specialty_name as specialty')->get();
 
 
         } catch (Exception $userExc) {
@@ -645,14 +648,176 @@ public function getPharmacyAppointments()
         }
         return $specialty;
     }
-/*To Save Patient Question */
+
+    public function saveSecondOpinion($request) {
+
+        //dd($request);
+       $OrgfileName=null;
+        $fileType=null;
+
+
+        try{
+
+            $specialist = $request->get("specialist");
+            $doctor1 = $request->get("doctor");
+            $hospital = $request->get("hospital");
+            $subject = $request->get("Subject");
+            $message = $request->get("Message");
+            //$questiontype = $request->get("questiontype");
+            $patient_id = session('patient_id');
+            $patientname = session('userID');
+            $priority = $request->get("expectedtime");
+
+            $SecondOpinion=new SecondOpinion();
+
+            $path='';
+            $nooffiles=0;
+
+
+
+            $SecondOpinion->patient_id = $patient_id;
+            $SecondOpinion->specialty_id = $specialist;
+            $SecondOpinion->doctor_id = $doctor1;
+            $SecondOpinion->hospital_id = $hospital;
+            $SecondOpinion->subject = $subject;
+            $SecondOpinion->so_priority_id = $priority;
+            //$SecondOpinion->subject = $message;
+            // $askquestion->filepath = $path;
+            $SecondOpinion->detailed_description = $message;
+            $SecondOpinion->created_by = 'Admin';
+            $SecondOpinion->updated_by = 'Admin';
+            $SecondOpinion->save();
+
+
+
+
+
+                if ($request->hasFile('image')) {
+
+                    $files= $request->file('image');
+                    foreach ($files as $file){
+                        $randomName = $this->generateUniqueFileName();
+                        $fileType= $file->getClientOriginalExtension();
+                        $OrgfileName=$file->getClientOriginalName();
+                        $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
+                        $path=$path.$filename."@@";
+                        $destinationPath = 'public/askquestion'; // upload path
+                        $extension = $file->getClientOriginalExtension();
+                        $fileName = rand(11111,99999).'.'.$extension; // renaming image
+                        $path = $filename;
+                        // dd($filename.'-------'.$destinationPath);
+                        $file->move($destinationPath, $filename);
+
+
+
+                    }
+
+                    $SecondOpinionItems=new SecondOpinionItems();
+                    $SecondOpinionItems->patient_second_opinion_id=$SecondOpinion->id;
+                    $SecondOpinionItems->document_path=$path;
+                    $SecondOpinionItems->document_filename=$OrgfileName;
+                    $SecondOpinionItems->document_extension=$fileType;
+                    $SecondOpinionItems->document_upload_status="1";
+                    $SecondOpinionItems->created_by = 'Admin';
+                    $SecondOpinionItems->updated_by = 'Admin';
+                    //$AskQuestionDocumentItems->patient_ask_question_id="";
+                    $SecondOpinionItems->save();
+
+
+
+
+                }
+
+
+
+
+
+
+
+
+            $dc = Doctor::where('doctor_id', '=', $doctor1)->get();
+            //$hospitalinfo = App\HospitalDoctor ::where('doctor_id', '=', $doctor1)->join('hospital', 'hospital.hospital_id', '=', 'hospital_doctor.hospital_id')->where('hospital.hospital_id', '=', $hospital)->get();
+
+
+            $did=$doctor1;
+            $date=$SecondOpinion->created_at;
+            $askquestions=DB::table('patient_second_opinion as pso')
+                ->join('doctor as d','d.doctor_id','=','pso.doctor_id')
+                ->join('hospital as h','h.hospital_id','=','pso.hospital_id')
+                ->join('patient_second_opinion_documents as psoi','psoi.patient_second_opinion_id','=','pso.id')
+                ->where('pso.patient_id','=',session('patient_id'))
+                ->where('pso.doctor_id','=',$did)
+                ->where('pso.created_at','=',$date)
+                ->select('d.name','d.specialty','pso.created_at as appointment_date','pso.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','psoi.document_path as reports','pso.subject')->get();
+
+            //$doctorappointments=\App\DoctorAppointment::join('doctor','doctor.doctor_id','=','doctor_appointment.doctor_id')->join('hospital','hospital.hospital_id','=','doctor_appointment.hospital_id')->where('doctor_appointment.patient_id','=',session('patient_id'))->where('doctor_appointment.id','=',$id)->select('doctor.name','doctor.specialty','doctor_appointment.appointment_date','doctor_appointment.brief_history','hospital.hospital_name','hospital.email','hospital.address as hsaddress','hospital.telephone')->get();
+            //return  view("maillayout.doctor_appointment")->with('doctorappointments',$askquestions);
+            $mails=array();
+            if(session('email')!="")   {
+                $mails[count($mails)]=session('email');
+            }
+            $questiontype="SecondOpinion";
+            if($dc[0]->email!=""){
+                $mails[count($mails)]=$dc[0]->email;
+            }
+            if(count($mails)>0){
+                Mail::send('maillayout.ask_appointment', ['doctorappointments' =>  $askquestions], function($msg) use($mails,$questiontype) {
+                    $msg->subject($questiontype);
+                    $msg->from(session('email'));
+                    $msg->to($mails);
+                });
+            }
+            //  dd($mails);
+
+            $mblno='';
+            if(session('patient_id')!=""){
+                $patient=Patient::where('patient_id', '=', session('patient_id'))->get();
+                if($patient[0]['telephone']!=""){
+                    $mblno=$patient[0]['telephone'];
+                }
+            }
+            if ($dc[0]->telephone != "") {
+                $mblno =$mblno.",".$dc[0]->telephone;
+            }
+
+            if($mblno!=""){
+                $msg="Patient ID:".session('patient_id');
+                $msg=$msg."%0APatient Name:".session('userID');
+                $msg=$msg."%0ADoctor Name:".$askquestions[0]->name;
+                $msg=$msg."%0ABrief Note:".$askquestions[0]->brief_history;
+                $msg=$msg."%0ADOA:".$askquestions[0]->appointment_date;
+                // dd('Test');
+                Sms::sendMSG($mblno, $msg);
+            }
+
+        } catch (Exception $userExc) {
+
+            $errorMsg = $userExc->getMessageForCode();
+            dd($userExc);
+            $msg = AppendMessage::appendMessage($userExc);
+
+
+        } catch (Exception $exc) {
+            dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+        return "true";
+
+    }
+
+
+
+/*To Save Patient Question  */
 
      public function saveQuestion($request) {
-
-
+           $filename=null;
+           $fileType=null;
+ //dd($request);
+         $path='';
          try{
 
-             $specialist = $request->get("specialist");
+        $specialist = $request->get("specialist");
         $doctor1 = $request->get("doctor");
         $hospital = $request->get("hospital");
         $subject = $request->get("Subject");
@@ -662,59 +827,59 @@ public function getPharmacyAppointments()
         $patientname = session('userID');
         $priority = $request->get("expectedtime");
 
-        $askquestion = new Askquestion();
+        $askquestion=new Askquestion();
+        $askquestion->patient_id = $patient_id;
+        $askquestion->specialty_id= $specialist;
+        $askquestion->doctor_id = $doctor1;
+        $askquestion->hospital_id = $hospital;
+        $askquestion->priority_id = $priority;
+        $askquestion->subject = $subject;
+        $askquestion->detailed_description = $message;
+        $askquestion->created_by = 'Admin';
+        $askquestion->updated_by = 'Admin';
+        $askquestion->save();
 
-        $path='';
-        $nooffiles=0;
+            if ($request->hasFile('image')) {
 
-        if ($request->hasFile('image')) {
+                $files= $request->file('image');
+                foreach ($files as $file){
+                    $fileType= $file->getClientOriginalExtension();
+                    $OrgfileName=$file->getClientOriginalName();
+                    $randomName = $this->generateUniqueFileName();
+                    $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
+                    $path=$path.$filename."@@";
+                    $destinationPath = 'public/askquestion'; // upload path
+                    $extension = $file->getClientOriginalExtension();
+                    $fileName = rand(11111,99999).'.'.$extension; // renaming image
+                    $path = $filename;
+                    // dd($filename.'-------'.$destinationPath);
+                    $file->move($destinationPath, $filename);
 
-            $files= $request->file('image');
-            foreach ($files as $file){
-                $randomName = $this->generateUniqueFileName();
-                $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
-                $path=$path.$filename."@@";
-                $destinationPath = 'public/askquestion'; // upload path
-                $extension = $file->getClientOriginalExtension();
-                $fileName = rand(11111,99999).'.'.$extension; // renaming image
-               $path = $filename;
-              // dd($filename.'-------'.$destinationPath);
-                $file->move($destinationPath, $filename);
-
+                $AskQuestionDocumentItems=new AskQuestionDocumentItems();
+                $AskQuestionDocumentItems->patient_ask_question_id=$askquestion->id;
+                $AskQuestionDocumentItems->document_path=$path;
+                $AskQuestionDocumentItems->document_filename=$OrgfileName;
+                $AskQuestionDocumentItems->document_extension=$fileType;
+                $AskQuestionDocumentItems->document_upload_status="1";
+                $AskQuestionDocumentItems->created_by = 'Admin';
+                $AskQuestionDocumentItems->updated_by = 'Admin';
+                $AskQuestionDocumentItems->save();
 
             }
 
         }
-
-        $askquestion->patient_id = $patient_id;
-        // $askquestion->specialist_id = $specialist;
-        $askquestion->doctor_id = $doctor1;
-        $askquestion->hospital_id = $hospital;
-        $askquestion->subject = $subject;
-        $askquestion->priority = $priority;
-        $askquestion->message = $message;
-        $askquestion->filepath = $path;
-        $askquestion->question_type = $questiontype;
-        $askquestion->created_by = 'Admin';
-        $askquestion->modified_by = 'Admin';
-        $askquestion->save();
-
-
         $dc = Doctor::where('doctor_id', '=', $doctor1)->get();
-        //$hospitalinfo = App\HospitalDoctor ::where('doctor_id', '=', $doctor1)->join('hospital', 'hospital.hospital_id', '=', 'hospital_doctor.hospital_id')->where('hospital.hospital_id', '=', $hospital)->get();
-
-
         $did=$doctor1;
         $date=$askquestion->created_at;
-        $askquestions=Askquestion::join('doctor','doctor.doctor_id','=','askquestion.doctor_id')
-            ->join('hospital','hospital.hospital_id','=','askquestion.hospital_id')
-            ->where('askquestion.patient_id','=',session('patient_id'))
-            ->where('askquestion.doctor_id','=',$did)
-            ->where('askquestion.created_at','=',$date)
-            ->select('doctor.name','doctor.specialty','askquestion.created_at as appointment_date','askquestion.message as brief_history','hospital.hospital_name','hospital.email','hospital.address as hsaddress','hospital.telephone','askquestion.filepath as reports','askquestion.answer','askquestion.subject','askquestion.response_date')->paginate(10);
+        $askquestions=DB::table('patient_ask_question as paq')
+            ->join('doctor as d','d.doctor_id','=','paq.doctor_id')
+            ->join('hospital as h','h.hospital_id','=','paq.hospital_id')
+            ->join('patient_ask_question_documents as paqi','paqi.patient_ask_question_id','=','paq.id')
+            ->where('paq.patient_id','=',session('patient_id'))
+            ->where('paq.doctor_id','=',$did)
+            ->where('paq.created_at','=',$date)
+            ->select('d.name','d.specialty','paq.created_at as appointment_date','paq.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','paqi.document_path as reports','paq.subject')->get();
 
-        //$doctorappointments=\App\DoctorAppointment::join('doctor','doctor.doctor_id','=','doctor_appointment.doctor_id')->join('hospital','hospital.hospital_id','=','doctor_appointment.hospital_id')->where('doctor_appointment.patient_id','=',session('patient_id'))->where('doctor_appointment.id','=',$id)->select('doctor.name','doctor.specialty','doctor_appointment.appointment_date','doctor_appointment.brief_history','hospital.hospital_name','hospital.email','hospital.address as hsaddress','hospital.telephone')->get();
-        //return  view("maillayout.doctor_appointment")->with('doctorappointments',$askquestions);
         $mails=array();
         if(session('email')!="")   {
             $mails[count($mails)]=session('email');
@@ -722,6 +887,7 @@ public function getPharmacyAppointments()
         if($dc[0]->email!=""){
             $mails[count($mails)]=$dc[0]->email;
         }
+      //dd($askquestions[0]->telephone);
         if(count($mails)>0){
             Mail::send('maillayout.ask_appointment', ['doctorappointments' =>  $askquestions], function($msg) use($mails,$questiontype) {
                 $msg->subject($questiontype);

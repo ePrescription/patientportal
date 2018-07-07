@@ -49,24 +49,6 @@ class PharmaController extends Controller {
         return $appointment;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function save(\Illuminate\Http\Request $request) {
         $hospital_id = $request->get("hospital_id");
         $pharmacy_id = $request->get("pharmacy_id");

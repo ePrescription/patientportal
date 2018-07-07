@@ -461,6 +461,14 @@ class LabController extends Controller {
             Log::error($msg);
         }
     }
+
+    /**
+     * Save motion test results
+     * @param $examinationRequest
+     * @throws $labException
+     * @return true | false
+     * @author Ramana
+     */
     public function savePatientMotionTests(Request $examinationRequest)
     {
         $patientBloodVM = null;
@@ -495,15 +503,15 @@ class LabController extends Controller {
         return redirect()->back()->with('msg','');
 
     }
-
-
     /**
-     * Save motion test results
-     * @param $testRequest
+     * Save UltraSound test results
+     * @param $examinationRequest
      * @throws $labException
      * @return true | false
-     * @author Baskar
+     * @author Ramana
      */
+
+
 
 
     public function savePatientUltraSoundTests(Request $examinationRequest)
@@ -549,7 +557,7 @@ class LabController extends Controller {
      * @param $examinationRequest
      * @throws $hospitalException
      * @return true | false
-     * @author Baskar
+     * @author Ramana
      */
 
     public function savePatientUrineTests(Request $examinationRequest)
@@ -588,7 +596,13 @@ class LabController extends Controller {
         return redirect('labappointment?methode=Lab')->with('msg','');
 
     }
-
+    /**
+     * Save patient Xray examination details
+     * @param $examinationRequest
+     * @throws $hospitalException
+     * @return true | false
+     * @author Ramana
+     */
 
 
     public function savePatientXRayTests(Request $xrayRequest)
@@ -634,7 +648,7 @@ class LabController extends Controller {
      * @param $dentalRequest
      * @throws $hospitalException
      * @return true | false
-     * @author Baskar
+     * @author Ramana
      */
 
     public function savePatientDentalTests(Request $dentalRequest)
@@ -680,7 +694,7 @@ class LabController extends Controller {
      * @param $scanRequest
      * @throws $hospitalException
      * @return true | false
-     * @author Baskar
+     * @author Ramana
      */
 
     public function savePatientScanDetails(Request $scanRequest)

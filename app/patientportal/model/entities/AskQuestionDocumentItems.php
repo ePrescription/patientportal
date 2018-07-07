@@ -1,5 +1,5 @@
 <?php
-namespace  App\patientportal\modal;
+namespace  App\patientportal\model;
 /**
  * Created by PhpStorm.
  * User: glodeveloper

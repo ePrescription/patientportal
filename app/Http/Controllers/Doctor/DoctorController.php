@@ -317,7 +317,7 @@ class DoctorController extends Controller
         try{
             $hospitals = Hospital::all();
 
-            $labappointments=$this->doctorService->getAppointments();
+            //$labappointments=$this->doctorService->getAppointments();
             $askquestions=$this->doctorService->getAskQuestions();
             $pharmacyappointments=$this->doctorService->getPharmacyAppointments();
             $examinationDates=$this->doctorService->getLabDates();
@@ -350,7 +350,8 @@ class DoctorController extends Controller
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
-        return view('askquestion')->with('specialty', $specialty)->with('hospitals', $hospitals);
+        //dd($specialty);
+       return view('askquestion')->with('specialty', $specialty)->with('hospitals', $hospitals);
     }
 
 
@@ -416,7 +417,22 @@ class DoctorController extends Controller
         }
         return view('secondoption')->with('specialty', $specialty)->with('hospitals', $hospitals);
     }
+    public function saveSecondOpinion(Request $request){
+        $status=null;
+        try{
+            $hospitals = Hospital::all();
+            $status=$this->doctorService->saveSecondOpinion($request);
 
+        } catch (Exception $userExc) {
+            $errorMsg = $userExc->getMessageForCode();
+            $msg = AppendMessage::appendMessage($userExc);
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+        return redirect()->back()->with('msg', 'Your Query is submited Successfully !');
+    }
 
 
 
@@ -427,6 +443,7 @@ class DoctorController extends Controller
             $specialty=$this->doctorService->AskQuestionPage();
             $doctors=$this->doctorService->getDoctors();
 
+
         } catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
             $msg = AppendMessage::appendMessage($userExc);
@@ -435,6 +452,7 @@ class DoctorController extends Controller
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
+       // dd($specialty);
         return view('doctors')->with('specialty', $specialty)->with('doctors', $doctors)->with('hospitals', $hospitals);
     }
     public function DoctorsList(Request $request){
@@ -457,12 +475,14 @@ class DoctorController extends Controller
         try{
             $did = $request->input("did");
             $date = $request->input("date");
-            $askquestions =Askquestion::join('doctor', 'doctor.doctor_id', '=', 'askquestion.doctor_id')
+            $askquestions =DB::table('patient_ask_question as askquestion')
+                ->join('doctor', 'doctor.doctor_id', '=', 'askquestion.doctor_id')
+                ->join('patient_ask_question_documents', 'patient_ask_question_documents.patient_ask_question_id', '=', 'askquestion.id')
                 ->join('hospital', 'hospital.hospital_id', '=', 'askquestion.hospital_id')
                 ->where('askquestion.patient_id', '=', session('patient_id'))
                 ->where('askquestion.doctor_id', '=', $did)
                 ->where('askquestion.created_at', '=', $date)
-                ->select('doctor.name', 'doctor.specialty', 'askquestion.created_at as appointment_date','askquestion.subject','askquestion.response_date','askquestion.message as brief_history', 'hospital.hospital_name', 'hospital.email', 'hospital.address as hsaddress', 'hospital.telephone', 'askquestion.filepath as reports', 'askquestion.answer')->paginate(10);
+                ->select('doctor.name', 'doctor.specialty', 'askquestion.created_at as appointment_date','askquestion.subject','askquestion.detailed_description as brief_history', 'hospital.hospital_name', 'hospital.email', 'hospital.address as hsaddress', 'hospital.telephone', 'patient_ask_question_documents.document_path as reports')->paginate(10);
 
             //$doctorappointments=\App\DoctorAppointment::join('doctor','doctor.doctor_id','=','doctor_appointment.doctor_id')->join('hospital','hospital.hospital_id','=','doctor_appointment.hospital_id')->where('doctor_appointment.patient_id','=',session('patient_id'))->where('doctor_appointment.id','=',$id)->select('doctor.name','doctor.specialty','doctor_appointment.appointment_date','doctor_appointment.brief_history','hospital.hospital_name','hospital.email','hospital.address as hsaddress','hospital.telephone')->get();
 

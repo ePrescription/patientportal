@@ -24,6 +24,7 @@ public function getLabDates();
 public function getDoctorAppointment();
 public function AskQuestionPage();
 public function saveQuestion($request);
+public function saveSecondOpinion($request);
 public function getSingleDoctor($request);
 public function getDoctors();
 public function getTokenIdByHospitalIdandDoctorId($hospitalId,$doctorId,$date,$type);

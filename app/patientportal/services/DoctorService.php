@@ -280,6 +280,23 @@ class DoctorService
         }
         return $status;
     }
+    public function saveSecondOpinion($request){
+        $status=null;
+        try{
+            $status=$this->doctorRepo->saveSecondOpinion($request);
+
+        } catch (Exception $userExc) {
+            $errorMsg = $userExc->getMessageForCode();
+            $msg = AppendMessage::appendMessage($userExc);
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+        return $status;
+    }
+
+
     public function getSingleDoctor($request)
     {
         $Alldata = null;

@@ -6,7 +6,7 @@
  * Time: 3:17 PM
  */
 
-namespace App\patientportal\modal;
+namespace App\patientportal\model;
 
 
 use Illuminate\Database\Eloquent\Model;

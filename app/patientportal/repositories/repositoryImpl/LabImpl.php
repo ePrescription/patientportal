@@ -2833,14 +2833,14 @@ class LabImpl implements LabInterface
             $hospitalQuery->where('h.hospital_id', '=', $hospitalId);
             $hospitalDetails = $hospitalQuery->first();
 
-            $D = count($bloodExaminations) > 0 ? $bloodExaminations[0]['doctor_id'] : null;
-            $U = count($latestUrineExaminations) > 0 ? $latestUrineExaminations[0]['doctor_id'] : null;
-            $M = count($latestMotionExaminations) > 0 ? $latestMotionExaminations[0]['doctor_id'] : null;
+            $D = count($bloodExaminations) > 0 ? $bloodExaminations[0]->doctor_id: null;
+            $U = count($latestUrineExaminations) > 0 ? $latestUrineExaminations[0]->doctor_id : null;
+            $M = count($latestMotionExaminations) > 0 ? $latestMotionExaminations[0]->doctor_id : null;
 
 
-            $DID = count($bloodExaminations) > 0 ? $bloodExaminations[0]['fee_receipt_id'] : null;
-            $UID = count($latestUrineExaminations) > 0 ? $latestUrineExaminations[0]['fee_receipt_id'] : null;
-            $MID = count($latestMotionExaminations) > 0 ? $latestMotionExaminations[0]['fee_receipt_id'] : null;
+            $DID = count($bloodExaminations) > 0 ? $bloodExaminations[0]->fee_receipt_id : null;
+            $UID = count($latestUrineExaminations) > 0 ? $latestUrineExaminations[0]->fee_receipt_id : null;
+            $MID = count($latestMotionExaminations) > 0 ? $latestMotionExaminations[0]->fee_receipt_id : null;
 
             $receiptID = null;
             if ($DID != null) $receiptID = $DID;
@@ -2892,7 +2892,7 @@ class LabImpl implements LabInterface
             throw new HospitalException(null, ErrorEnum::PATIENT_EXAMINATION_DATES_ERROR, $exc);
         }
 
-        //dd($patientLabTests);
+       // dd($examinationDates);
         return $examinationDates;
     }
 

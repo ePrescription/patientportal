@@ -143,7 +143,8 @@ Route::post('/askquestsendmail', array('as' => 'user.saveaskquestion', 'uses' =>
 
 Route::get('/singledoctor', array('as' => 'user.saveaskquestion', 'uses' => 'Doctor\DoctorController@SingleDoctor'));
 
-Route::get('/secondoption', array('as' => 'user.askquestion', 'uses' => 'Doctor\DoctorController@SecondOptionPage'));
+Route::get('/secondoption', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@SecondOptionPage'));
+Route::post('/Savesecondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@saveSecondOpinion'));
 
 Route::get('/doctors', array('as' => 'user.askquestion', 'uses' => 'Doctor\DoctorController@DoctorsPage'));
 

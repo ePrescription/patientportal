@@ -149,19 +149,19 @@
                             <div class="form-group col-md-12">
                                 <label class="col-sm-3 control-label" style="width:30%;float:left; font-size: 12px; font-weight: bold;">Name</label>
                                 <div class="col-sm-9" style="width:70%;float:left; font-size: 11px; font-weight: bold;">
-                                    {{$patientExaminations['patientDetails']['name']}}
+                                    {{$patientExaminations['patientDetails']->name}}
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="col-sm-3 control-label" style="width:30%;float:left;font-size: 12px; font-weight: bold; ">City/Town</label>
                                 <div class="col-sm-9" style="width:70%;float:left; font-size: 11px; font-weight: bold;">
-                                    {{$patientExaminations['patientDetails']['address']==""? "----":$patientExaminations['patientDetails']['address'] }}
+                                    {{$patientExaminations['patientDetails']->address==""? "----":$patientExaminations['patientDetails']->address }}
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="col-sm-3 control-label" style="width:30%;float:left; font-size: 12px; font-weight: bold;">Ref.DR</label>
                                 <div class="col-sm-9" style="width:70%;float:left;font-size: 11px;font-weight: bold; ">
-                                    {{count($patientExaminations['doctorDetails'])>0?$patientExaminations['doctorDetails']['name']:"---"}}
+                                    {{count($patientExaminations['doctorDetails'])>0?$patientExaminations['doctorDetails']->name :"---"}}
                                 </div>
                             </div>
 
@@ -174,13 +174,13 @@
                             <div class="form-group col-md-12">
                                 <label class="col-sm-3 control-label" style="width:30%;float:left; font-size: 12px; font-weight: bold;">Sex</label>
                                 <div class="col-sm-9" style="width:70%;float:left; font-size: 11px; font-weight: bold;">
-                                    {{ $patientExaminations['patientDetails']['gender']==0 ? "Male" :"Female"}}
+                                    {{ $patientExaminations['patientDetails']->gender==0 ? "Male" :"Female"}}
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="col-sm-3 control-label" style="width:30%;float:left; font-size: 12px; font-weight: bold;">Age</label>
                                 <div class="col-sm-9" style="width:70%;float:left; font-size: 11px; font-weight: bold;">
-                                    {{$patientExaminations['patientDetails']['age'] }}
+                                    {{$patientExaminations['patientDetails']->age }}
                                 </div>
                             </div>
 
@@ -194,13 +194,13 @@
                             <div class="form-group col-md-12">
                                 <label class="col-sm-3 control-label" style="width:30%;float:left; font-size: 12px; font-weight: bold;">PID</label>
                                 <div class="col-sm-9" style="width:70%;float:left; font-size: 11px; font-weight: bold;">
-                                    {{$patientExaminations['patientDetails']['pid']}}
+                                    {{$patientExaminations['patientDetails']->pid}}
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="col-sm-3 control-label" style="width:30%;float:left; font-size: 12px; font-weight: bold;">E-Mail</label>
                                 <div class="col-sm-9" style="width:70%;float:left; font-size: 11px; font-weight: bold;">
-                                    {{$patientExaminations['patientDetails']['email']}}
+                                    {{$patientExaminations['patientDetails']->email}}
                                 </div>
                             </div>
 
@@ -221,7 +221,7 @@
                             <div class="form-group col-md-12">
                                 <label class="col-sm-3 control-label" style="width:30%;float:left; font-size: 12px; font-weight: bold;">Patient</label>
                                 <div class="col-sm-9" style="width:70%;float:left; font-size: 11px; font-weight: bold;">
-                                    {{$patientExaminations['patientDetails']['patient_id']}}
+                                    {{$patientExaminations['patientDetails']->patient_id}}
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
@@ -253,24 +253,24 @@
                                         <tr><th colspan="3"><hr/></th></tr>
                                         <?php $parentCheck = "";?>
                                              @foreach($patientExaminations['recentBloodTests'] as $patientExaminations['recentBloodTests'])
-                                            @if($patientExaminations['recentBloodTests']['is_parent']==0 && ($parentCheck=="" || $parentCheck!=$patientExaminations['recentBloodTests']['parent_examination_name']))
-                                                <?php $parentCheck = $patientExaminations['recentBloodTests']['parent_examination_name']; ?>
+                                            @if($patientExaminations['recentBloodTests']->is_parent==0 && ($parentCheck=="" || $parentCheck!=$patientExaminations['recentBloodTests']->parent_examination_name))
+                                                <?php $parentCheck = $patientExaminations['recentBloodTests']->parent_examination_name; ?>
                                                 <tr style="font-size: 15px; font-weight: bold; align-content: center">
-                                                    <td colspan="3"> <b>{{$patientExaminations['recentBloodTests']['parent_examination_name']}}</b> </td>
+                                                    <td colspan="3"> <b>{{$patientExaminations['recentBloodTests']->parent_examination_name}}</b> </td>
                                                 </tr>
 
                                             @endif
                                             <tr style="font-size: 13px;font-weight: bold; align-content: center">
                                                 <td >
-                                                    @if($patientExaminations['recentBloodTests']['is_parent']==0)
+                                                    @if($patientExaminations['recentBloodTests']->is_parent==0)
                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     @endif
-                                                    {{$patientExaminations['recentBloodTests']['examination_name']}}
+                                                    {{$patientExaminations['recentBloodTests']->examination_name}}
                                                 </td>
 
-                                                <td style="padding-left: 50px;"> {{$patientExaminations['recentBloodTests']['test_readings']}}&nbsp;
-                                                    {{$patientExaminations['recentBloodTests']['units']}}</td>
-                                                <td style="padding-left: 30px;">{{$patientExaminations['recentBloodTests']['default_normal_values']}}</td>
+                                                <td style="padding-left: 50px;"> {{$patientExaminations['recentBloodTests']->test_readings}}&nbsp;
+                                                    {{$patientExaminations['recentBloodTests']->units}}</td>
+                                                <td style="padding-left: 30px;">{{$patientExaminations['recentBloodTests']->default_normal_values}}</td>
 
                                             </tr>
                                          @endforeach
@@ -284,15 +284,15 @@
 
                                <div class="form-group" style="color: black;">
                                    <label class="col-sm-12 control-label">Motion Test
-                                       - {{$patientExaminations['recentMotionExaminations'][0]['examination_date']}}</label>
+                                       - {{$patientExaminations['recentMotionExaminations'][0]->examination_date}}</label>
                                </div>
                                <div class="form-group ">
                                    <div class="col-sm-4" style="width:100%;float:left;">
                                        <table style="width:100%;float:left;">
                                            @foreach($patientExaminations['recentMotionExaminations'] as $patientExaminations['recentMotionExaminations'])
                                                <tr style="font-size: 13px;font-weight: bold; align-content: center">
-                                                   <td>{{$patientExaminations['recentMotionExaminations']['examination_name']}}</td>
-                                                   <td>{{$patientExaminations['recentMotionExaminations']['test_readings']}}</td>
+                                                   <td>{{$patientExaminations['recentMotionExaminations']->examination_name}}</td>
+                                                   <td>{{$patientExaminations['recentMotionExaminations']->test_readings}}</td>
                                                    <td>&nbsp;</td>
                                                </tr>
 
@@ -308,7 +308,7 @@
 
                                <div class="form-group" style="color: black;">
                                    <label class="col-sm-12 control-label">Urine Test
-                                       - {{$patientExaminations['recentUrineExaminations'][0]['examination_date']}}</label>
+                                       - {{$patientExaminations['recentUrineExaminations'][0]->examination_date}}</label>
                                </div>
                                <div class="form-group ">
                                    <div class="col-sm-4" style="width:100%;float:left;">
@@ -316,24 +316,24 @@
 
                                            <?php $parentCheck = "";?>
                                            @foreach($patientExaminations['recentUrineExaminations'] as $patientExaminations['recentUrineExaminations'])
-                                               @if($patientExaminations['recentUrineExaminations']['is_parent']==0 && ($parentCheck=="" || $parentCheck!=$patientExaminations['recentUrineExaminations']['parent_examination_name']))
-                                                   <?php $parentCheck = $patientExaminations['recentUrineExaminations']['parent_examination_name']; ?>
+                                               @if($patientExaminations['recentUrineExaminations']->is_parent==0 && ($parentCheck=="" || $parentCheck!=$patientExaminations['recentUrineExaminations']->parent_examination_name))
+                                                   <?php $parentCheck = $patientExaminations['recentUrineExaminations']->parent_examination_name; ?>
                                                    <tr style=" font-size: 15px;font-weight: bold; align-content: center">
-                                                       <td colspan="3"> <b>{{$patientExaminations['recentUrineExaminations']['parent_examination_name']}}</b> </td>
+                                                       <td colspan="3"> <b>{{$patientExaminations['recentUrineExaminations']->parent_examination_name}}</b> </td>
                                                    </tr>
 
                                                @endif
                                                <tr style="font-size: 13px;font-weight: bold; align-content: center">
 
                                                    <td style="width:33%;float:left;">
-                                                       @if($patientExaminations['recentUrineExaminations']['is_parent']==0)
+                                                       @if($patientExaminations['recentUrineExaminations']->is_parent==0)
                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                        @endif
-                                                       {{$patientExaminations['recentUrineExaminations']['examination_name']}}
+                                                       {{$patientExaminations['recentUrineExaminations']->examination_name}}
                                                    </td>
 
-                                                   <td style="width:33%;float:left;"> {{$patientExaminations['recentUrineExaminations']['test_readings']}}</td>
-                                                   <td style="width:33%;float:left;">{{$patientExaminations['recentUrineExaminations']['normal_default_values']}}</td>
+                                                   <td style="width:33%;float:left;"> {{$patientExaminations['recentUrineExaminations']->test_readings}}</td>
+                                                   <td style="width:33%;float:left;">{{$patientExaminations['recentUrineExaminations']->normal_default_values}}</td>
 
                                                </tr>
 

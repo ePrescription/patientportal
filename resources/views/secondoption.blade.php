@@ -86,7 +86,7 @@
 
                                     </div>
                                 @endif
-                                <form action="askquestsendmail" method="post" id="registration" enctype="multipart/form-data">
+                                <form action="Savesecondopinion" method="post" id="registration" enctype="multipart/form-data">
                                     {{ csrf_field() }}
 
 
@@ -98,7 +98,7 @@
                                                         placeholder="Specialist">
                                                     <option value="">Select Speciality</option>
                                                     @foreach ($specialty as $val)
-                                                        <option value="{{ $val['specialty'] }}">{{ $val['specialty'] }}</option>
+                                                        <option value="{{ $val->id }}">{{ $val->specialty }}</option>
                                                     @endforeach
 
                                                 </select>

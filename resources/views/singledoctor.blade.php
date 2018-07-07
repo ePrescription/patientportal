@@ -5,9 +5,10 @@
     <style>
 
 
-        .error{
-            color:red;
+        .error {
+            color: red;
         }
+
         .panel-default1 {
             border-color: #ddd;
             border-left-color: purple;
@@ -291,7 +292,8 @@
                                 <div id="sendmessage">Your message has been sent. Thank you!</div>
                                 <div id="errormessage"></div>
 
-                                <form action="askquestsendmail" method="post" id="registration" enctype="multipart/form-data">
+                                <form action="askquestsendmail" method="post" id="registration"
+                                      enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-6 col-md-6">
@@ -382,7 +384,7 @@
                                 <div id="sendmessage">Your message has been sent. Thank you!</div>
                                 <div id="errormessage"></div>
 
-                                <form action="makeappointment" method="post" id="appointment" >
+                                <form action="makeappointment" method="post" id="appointment">
                                     {{ csrf_field() }}
                                     <div class="row">
 
@@ -405,7 +407,8 @@
                                                        id='doctorId'/>
 
                                                 <select class="form-control name" style="width:100%;" name="hospitalId"
-                                                        id="hospitalId" class="form-control name" placeholder="Hospital" onchange="javascript:appointmentTypePatient(); ">
+                                                        id="hospitalId" class="form-control name" placeholder="Hospital"
+                                                        onchange="javascript:appointmentTypePatient(); ">
                                                     <option value="">Select Hospital</option>
                                                     @foreach ($hospital as $val)
                                                         <option value="{{ $val['hospital_id'] }}">{{ $val['hospital_name'] }}</option>
@@ -416,32 +419,36 @@
                                         </div>
 
 
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                        <div class="form-group">
-                                            <label>Select Date<span class="red">*</span></label>
-                                            <input type="text" class="form-control" name="appointmentDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:appointmentTypePatient(); " />
-                                            <div class="validation"></div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <label>Select Date<span class="red">*</span></label>
+                                                <input type="text" class="form-control" name="appointmentDate"
+                                                       id="TestDate" value="{{date('Y-m-d')}}"
+                                                       style="line-height: 20px;" required="required"
+                                                       onchange="javascript:appointmentTypePatient(); "/>
+                                                <div class="validation"></div>
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                        <div class="form-group">
-                                            <label>Appointment Time<span class="red">*</span></label>
-                                            <select class="form-control" name="appointmentTime" id="appointmentTime"
-                                                    required="required" onchange="javascript:getTokenId(this.value);">
+                                        <div class="col-xs-12 col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <label>Appointment Time<span class="red">*</span></label>
+                                                <select class="form-control" name="appointmentTime" id="appointmentTime"
+                                                        required="required"
+                                                        onchange="javascript:getTokenId(this.value);">
 
-                                                <option value=""> --:----</option>
-                                                @foreach($time_array as $time_value)
-                                                    <?php $key=array_keys($time_array,$time_value); ?>
-                                                    <option value="{{$key[0]}}"> {{$time_value}} </option>
-                                                @endforeach
+                                                    <option value=""> --:----</option>
+                                                    @foreach($time_array as $time_value)
+                                                        <?php $key = array_keys($time_array, $time_value); ?>
+                                                        <option value="{{$key[0]}}"> {{$time_value}} </option>
+                                                    @endforeach
 
-                                            </select>
-                                            <div class="validation"></div>
+                                                </select>
+                                                <div class="validation"></div>
 
+                                            </div>
                                         </div>
-                                    </div>
 
 
                                         <div class="col-xs-12 col-sm-6 col-md-6">
@@ -456,23 +463,25 @@
                                             </div>
                                         </div>
                                     </div>
-                             <!--       <div class="col-xs-6 col-sm-6 col-md-6">
-                                        <div class="form-group">
-                                            <label>Appointment Date and Time</label>
-                                            <input style="width:100%;" class="name" id="datepicker1" name="date"
-                                                   name="Text" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {
-                                                     ;
-                                                 }" placeholder="Appointment Date and Time" required="">
+                                    <!--       <div class="col-xs-6 col-sm-6 col-md-6">
+                                               <div class="form-group">
+                                                   <label>Appointment Date and Time</label>
+                                                   <input style="width:100%;" class="name" id="datepicker1" name="date"
+                                                          name="Text" type="text" value="" onfocus="this.value = '';" onblur="if (this.value == '') {
+                                                            ;
+                                                        }" placeholder="Appointment Date and Time" required="">
 
 
-                                            <div class="validation"></div>
-                                        </div>
-                                    </div>-->
+                                                   <div class="validation"></div>
+                                               </div>
+                                           </div>-->
                                     <div class="col-xs-6 col-sm-6 col-md-6" id="token" style="display: none">
                                         <div class="form-group">
 
 
-                                            <b>Your Token ID:</b><p  name="tokenId" id="tokenId"  required="required" readonly style="font-size: 20px;color: blue;"></p>
+                                            <b>Your Token ID:</b>
+                                            <p name="tokenId" id="tokenId" required="required" readonly
+                                               style="font-size: 20px;color: blue;"></p>
 
                                         </div>
                                     </div>
@@ -494,13 +503,12 @@
                 <link rel="stylesheet" href="/resources/demos/style.css">
                 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
                 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    $('#TestDate').datepicker({
-        dateFormat: "mm/dd/yy",
-    });
+                <script>
+                    $('#TestDate').datepicker({
+                        dateFormat: "mm/dd/yy",
+                    });
 
-</script>
-
+                </script>
 
 
                 <!--ddd-->
@@ -511,18 +519,17 @@
 
 
     <script>
-        window.onload = function() {
-            var dateValue=$("#appointmentDate").val({minDate: new Date()});
+        window.onload = function () {
+            var dateValue = $("#appointmentDate").val({minDate: new Date()});
 
         };
 
-        function appointmentTypePatient()
-        {
-            var dateValue= $("#TestDate").val();
-            var hid= $("#hospitalId").val();
-            var did=$("#doctorId").val();
+        function appointmentTypePatient() {
+            var dateValue = $("#TestDate").val();
+            var hid = $("#hospitalId").val();
+            var did = $("#doctorId").val();
 
-            if(did!="Select Doctor") {
+            if (did != "Select Doctor") {
 
                 var new_appointment_date = dateValue;
                 var prev_appointment_date = $("input#prev_appointment_date").val();
@@ -573,11 +580,11 @@
                     success: function (data) {
                         console.log(data);
 
-                        if(data.result['result']=="Doctor Is Not Available"){
+                        if (data.result['result'] == "Doctor Is Not Available") {
                             alert(data.result['result']);
                             var terms = '<option value="">--Choose Time--</option>';
                             $("#appointmentTime").html(terms);
-                        }else {
+                        } else {
 
                             var terms = '<option value="">--Choose Time--</option>';
                             $.each(data.result, function (index, value) {
@@ -588,7 +595,7 @@
 
                     }
                 });
-            }else{
+            } else {
                 alert("Please Select Doctor");
             }
 
@@ -596,24 +603,23 @@
         }
 
 
-
         function getTokenId() {
 
             var BASEURL = "{{ URL::to('/') }}/";
-            var hid=$("#hospitalId").val();
-            var date=$("#TestDate").val();
-            var did=$("#doctorId").val();
-            var type=$("#appointmentCategory").val();
+            var hid = $("#hospitalId").val();
+            var date = $("#TestDate").val();
+            var did = $("#doctorId").val();
+            var type = $("#appointmentCategory").val();
 
             var status = 1;
-            var callurl = BASEURL + 'rest/api/hospital/'+hid+'/doctor/' + did + '/date/'+date+'/tokenId';
+            var callurl = BASEURL + 'rest/api/hospital/' + hid + '/doctor/' + did + '/date/' + date + '/tokenId';
             //alert(callurl);
             $.ajax({
                 url: callurl,
                 type: "get",
-                data: {"id": hid, "status": status,"appointmentCategory":type},
+                data: {"id": hid, "status": status, "appointmentCategory": type},
                 success: function (data) {
-                    document.getElementById('token').style.display='block';
+                    document.getElementById('token').style.display = 'block';
                     $("#tokenId").html(data);
 
                 }
@@ -627,7 +633,8 @@
 
     <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js"
+            type="text/javascript"></script>
 
 
     <script>
@@ -670,10 +677,10 @@
                     doctor: "Please choose Doctor",
                     hospitalId: "Please choose Hospital",
                     specialist: "Please choose Specialization Type",
-                    expectedtime:"Select One Priority level",
-                    Message:{
+                    expectedtime: "Select One Priority level",
+                    Message: {
 
-                        required:"Please Write SomeThing",
+                        required: "Please Write SomeThing",
                         minlength: "Meaage Atleast 6 characters long",
                         maxlength: "Meaage Should be less Than 300 characters long"
                     },
@@ -715,8 +722,8 @@
                 messages: {
                     doctorId: "Please choose Doctor",
                     hospitalId: "Please choose Hospital",
-                    AppointmentType:"Please Select AppointmentType",
-                    appointmentTime:"Please Select appointmentTime"
+                    AppointmentType: "Please Select AppointmentType",
+                    appointmentTime: "Please Select appointmentTime"
                 },
                 // Make sure the form is submitted to the destination defined
                 // in the "action" attribute of the form when valid
