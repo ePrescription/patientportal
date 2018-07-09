@@ -330,6 +330,7 @@ class DoctorController extends Controller
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
+        //dd($pharmacyappointments);
         return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates);
     }
 
@@ -418,7 +419,9 @@ class DoctorController extends Controller
         return view('secondoption')->with('specialty', $specialty)->with('hospitals', $hospitals);
     }
     public function saveSecondOpinion(Request $request){
+
         $status=null;
+
         try{
             $hospitals = Hospital::all();
             $status=$this->doctorService->saveSecondOpinion($request);
@@ -431,6 +434,7 @@ class DoctorController extends Controller
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
+
         return redirect()->back()->with('msg', 'Your Query is submited Successfully !');
     }
 

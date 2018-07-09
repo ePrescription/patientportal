@@ -3,7 +3,7 @@ namespace App\patientportal\repositories\repoInterface;
 
 interface PharmaInterface{
 
-
+public function saveAppointment($request);
 
 }
 /**

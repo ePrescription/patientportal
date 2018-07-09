@@ -68,4 +68,25 @@ class PharmaService
         }
         return $appointment;
     }
+
+    public function saveAppointment($request){
+
+        $appointment = null;
+        try {
+
+            $appointment = $this->pharmaRepo->saveAppointment($request);
+
+        } catch (Exception $userExc) {
+
+            $errorMsg = $userExc->getMessageForCode();
+
+            $msg = AppendMessage::appendMessage($userExc);
+
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+
+    }
 }

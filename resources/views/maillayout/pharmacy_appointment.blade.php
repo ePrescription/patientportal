@@ -194,11 +194,11 @@
                                                 <td class="col-md-3">{{ $doctorappointments[0]->appointment_date}}</td>
                                             </tr>
                                            
-                                            <tr>
-                                                <td class="col-md-9"> Estimated Pickup Date & Time :</td>
-                                                <td class="col-md-3">{{ $doctorappointments[0]->response_date}}</td>
+                                            {{--<tr>--}}
+                                                {{--<td class="col-md-9"> Estimated Pickup Date & Time :</td>--}}
+                                                {{--<td class="col-md-3">{{ $doctorappointments[0]->response_date}}</td>--}}
 
-                                            </tr>
+                                            {{--</tr>--}}
                                              <tr>
                                                 <td class="col-md-9">From: Hospital / Nursing Home / Clinic :</td>
                                                 <td class="col-md-3">{{ $doctorappointments[0]->hospital_name}}</td>
@@ -214,31 +214,14 @@
                                         <?php $paths=explode("@@",$doctorappointments[0]->reports);
                                          foreach($paths as $path){
                                              if($path!="")
-                                           echo "<a href='storage/pharmacy/$path' target='_blank'><img src='../storage/askquestion/$path' with='200' height='200px' /><a>";
+                                           echo "<a href='public/pharmacy/$path' target='_blank'>
+                                             <img src='../public/pharmacy/$path' with='200' height='200px'></a>";
                                            
                                          }
                                          ?>
                                         
                                    @endif
-                                   @if( $doctorappointments[0]->prescription!="")
-                                        <?php $paths=explode("@@",$doctorappointments[0]->prescription);
-                                         foreach($paths as $path){
-                                             if($path!="")
-                                           echo "<a href='storage/pharmacy/$path' target='_blank'><img src='../storage/pharmacy/$path' with='200' height='200px' /></a>";
-                                           
-                                         }
-                                         ?>
-                                   @endif
 
-
-                                    <!--
-                                                                    <h5>From: Hospital / Nursing Home / Clinic / Doctor Name</h5>
-                                        <h5>Patient Name:</h5>
-                                        <h5>Doctor Name:</h5>
-                                        <h5>Date of Appointment:</h5>
-                                        <h5>Time of Appointment:</h5>
-                                        <h5>Brief Description of Illness:</h5>
-                                         <h5>Link to Location Map:</h5>-->
 
                                 </div>
                             </div>

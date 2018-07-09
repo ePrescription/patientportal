@@ -521,8 +521,9 @@ public function getPharmacyAppointments()
     try{
         $pharmacyappointments =  DB::table('pharmacy_pickup')->join('pharmacy_pickup_documents', 'pharmacy_pickup.id', '=', 'pharmacy_pickup_documents.pharmacy_pickup_id')
             ->join('hospital', 'hospital.hospital_id', '=', 'pharmacy_pickup.hospital_id')
+            ->join('pharmacy as p','p.pharmacy_id','=','pharmacy_pickup.pharmacy_id')
             ->where('pharmacy_pickup.patient_id', '=', session('patient_id'))
-            ->select('pharmacy_pickup.id', 'pharmacy_pickup.breif_notes', 'pharmacy_pickup.appointment_date', 'hospital.hospital_name')
+            ->select('pharmacy_pickup.id', 'pharmacy_pickup.brief_notes', 'pharmacy_pickup.pickup_date as appointment_date', 'hospital.hospital_name','p.name')
             ->paginate(10);
 
 
