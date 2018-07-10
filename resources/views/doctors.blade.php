@@ -60,7 +60,7 @@
                             <select name="specialist" id="specialist" class="form-control input-md" onchange="loaddoct()" placeholder="Specialist" required="">
                                 <option value="">Select Speciality</option>
                                 @foreach ($specialty as $val)
-                                <option value ="{{ $val['specialty'] }}">{{ $val['specialty'] }}</option>
+                                <option value ="{{ $val->specialty}}">{{ $val->specialty }}</option>
                                 @endforeach
 
                             </select>

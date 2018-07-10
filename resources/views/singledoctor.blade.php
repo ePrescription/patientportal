@@ -301,6 +301,10 @@
                                                 <label>Select Hospital</label>
                                                 <input class="name" type="hidden" value="{{ $doctors[0]->doctor_id}}"
                                                        name='doctor' id='doctor'/>
+
+                                                <input type="hidden" class="form-control" name="specialist" id="specialist" value="{{ $doctors[0]->id }}"/>
+
+
                                                 <select class="form-control input-md name" name="hospital" id="hospital"
                                                         placeholder="Hospital" style="width:100%;">
                                                     <option value="">Select Hospital</option>

@@ -724,21 +724,11 @@ public function getPharmacyAppointments()
                     //$AskQuestionDocumentItems->patient_ask_question_id="";
                     $SecondOpinionItems->save();
 
-
-
-
                 }
-
-
-
-
-
-
 
 
             $dc = Doctor::where('doctor_id', '=', $doctor1)->get();
             //$hospitalinfo = App\HospitalDoctor ::where('doctor_id', '=', $doctor1)->join('hospital', 'hospital.hospital_id', '=', 'hospital_doctor.hospital_id')->where('hospital.hospital_id', '=', $hospital)->get();
-
 
             $did=$doctor1;
             $date=$SecondOpinion->created_at;
@@ -974,7 +964,10 @@ public function getPharmacyAppointments()
 
             $hospital = Hospital::whereIn('hospital_id', $hospitalids)->get();
 
-            $doctors = Doctor::where('doctor_id', '=', $doctor_id)->get();
+            $doctors = DB::table('doctor')
+                ->join('specialty','specialty.specialty_name','=','doctor.specialty')
+                ->where('doctor.doctor_id', '=', $doctor_id)
+                ->select('doctor.doctor_id','doctor.name','doctor.address','doctor.doctor_photo','doctor.qualifications','doctor.designation','specialty.id')->get();
             $hospitals = Hospital::all();
 
             $Alldata['doctorinfo']=$totaldoctorinfo;
@@ -991,6 +984,7 @@ public function getPharmacyAppointments()
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
+        //dd($Alldata);
         return $Alldata;
     }
 
