@@ -216,12 +216,12 @@
                     <input type="password" name="password" password="password" placeholder="Password" required=""/>
                     <input type="file" class="form-controlx" name="patient_photo" placeholder="patient_photo"/>
                     <input type="text" name="telephone" id="telephone" placeholder="MobileNumber" required=""/>
-                    <input name="dob" id="dob1"  class="form-control" type="date" value="" style="line-height: 20px;" required="">
+                    <input name="dob" onblur="calculateAge(this.value)" id="dob1"  class="form-control" type="text" value="2018/01/01" style="line-height: 20px;" placeholder="Select DateofBirth" required="">
                     <input type="radio" class="form-controlx" id="gender1" name="gender" value="1" required="required"/>&nbsp;&nbsp;Male
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="radio" class="form-controlx" id="gender2" name="gender" value="2" required="required"/>&nbsp;&nbsp;Female
 
-                    <input type="text" name="age" name="age" placeholder="Age" required=""/>
+                    <input type="text" name="age" id="age" placeholder="Age" required=""/>
                     <textarea name="address" id="address" required style="width: 301px; height: 89px;"></textarea>
                     <select id="nationality" name="nationality">
                         <option value="">Select Nationality</option>
@@ -403,7 +403,6 @@
 <!-- Core JavaScript Files -->
 <!-- <script src="js/jquery.min.js"></script>-->
 <script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.easing.min.js"></script>
 <script src="js/wow.min.js"></script>
 <script src="js/jquery.scrollTo.js"></script>
 <script src="js/jquery.appear.js"></script>
@@ -424,18 +423,55 @@
 
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
+<link rel="stylesheet" href="./css/bootstrap-material-datetimepicker.css" />
+<script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap-material-datetimepicker.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.5.10/css/bootstrap-material-design.min.css"/>
+
+
 <script>
-    $('#dob').datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: "mm/dd/yy",
-        yearRange: "-90:+00"
+    $('#dob1').bootstrapMaterialDatePicker
+    ({
+        time: false,
+        clearButton: false,
+        format: 'YYYY/MM/DD',
+
+
     });
+
+
+    function getAge(date) {
+        var now = new Date();
+        var diff_ms = Date.now() - date.getTime();
+        var age_dt = new Date(diff_ms);
+        return Math.abs(age_dt.getUTCFullYear() - 1970);
+    };
+
+    function calculateAge(dob) {
+
+        var dateofbirth = $("#dob").val();
+       // alert(dob+""+dateofbirth);
+        var dateOfBirth = new Date(dob + " 00:00:00");
+        var age = getAge(new Date(dateOfBirth.getFullYear(), dateOfBirth.getMonth(), dateOfBirth.getDay()));
+        // calculate age
+        //alert(age);
+        var now = new Date();
+        var start = new Date(dateofbirth),
+            end = new Date(now);
+        //var x = Date.getFormattedDateDiff(start, end);
+        //alert(age);
+        // $('#age').val(age);
+        $("#age").val(age).prop('readOnly', true);
+
+    }
+
+
     // Wait for the DOM to be ready
     $(function () {
 
@@ -515,10 +551,10 @@
         }
     });
 
-
 </script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
 
 </body>
