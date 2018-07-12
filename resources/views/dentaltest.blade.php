@@ -4,31 +4,12 @@
     }
 </style>
 <script>
-    $(function () {
 
-        var pickerOpts = {
-            format: 'Y-m-d',
-            //timepicker:true,
-            // datepicker:true,
-            changeMonth: true,
-            changeYear: true,
-            // showSeconds: true,
-            showMonthAfterYear: true,
-        }
-        $("#input#TestDate").datetimepicker(pickerOpts);
-        // $("#input#TestTIme").datetimepicker(pickerOpts1);
 
+    $('#TestDate').datepicker({
+        dateFormat: "mm/dd/yy",
+        minDate: new Date()
     });
-    $("input#TestTime").timepicker({
-        timeFormat: 'HH:mm:ss',
-        interval: 60,
-        defaultTime: '{{date('H:i:s')}}',
-        startTime: '00:00',
-        dynamic: false,
-        dropdown: true,
-        scrollbar: true
-    });
-
 </script>
 <?php
 $time_array = array(

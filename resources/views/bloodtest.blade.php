@@ -351,6 +351,7 @@ $time_array = array(
 <script>
     $('#TestDate').datepicker({
         dateFormat: "mm/dd/yy",
+        minDate: new Date()
     });
     window.onload = function () {
         var dateValue = $("#appointmentDate").val();

@@ -278,8 +278,9 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                     <td>{{ explode(" ",$appointment->appointment_date)[0]  }}</td>
                     <td>{{ $appointment->time }}</td>
                     <td><a href="doctor_appointmentmsgnew?id={{ $appointment->id }}" target="_blank">Details</a></td>
-                    <td><a onclick="openmodle('{{ $appointment->id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                    </td></tr>
+                    {{--<td><a onclick="openmodle('{{ $appointment->id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>--}}
+                    {{--</td>--}}
+                </tr>
                 <?php $count++;?>
                 @endforeach
             </tbody></table>

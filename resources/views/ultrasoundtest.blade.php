@@ -33,23 +33,10 @@ $time_array = array(
 );
 ?>
 <script>
-    $(function () {
 
-        var pickerOpts = {
-            format: 'Y-m-d',
-            //timepicker:true,
-            // datepicker:true,
-            changeMonth: true,
-            changeYear: true,
-            // showSeconds: true,
-            showMonthAfterYear: true,
-        }
-
-        // $("#input#TestTIme").datetimepicker(pickerOpts1);
-
-    });
     $('#TestDate').datepicker({
         dateFormat: "mm/dd/yy",
+        minDate: new Date()
     });
 </script>
 <script>

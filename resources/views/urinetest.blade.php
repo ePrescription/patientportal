@@ -51,6 +51,7 @@ $time_array = array(
 
     $('#TestDate').datepicker({
         dateFormat: "mm/dd/yy",
+        minDate: new Date()
     });
 </script>
 <script>
@@ -145,16 +146,13 @@ $time_array = array(
             type: "get",
             data: {"id": hid, "status": status},
             success: function (data) {
-
+               // alert(data);
                 var list = "<option value=''>Select Doctor</option>";
                 for (var i = 0; i < data.length; i++) {
-
                     list = list + "<option value='" + data[i]['doctor_id'] + "'>" + data[i]['name'] + "</option>";
                 }
                 $("#doctorId").html(list);
             }
-
-
         });
     }
     function submitForm() {
@@ -199,7 +197,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label">Select Hospital</label>
         <div class="col-sm-8">
-            <select name="hospitalId" id="hospitalId" onchange="loaddoctor()"  class="form-control input-md" placeholder="Hospital" required="required">
+            <select name="hospitalId" id="hospitalId" onchange="loaddoctor(this.value)"  class="form-control input-md" placeholder="Hospital" required="required">
                 <option value="">Select Hospital</option>
                 @foreach ($hospitals as $val)
 

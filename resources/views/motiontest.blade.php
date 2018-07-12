@@ -23,6 +23,7 @@
     });
     $('#TestDate').datepicker({
         dateFormat: "mm/dd/yy",
+        minDate: new Date()
     });
     function changeValues(did) {
 

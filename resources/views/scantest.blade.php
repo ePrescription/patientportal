@@ -48,7 +48,8 @@ $time_array = array(
 
     });
     $('#TestDate').datepicker({
-        dateFormat: "mm/dd/yy"
+        dateFormat: "mm/dd/yy",
+        minDate: new Date()
     });
 
     function changeValues(did) {
