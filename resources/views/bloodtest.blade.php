@@ -36,10 +36,10 @@ $time_array = array(
 <div class="container">
 
 <div class="row">
- <div class="col-sm-6 col-md-offset-2"></div>
-<div class="col-sm-12">
+ <div class="col-sm-7 col-md-offset-2"></div>
+<div class="col-sm-9">
 <div class="panel panel-primary">
-<div class="panel-body" style="width: 100%;">
+<div class="panel-body">
     <style>
         form.display label.control-label{ text-align:left; }
     </style>
@@ -136,7 +136,7 @@ $time_array = array(
             changeMonth: true,
             changeYear: true,
             // showSeconds: true,
-            showMonthAfterYear: true,
+            showMonthAfterYear: true
         }
         $("#input#TestDate").datetimepicker(pickerOpts);
        // $("#input#TestTIme").datetimepicker(pickerOpts1);
@@ -294,10 +294,10 @@ $time_array = array(
             rules: {
 
                 doctorId: {
-                    required: true,
+                    required: true
                 },
                 hospitalId: {
-                    required: true,
+                    required: true
                 },
                 appointmentCategory:{
                     required: true
@@ -316,12 +316,11 @@ $time_array = array(
             // Specify validation error messages
             messages: {
                 doctorId: {
-                    required: "Please Select Doctor Id",
+                    required: "Please Select Doctor Id"
                 },
                 appointmentDate: "Please provide a valid Date",
                 appointmentTime:"Please Select Appointment Time",
                 appointmentCategory:"Please Select Appointment Category ",
-                doctorId: "Please Select DoctorId",
                 hospitalId: "Please select HospitalId",
                 specialist: "Please select specialization"
             },
@@ -438,4 +437,4 @@ $time_array = array(
 
     }
 
-    <!-- container -->
+</script>
