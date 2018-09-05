@@ -214,7 +214,9 @@
                     <input type="text" name="name" id="name" placeholder="Username" required=""/>
                     <input type="text" name="email" id="email" placeholder="Email" required=""/>
                     <input type="password" name="password" password="password" placeholder="Password" required=""/>
+                    <?php /* ?>
                     <input type="file" class="form-controlx" name="patient_photo" placeholder="patient_photo"/>
+                    <?php */ ?>
                     <input type="text" name="telephone" id="telephone" placeholder="MobileNumber" required=""/>
                     <input name="dob" onblur="calculateAge(this.value)" id="dob1"  class="form-control" type="text" value="2018/01/01" style="line-height: 20px;" placeholder="Select DateofBirth" required="">
                     <input type="radio" class="form-controlx" id="gender1" name="gender" value="1" required="required"/>&nbsp;&nbsp;Male
