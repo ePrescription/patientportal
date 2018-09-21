@@ -13,6 +13,8 @@ use App\Http\ViewModels\PatientScanViewModel;
 use App\Http\ViewModels\PatientUrineExaminationViewModel;
 use App\Http\ViewModels\PatientXRayViewModel;
 use App\Http\ViewModels\TestResultsViewModel;
+use App\patientportal\modal\PatientUltrasoundExamination;
+use App\patientportal\modal\PatientUltrasoundExaminationItems;
 use App\patientportal\modal\BloodExamination;
 use App\patientportal\modal\Doctor;
 use App\patientportal\modal\DoctorAppointment;
@@ -42,12 +44,16 @@ use App\patientportal\repositories\repoInterface\LabInterface;
 use App\patientportal\utilities\AppointmentType;
 use App\patientportal\utilities\ErrorEnum\ErrorEnum;
 use App\patientportal\utilities\Helper;
-use App\prescription\model\entities\PatientUltrasoundExamination;
+//use App\prescription\model\entities\PatientUltrasoundExamination;
 use Illuminate\Support\Facades\DB;
 use Storage;
 use Carbon\Carbon;
 use Config as CA;
 use Crypt;
+
+use App\patientportal\utilities\Exception\UserNotFoundException;
+use App\patientportal\utilities\Exception\LabException;
+use App\patientportal\utilities\Exception\HospitalException;
 
 /**
  * Created by PhpStorm.
@@ -717,12 +723,10 @@ class LabImpl implements LabInterface
     {
         $status = true;
         //$hospitalLabId = null;
-        //dd($patientBloodVM);
 
         try {
             $patientId = $patientBloodVM->getPatientId();
             $doctorId = $patientBloodVM->getDoctorId();
-            //dd($doctorId);
             $hospitalId = $patientBloodVM->getHospitalId();
             //$labId = $patientBloodVM->getLabId();
             //$patientUser = User::find($patientId);
@@ -730,7 +734,6 @@ class LabImpl implements LabInterface
             $bloodExaminations = $patientBloodVM->getExaminations();
             $examinationDate = $patientBloodVM->getExaminationDate();
             $examinationTime = $patientBloodVM->getExaminationTime();
-            // dd($patientBloodVM);
 
             $bloodExamCategory = CA::get('constants.BLOOD_EXAMINATION_CATEGORY');
 
@@ -760,7 +763,6 @@ class LabImpl implements LabInterface
 
 
                 $patientTokenId = $this->generateTokenId($hospitalId, $doctorId, $examinationDate);
-                //dd($patientTokenId);
                 //$patientTokenId=intval($patientTokenId)+1;
                 $doctorAppointment->token_id = $patientTokenId;
                 //BY PRASANTH 24-01-2018 END//
@@ -782,9 +784,7 @@ class LabImpl implements LabInterface
                 //$patientUser = User::find($patientId);
                 //DB::table('patient_family_illness')->where('patient_id', $patientId)->delete();
                 //dd($patientDentalVM->getExaminationDate());
-                //dd('Test');
                 //$examinationDt = property_exists($patientBloodVM, 'examinationDate') ? $examinationDate : null;
-                //dd('After Test');
                 //dd($examinationDt);
 
                 if (!is_null($examinationDate)) {
@@ -815,23 +815,15 @@ class LabImpl implements LabInterface
                 $bloodExamination->save();
 
                 foreach ($bloodExaminations as $examination) {
-
-                    //dd($bloodExaminations);
                     $examinationId = $examination->examinationId;
                     $isValueSet = $examination->isValueSet;
 
                     if (in_array($examinationId, $bloodExamCategory)) {
-
-                        //dd($examinationId);
                         $categoryQuery = DB::table('blood_examination as be')->where('be.parent_id', '=', $examinationId);
                         $categoryQuery->where('be.has_child', '!=', 1);
                         $categoryQuery->where('be.status', '=', 1);
                         $categoryQuery->select('id');
-
-                        //dd($categoryQuery->toSql());
-
                         $categoryItems = $categoryQuery->get();
-                        //dd($categoryItems);
 
                         foreach ($categoryItems as $item) {
                             // dd($item);
@@ -1061,33 +1053,24 @@ class LabImpl implements LabInterface
     {
         $status = true;
         $patientExaminationDate = null;
-        //$hospitalLabId = null;
-        //$patientXRayExamination = null;
 
         try {
-            //dd('test');
             $patientId = $patientXRayVM->getPatientId();
             $doctorId = $patientXRayVM->getDoctorId();
-            //dd($doctorId);
             $hospitalId = $patientXRayVM->getHospitalId();
             //$labId = $patientXRayVM->getLabId();
-
             $xrayExaminations = $patientXRayVM->getPatientXRayTests();
             $examinationDate = $patientXRayVM->getExaminationDate();
             $examinationTime = $patientXRayVM->getExaminationTime();
-
-
             $patient = Helper::checkPatientExists($patientId);
 
             $date = date('Y-m-d');
             $doctorappment = DB::table('doctor_appointment')->where('patient_id', '=', $patient[0])->where('appointment_date', '=', $date)->select('patient_id')->get();
 
-
             if (is_null($doctorappment)) {
                 //$appointments = $patientProfileVM->getAppointment();
                 $appointmentStatus = AppointmentType::APPOINTMENT_OPEN;
                 $doctorAppointment = new DoctorAppointment();
-
                 $doctorAppointment->patient_id = $patientId;
                 $doctorAppointment->doctor_id = $doctorId;
                 $doctorAppointment->hospital_id = $hospitalId;
@@ -1102,7 +1085,6 @@ class LabImpl implements LabInterface
 
 
                 $patientTokenId = $this->generateTokenId($hospitalId, $doctorId, $examinationDate);
-                //dd($patientTokenId);
                 //$patientTokenId=intval($patientTokenId)+1;
                 $doctorAppointment->token_id = $patientTokenId;
                 //BY PRASANTH 24-01-2018 END//
@@ -1116,30 +1098,17 @@ class LabImpl implements LabInterface
                 $doctorAppointment->modified_by = "Admin";
                 $doctorAppointment->created_at = date("Y-m-d H:i:s");
                 $doctorAppointment->updated_at = date("Y-m-d H:i:s");
-
                 $doctorUser = $doctorAppointment->save();
-
             }
-
 
             if (!is_null($patient)) {
                 //DB::table('patient_family_illness')->where('patient_id', $patientId)->delete();
-                //dd($patientDentalVM->getExaminationDate());
                 $examinationDt = property_exists($patientXRayVM->getExaminationDate(), 'examinationDate') ? $examinationDate : null;
-                //dd($examinationDt);
-
                 if (!is_null($examinationDate)) {
                     $patientExaminationDate = date('Y-m-d', strtotime($examinationDate));
                 } else {
                     $patientExaminationDate = null;
                 }
-
-                /*if(is_null($labId))
-                {
-                    $hospitalLabId = $this->getLabIdForHospital($hospitalId);
-                }*/
-
-                //dd($patientExaminationDate);
 
                 $xrayExamination = new PatientXRayExamination();
                 $xrayExamination->patient_id = $patientId;
@@ -1155,14 +1124,11 @@ class LabImpl implements LabInterface
                 $xrayExamination->save();
 
                 foreach ($xrayExaminations as $examination) {
-                    //dd($examination);
                     $xrayExaminationItems = new PatientXRayExaminationItems();
                     $xrayExaminationItems->xray_examination_item_id = $examination->xrayExaminationId;
                     //$examinationDate = property_exists($patientDentalVM->getExaminationDate(), 'examinationDate') ? $examinationDate : null;
-
                     //$xrayExaminationItems->xray_examination_name = property_exists($examination->xrayExaminationName, 'xrayExaminationName') ? $examination->xrayExaminationName : null;
                     $xrayExaminationItems->xray_examination_name = (isset($examination->xrayExaminationName)) ? $examination->xrayExaminationName : null;
-
                     //$dentalExaminationItems->dental_examination_name = $examination->dentalExaminationName;
                     $xrayExaminationItems->created_by = $patientXRayVM->getCreatedBy();
                     $xrayExaminationItems->modified_by = $patientXRayVM->getUpdatedBy();
@@ -1171,7 +1137,6 @@ class LabImpl implements LabInterface
                     if (!is_null($xrayExaminationItems->xray_examination_name)) {
                         $xrayExamination->xrayexaminationitems()->save($xrayExaminationItems);
                     }
-
                 }
 
                 $this->setPatientLabTests($patientId, $hospitalId);
@@ -1324,29 +1289,23 @@ class LabImpl implements LabInterface
     public function savePatientUltraSoundTestsNew(PatientUrineExaminationViewModel $patientUltraSoundVM)
     {
         $status = true;
-        //$hospitalLabId = null;
-
         try {
             $patientId = $patientUltraSoundVM->getPatientId();
             $doctorId = $patientUltraSoundVM->getDoctorId();
-            //dd($doctorId);
             $hospitalId = $patientUltraSoundVM->getHospitalId();
-            //$labId = $patientUltraSoundVM->getLabId();
-            //$patientUser = User::find($patientId);
 
             $ultrasoundExaminations = $patientUltraSoundVM->getExaminations();
+            //dd($ultrasoundExaminations);
             $examinationDate = $patientUltraSoundVM->getExaminationDate();
             $examinationTime = $patientUltraSoundVM->getExaminationTime();
-            dd($patientId);
             $patient = Helper::checkPatientExists($patientId);
-            dd();
             $date = date('Y-m-d');
             $doctorappment = DB::table('doctor_appointment')->where('patient_id', '=', $patient[0])->where('appointment_date', '=', $date)->select('patient_id')->get();
-
 
             if (is_null($doctorappment)) {
                 //$appointments = $patientProfileVM->getAppointment();
                 $appointmentStatus = AppointmentType::APPOINTMENT_OPEN;
+                dd($appointmentStatus);
                 $doctorAppointment = new DoctorAppointment();
 
                 $doctorAppointment->patient_id = $patientId;
@@ -1357,16 +1316,10 @@ class LabImpl implements LabInterface
                 $doctorAppointment->appointment_time =
                 $doctorAppointment->appointment_category = $examinationTime;
                 $doctorAppointment->appointment_status_id = $appointmentStatus;
-                //BY PRASANTH 24-01-2018 START//
-                //we are adding+1 for existing count value for display current TokenID
-                // $patientTokenId=intval($patientTokenId)+1;
-
-
+                dd($examinationDate);
                 $patientTokenId = $this->generateTokenId($hospitalId, $doctorId, $examinationDate);
-                //dd($patientTokenId);
-                //$patientTokenId=intval($patientTokenId)+1;
+                dd($patientTokenId);
                 $doctorAppointment->token_id = $patientTokenId;
-                //BY PRASANTH 24-01-2018 END//
                 $doctorAppointment->referral_type = "";
                 $doctorAppointment->referral_doctor = "";
                 $doctorAppointment->referral_hospital = "";
@@ -1381,55 +1334,30 @@ class LabImpl implements LabInterface
                 $doctorUser = $doctorAppointment->save();
 
             }
-            if (!is_null($patient)) {
-                //$patientUser = User::find($patientId);
-                //DB::table('patient_family_illness')->where('patient_id', $patientId)->delete();
-                //dd($patientDentalVM->getExaminationDate());
-                //dd('Test');
-                //$examinationDt = property_exists($patientBloodVM, 'examinationDate') ? $examinationDate : null;
-                //dd('After Test');
-                //dd($examinationDt);
 
+            if (!is_null($patient)) {
                 if (!is_null($examinationDate)) {
                     $patientExaminationDate = date('Y-m-d', strtotime($examinationDate));
                 } else {
                     $patientExaminationDate = null;
                 }
 
-                /*if(is_null($labId))
-                {
-                    $hospitalLabId = $this->getLabIdForHospital($hospitalId);
-                }*/
-
-                //dd($patientExaminationDate);
-
                 $ultrasoundExamination = new PatientUltrasoundExamination();
                 $ultrasoundExamination->patient_id = $patientId;
                 $ultrasoundExamination->hospital_id = $hospitalId;
                 $ultrasoundExamination->doctor_id = $doctorId;
-                //$ultrasoundExamination->lab_id = $hospitalLabId;
                 $ultrasoundExamination->examination_date = $patientExaminationDate;
                 $ultrasoundExamination->examination_time = $examinationTime;
                 $ultrasoundExamination->created_by = $patientUltraSoundVM->getCreatedBy();
                 $ultrasoundExamination->modified_by = $patientUltraSoundVM->getUpdatedBy();
                 $ultrasoundExamination->created_at = $patientUltraSoundVM->getCreatedAt();
                 $ultrasoundExamination->updated_at = $patientUltraSoundVM->getUpdatedAt();
-                //$patientBloodExamination = $bloodExamination->save();
                 $ultrasoundExamination->save();
+                //dd($ultrasoundExamination);
 
                 foreach ($ultrasoundExaminations as $examination) {
-                    //dd($bloodExaminations);
-                    //$examinationId = $examination->examinationId;
-                    //$examinationName = $examination->examinationName;
-                    //$pregnancyDate = $pregnancy->pregnancyDate;
                     $ultrasoundExaminationItems = new PatientUltrasoundExaminationItems();
                     $ultrasoundExaminationItems->ultra_sound_id = $examination->examinationId;
-                    //$examinationDate = property_exists($patientDentalVM->getExaminationDate(), 'examinationDate') ? $examinationDate : null;
-
-                    //$dentalExaminationItems->dental_examination_name = property_exists($examination->dentalExaminationName, 'dentalExaminationName') ? $examination->dentalExaminationName : null;
-                    //$dentalExaminationItems->dental_examination_name = (isset($examination->dentalExaminationName)) ? $examination->dentalExaminationName : null;
-
-                    //$dentalExaminationItems->dental_examination_name = $examination->dentalExaminationName;
                     $ultrasoundExaminationItems->is_value_set = $examination->isValueSet;
                     $ultrasoundExaminationItems->created_by = $patientUltraSoundVM->getCreatedBy();
                     $ultrasoundExaminationItems->modified_by = $patientUltraSoundVM->getUpdatedBy();
@@ -1437,11 +1365,9 @@ class LabImpl implements LabInterface
                     $ultrasoundExaminationItems->updated_at = $patientUltraSoundVM->getUpdatedAt();
 
                     $ultrasoundExamination->ultrasoundexaminationitems()->save($ultrasoundExaminationItems);
-
+                    //dd($ultrasoundExaminationItems);
                 }
-
                 $this->setPatientLabTests($patientId, $hospitalId);
-
             } else {
                 throw new UserNotFoundException(null, ErrorEnum::PATIENT_USER_NOT_FOUND, null);
             }
@@ -1955,7 +1881,6 @@ class LabImpl implements LabInterface
             $date = date('Y-m-d');
             $doctorappment = DB::table('doctor_appointment')->where('patient_id', '=', $patient[0])->where('appointment_date', '=', $date)->select('patient_id')->get();
 
-
             if (is_null($doctorappment)) {
                 //$appointments = $patientProfileVM->getAppointment();
                 $appointmentStatus = AppointmentType::APPOINTMENT_OPEN;
@@ -1996,12 +1921,7 @@ class LabImpl implements LabInterface
             if (!is_null($patient)) {
                 //$patientUser = User::find($patientId);
                 //DB::table('patient_family_illness')->where('patient_id', $patientId)->delete();
-                //dd($patientDentalVM->getExaminationDate());
-                //dd('Test');
                 //$examinationDt = property_exists($patientBloodVM, 'examinationDate') ? $examinationDate : null;
-                //dd('After Test');
-                //dd($examinationDt);
-
                 if (!is_null($examinationDate)) {
                     $patientExaminationDate = date('Y-m-d', strtotime($examinationDate));
                 } else {
@@ -2374,35 +2294,15 @@ class LabImpl implements LabInterface
         $status = true;
         $patientExaminationDate = null;
         $patientDentalExamination = null;
-        //$hospitalLabId = null;
 
         try {
-            //dd('test');
             $patientId = $patientDentalVM->getPatientId();
             $doctorId = $patientDentalVM->getDoctorId();
-            //dd($doctorId);
             $hospitalId = $patientDentalVM->getHospitalId();
-            //$labId = $patientDentalVM->getLabId();
-            //$patientUser = User::find($patientId);
 
-            $dentalExaminations = $patientDentalVM->getPatientDentalTests();
+            $dentalExaminations = $patientDentalVM->getExaminations();
             $examinationDate = $patientDentalVM->getExaminationDate();
             $examinationTime = $patientDentalVM->getExaminationTime();
-            //dd($examinationDate);
-
-            /*$doctor = Helper::checkDoctorExists($doctorId);
-
-            if(is_null($doctor))
-            {
-                throw new UserNotFoundException(null, ErrorEnum::USER_NOT_FOUND, null);
-            }
-
-            $hospital = Helper::checkHospitalExists($hospitalId);
-
-            if(is_null($hospital))
-            {
-                throw new UserNotFoundException(null, ErrorEnum::HOSPITAL_USER_NOT_FOUND, null);
-            }*/
 
             $patient = Helper::checkPatientExists($patientId);
             $date = date('Y-m-d');
@@ -2468,7 +2368,6 @@ class LabImpl implements LabInterface
                 $dentalExamination->save();
 
                 foreach ($dentalExaminations as $examination) {
-                    //dd($examination);
                     //$examinationId = $examination->examinationId;
                     //$examinationName = $examination->examinationName;
                     //$pregnancyDate = $pregnancy->pregnancyDate;
@@ -2487,7 +2386,6 @@ class LabImpl implements LabInterface
                     if (!is_null($dentalExaminationItems->dental_examination_name)) {
                         $dentalExamination->dentalexaminationitems()->save($dentalExaminationItems);
                     }
-
                 }
 
                 $this->setPatientLabTests($patientId, $hospitalId);
@@ -2498,14 +2396,14 @@ class LabImpl implements LabInterface
         } catch (QueryException $queryEx) {
             //dd($queryEx);
             $status = false;
-            throw new HospitalException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $queryEx);
+            throw new LabException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $queryEx);
         } catch (UserNotFoundException $userExc) {
             //dd($userExc);
-            throw new HospitalException(null, $userExc->getUserErrorCode(), $userExc);
+            throw new LabException(null, $userExc->getUserErrorCode(), $userExc);
         } catch (Exception $exc) {
             //dd($exc);
             $status = false;
-            throw new HospitalException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $exc);
+            throw new LabException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $exc);
         }
 
         return $status;

@@ -4,6 +4,7 @@ namespace App\patientportal\services;
 
 use App\patientportal\repositories\repoInterface\LabInterface;
 use App\patientportal\utilities\ErrorEnum\ErrorEnum;
+use App\patientportal\utilities\Exception\LabException;
 use App\patientportal\utilities\Exception\HospitalException;
 use Illuminate\Support\Facades\DB;
 
@@ -404,7 +405,7 @@ class LabService
             });
 
         }
-        catch(HospitalException $hospitalExc)
+        catch(LabException $hospitalExc)
         {
             $status = false;
             throw $hospitalExc;
@@ -412,7 +413,7 @@ class LabService
         catch (Exception $ex) {
 
             $status = false;
-            throw new HospitalException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $ex);
+            throw new LabException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $ex);
         }
 
         return $status;

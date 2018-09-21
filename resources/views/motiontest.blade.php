@@ -105,9 +105,6 @@
     }
     function loaddoctor(hid) {
         var BASEURL = "{{ URL::to('/') }}/";
-        var did=$("#doctorId").val();
-        var date=$("#TestDate").val();
-        //alert(date);
         var status = 1;
         var callurl = BASEURL + '/hospital/'+hid+'/HospitalDoctors';
         //  alert(callurl);
@@ -120,7 +117,7 @@
                 for (var i = 0; i < data.length; i++) {
                     list = list + "<option value='" + data[i]['doctor_id'] + "'>" + data[i]['name'] + "</option>";
                 }
-                $("#doctorId").html(list);
+                $("#motiondocId").html(list);
             }
         });
     }
@@ -221,7 +218,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label" >Select Doctor</label>
         <div class="col-sm-8">
-            <select name="doctorId" id="doctorId" onchange="changeValues(this.value)"  class="form-control input-md" placeholder="Hospital">
+            <select name="doctorId" id="motiondocId" onchange="changeValues(this.value)"  class="form-control input-md" placeholder="Hospital">
             </select>
         </div>
     </div>

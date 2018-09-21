@@ -574,25 +574,44 @@ public function getPharmacyAppointments()
             $bloodDatesQuery->select('pbe.examination_date','h.hospital_id','hospital_name','pbe.examination_time')->orderBy('pbe.examination_date', 'DESC');
             $bloodTestDates = $bloodDatesQuery->distinct()->get();
 
-            // dd($bloodTestDates);
-
             $urineDatesQuery = DB::table('patient_urine_examination as pue')->where('pue.patient_id', '=', $patientId);
             $urineDatesQuery->join('hospital as h ','h.hospital_id','=','pue.hospital_id');
             $urineDatesQuery->select('pue.examination_date','h.hospital_id','hospital_name','pue.examination_time')->orderBy('pue.examination_date', 'DESC');
             $urineTestDates = $urineDatesQuery->distinct()->get();
-            //$urineTestDates = $urineDatesQuery->distinct()->take(2147483647)->skip(1)->get();
 
-            // dd($urineTestDates);
             $motionDatesQuery = DB::table('patient_motion_examination as pme')->where('pme.patient_id', '=', $patientId);
             $motionDatesQuery->join('hospital as h ','h.hospital_id','=','pme.hospital_id');
             $motionDatesQuery->select('pme.examination_date','h.hospital_id','hospital_name','pme.examination_time')->orderBy('pme.examination_date', 'DESC');
             $motionTestDates = $motionDatesQuery->distinct()->get();
 
-            // dd($bloodTestDates);
+            $ultraDatesQuery = DB::table('patient_ultra_sound as pus')->where('pus.patient_id', '=', $patientId);
+            $ultraDatesQuery->join('hospital as h', 'h.hospital_id','=','pus.hospital_id');
+            $ultraDatesQuery->select('pus.examination_date','h.hospital_id','hospital_name','pus.examination_time')->orderBy('pus.examination_date', 'DESC');
+            $ultraSoundTestDates = $ultraDatesQuery->distinct()->get();
+            //dd($ultraSoundTestDates);
+
+            $scanDatesQuery = DB::table('patient_scan as pscan')->where('pscan.patient_id', '=', $patientId);
+            $scanDatesQuery->join('hospital as h', 'h.hospital_id','=','pscan.hospital_id');
+            $scanDatesQuery->select('pscan.scan_date','h.hospital_id','hospital_name','pscan.examination_time')->orderBy('pscan.scan_date', 'DESC');
+            $scanTestDates = $scanDatesQuery->distinct()->get();
+
+            $xrayDatesQuery = DB::table('patient_xray_examination as pxray')->where('pxray.patient_id', '=', $patientId);
+            $xrayDatesQuery->join('hospital as h', 'h.hospital_id','=','pxray.hospital_id');
+            $xrayDatesQuery->select('pxray.examination_date','h.hospital_id','hospital_name','pxray.examination_time')->orderBy('pxray.examination_date', 'DESC');
+            $xrayTestDates = $xrayDatesQuery->distinct()->get();
+
+            $denatlDatesQuery = DB::table('patient_dental_examination as pdental')->where('pdental.patient_id', '=', $patientId);
+            $denatlDatesQuery->join('hospital as h', 'h.hospital_id','=','pdental.hospital_id');
+            $denatlDatesQuery->select('pdental.examination_date','h.hospital_id','hospital_name','pdental.examination_time')->orderBy('pdental.examination_date', 'DESC');
+            $dentalTestDates = $denatlDatesQuery->distinct()->get();
+
             $examinationDates["bloodTestDates"] = $bloodTestDates;
             $examinationDates["urineTestDates"] = $urineTestDates;
             $examinationDates["motionTestDates"] = $motionTestDates;
-
+            $examinationDates["ultraSoundTestDates"] = $ultraSoundTestDates;
+            $examinationDates["scanTestDates"] = $scanTestDates;
+            $examinationDates["xrayTestDates"] = $xrayTestDates;
+            $examinationDates["dentalTestDates"] = $dentalTestDates;
             // dd($examinationDates);
 
             $latestBloodExamQuery = DB::table('patient_blood_examination as pbe');
@@ -615,9 +634,6 @@ public function getPharmacyAppointments()
             $latestBloodExamQuery->select('pbe.id as examinationId', 'pbei.id as examinationItemId', 'pbe.patient_id',
                 'pbe.hospital_id', 'be.examination_name', 'pbe.examination_date');
             $bloodExaminations = $latestBloodExamQuery->get();
-
-
-
         } catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
             $msg = AppendMessage::appendMessage($userExc);

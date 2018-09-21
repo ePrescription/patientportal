@@ -151,14 +151,13 @@ $time_array = array(
                 for (var i = 0; i < data.length; i++) {
                     list = list + "<option value='" + data[i]['doctor_id'] + "'>" + data[i]['name'] + "</option>";
                 }
-                $("#doctorId").html(list);
+                $("#docId").html(list);
             }
         });
     }
     function submitForm() {
-
-
-        var hospitalId= $('#hospitalId').val();
+        var hospitalId= $('#uhospitalId').val();
+        alert(hospitalId);
         var doctorId= $('#doctorId').val();
         // localStorage.setItem('hospitalId', hospitalId);
         // localStorage.setItem('doctorId', doctorId);
@@ -197,7 +196,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label">Select Hospital</label>
         <div class="col-sm-8">
-            <select name="hospitalId" id="hospitalId" onchange="loaddoctor(this.value)"  class="form-control input-md" placeholder="Hospital" required="required">
+            <select name="hospitalId" id="uhospitalId" onchange="loaddoctor(this.value)"  class="form-control input-md" placeholder="Hospital" required="required">
                 <option value="">Select Hospital</option>
                 @foreach ($hospitals as $val)
 
@@ -211,7 +210,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label" >Select Doctor</label>
         <div class="col-sm-8">
-            <select name="doctorId" id="doctorId" onchange="changeValues(this.value)"  class="form-control input-md" placeholder="Hospital">
+            <select name="doctorId" id="docId" onchange="changeValues(this.value)"  class="form-control input-md">
             </select>
         </div>
     </div>

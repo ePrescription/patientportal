@@ -751,15 +751,10 @@ class PatientProfileMapper
         $patientDentalVM->setExaminationTime(property_exists($dentalObj, 'examinationTime') ? $dentalObj->examinationTime : null);
         //$patientUltraSoundVM->setHospitalId($examinationObj->hospitalId);
         $examinationDetails = $dentalObj->dentalExaminations;
-        //dd($candidateEmployments);
 
         foreach($examinationDetails as $examination)
         {
-            $patientDentalVM->setPatientDentalTests($examination);
-            /*if(count($examination)==3)
-            {
-                $patientDentalVM->setPatientDentalTests($examination);
-            }*/
+            $patientDentalVM->setExaminations($examination);
         }
 
         //$userName = Session::get('DisplayName');
@@ -769,19 +764,6 @@ class PatientProfileMapper
         $patientDentalVM->setUpdatedBy($userName);
         $patientDentalVM->setCreatedAt(date("Y-m-d H:i:s"));
         $patientDentalVM->setUpdatedAt(date("Y-m-d H:i:s"));
-
-        /*try
-        {
-            //dd($examinationRequest);
-
-
-            //dd($patientDentalVM);
-        }
-        catch(Exception $ex)
-        {
-            dd($ex);
-        }*/
-
 
         return $patientDentalVM;
     }

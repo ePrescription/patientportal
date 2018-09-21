@@ -297,9 +297,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 <div id="Diagnostics" class="tabcontent">
 
 <b>Blood Tests</b>
-    <?php $count=1;
-
-    ?>
+    <?php $count=1;?>
     @if(count($examinationDates["bloodTestDates"])>0)
         <table class="table table-bordred table-striped"><thead class='th'>
             <th>SNO</th>
@@ -324,8 +322,8 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                 <?php $count=0;?>
             @endforeach
             </tbody></table>
-
     @endif
+
     <b>Motion Tests</b>
     <?php $count=1;?>
 @if(count($examinationDates["motionTestDates"])>0)
@@ -354,10 +352,12 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             @endforeach
             </tbody></table>
     @endif
+
     <b>Urine Tests</b>
     <?php $count=1;?>
 @if(count($examinationDates["urineTestDates"])>0)
-        <table class="table table-bordred table-striped"><thead class='th'>
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
                <th>SNO</th>
             <th>Hospital Name</th>
             <th>Appointment Date </th>
@@ -365,7 +365,8 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             {{--<th>Hospital ID</th>--}}
             <th>More Details</th>
             {{--<th>Reappointment</th>--}}
-            </thead><tbody>
+            </thead>
+            <tbody>
             @foreach ($examinationDates["urineTestDates"] as $appointment)
                 <tr>
                     <td>{{ $count}}</td>
@@ -379,9 +380,119 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                 </tr>
                 <?php $count++;?>
             @endforeach
-            </tbody></table>
-
+            </tbody>
+        </table>
     @endif
+
+    <b>Ultrasound Tests</b>
+    <?php $count=1;?>
+    @if(count($examinationDates["ultraSoundTestDates"])>0)
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
+            <th>SNO</th>
+            <th>Hospital Name</th>
+            <th>Appointment Date </th>
+            <th>Appointment Time </th>
+            {{--<th>Hospital ID</th>--}}
+            <th>More Details</th>
+            {{--<th>Reappointment</th>--}}
+            </thead>
+            <tbody>
+            @foreach ($examinationDates["ultraSoundTestDates"] as $appointment)
+                <tr>
+                    <td>{{ $count}}</td>
+                    <td>{{ $appointment->hospital_name}}</td>
+                    <td>{{ $appointment->examination_date}} </td>
+                    <td>{{ $appointment->examination_time}}</td>
+                    {{--<td>{{ $appointment->hospital_id}}</td>--}}
+                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                    {{--<td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>--}}
+
+                </tr>
+                <?php $count++;?>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
+
+    <b>Scan Tests</b>
+    <?php $count=1;?>
+    @if(count($examinationDates["scanTestDates"])>0)
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
+            <th>SNO</th>
+            <th>Hospital Name</th>
+            <th>Appointment Date </th>
+            <th>Appointment Time </th>
+            <th>More Details</th>
+            </thead>
+            <tbody>
+            @foreach ($examinationDates["scanTestDates"] as $appointment)
+                <tr>
+                    <td>{{ $count}}</td>
+                    <td>{{ $appointment->hospital_name}}</td>
+                    <td>{{ $appointment->scan_date}} </td>
+                    <td>{{ $appointment->examination_time}}</td>
+                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->scan_date}}" target="_blank">Details</a></td>
+                </tr>
+                <?php $count++;?>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
+
+    <b>Dental Tests</b>
+    <?php $count=1;?>
+    @if(count($examinationDates["dentalTestDates"])>0)
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
+            <th>SNO</th>
+            <th>Hospital Name</th>
+            <th>Appointment Date </th>
+            <th>Appointment Time </th>
+            <th>More Details</th>
+            </thead>
+            <tbody>
+            @foreach ($examinationDates["dentalTestDates"] as $appointment)
+                <tr>
+                    <td>{{ $count}}</td>
+                    <td>{{ $appointment->hospital_name}}</td>
+                    <td>{{ $appointment->examination_date}} </td>
+                    <td>{{ $appointment->examination_time}}</td>
+                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                </tr>
+                <?php $count++;?>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
+
+    <b>X-ray Tests</b>
+    <?php $count=1;?>
+    @if(count($examinationDates["xrayTestDates"])>0)
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
+            <th>SNO</th>
+            <th>Hospital Name</th>
+            <th>Appointment Date </th>
+            <th>Appointment Time </th>
+            <th>More Details</th>
+            </thead>
+            <tbody>
+            @foreach ($examinationDates["xrayTestDates"] as $appointment)
+                <tr>
+                    <td>{{ $count}}</td>
+                    <td>{{ $appointment->hospital_name}}</td>
+                    <td>{{ $appointment->examination_date}} </td>
+                    <td>{{ $appointment->examination_time}}</td>
+                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                </tr>
+                <?php $count++;?>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
+
 
 </div>
 

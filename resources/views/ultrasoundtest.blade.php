@@ -121,36 +121,27 @@ $time_array = array(
     }
     function loaddoctor(hid) {
         var BASEURL = "{{ URL::to('/') }}/";
-        var did=$("#doctorId").val();
-        var date=$("#TestDate").val();
-        //alert(date);
         var status = 1;
         var callurl = BASEURL + '/hospital/'+hid+'/HospitalDoctors';
-        //  alert(callurl);
         $.ajax({
             url: callurl,
             type: "get",
             data: {"id": hid, "status": status},
             success: function (data) {
-
                 var list = "<option value=''>Select Doctor</option>";
                 for (var i = 0; i < data.length; i++) {
 
                     list = list + "<option value='" + data[i]['doctor_id'] + "'>" + data[i]['name'] + "</option>";
                 }
-                $("#doctorId").html(list);
+                //alert(list);
+                $("#usdocId").html(list);
             }
-
-
         });
     }
+
     function submitForm() {
-
-
-        var hospitalId= $('#hospitalId').val();
+        var hospitalId= $('#hospId').val();
         var doctorId= $('#doctorId').val();
-        // localStorage.setItem('hospitalId', hospitalId);
-        // localStorage.setItem('doctorId', doctorId);
         localStorage.hospitalId = hospitalId;
         localStorage.doctorId = doctorId;
         var sthospitalId = localStorage.hospitalId;
@@ -191,21 +182,18 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label">Select Hospital</label>
         <div class="col-sm-8">
-            <select name="hospitalId" id="hospitalId" onchange="loaddoctor()"  class="form-control input-md" placeholder="Hospital" required="required">
+            <select name="hospitalId" id="hospId" onchange="loaddoctor(this.value)"  class="form-control input-md" required="required">
                 <option value="">Select Hospital</option>
                 @foreach ($hospitals as $val)
-
                     <option value="{{ $val['hospital_id'] }}">{{ $val['hospital_name'] }}</option>
-
                 @endforeach
-
             </select>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-4 control-label" >Select Doctor</label>
         <div class="col-sm-8">
-            <select name="doctorId" id="doctorId" onchange="changeValues(this.value)"  class="form-control input-md" placeholder="Hospital">
+            <select name="doctorId" id="usdocId" onchange="changeValues(this.value)"  class="form-control input-md">
             </select>
         </div>
     </div>

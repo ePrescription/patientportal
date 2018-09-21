@@ -133,12 +133,8 @@ $time_array = array(
        }
        function loaddoctor(hid) {
            var BASEURL = "{{ URL::to('/') }}/";
-           var did=$("#doctorId").val();
-           var date=$("#TestDate").val();
-           //alert(date);
            var status = 1;
            var callurl = BASEURL + '/hospital/'+hid+'/HospitalDoctors';
-           //  alert(callurl);
            $.ajax({
                url: callurl,
                type: "get",
@@ -150,19 +146,13 @@ $time_array = array(
 
                        list = list + "<option value='" + data[i]['doctor_id'] + "'>" + data[i]['name'] + "</option>";
                    }
-                   $("#doctorId").html(list);
+                   $("#dendoctorId").html(list);
                }
-
-
            });
        }
        function submitForm() {
-
-
-           var hospitalId= $('#hospitalId').val();
+           var hospitalId= $('#denhospitalId').val();
            var doctorId= $('#doctorId').val();
-           // localStorage.setItem('hospitalId', hospitalId);
-           // localStorage.setItem('doctorId', doctorId);
            localStorage.hospitalId = hospitalId;
            localStorage.doctorId = doctorId;
            var sthospitalId = localStorage.hospitalId;
@@ -193,7 +183,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label">Select Hospital</label>
         <div class="col-sm-8">
-            <select name="hospitalId" id="hospitalId" onchange="loaddoctor(this.value)"  class="form-control input-md" placeholder="Hospital">
+            <select name="hospitalId" id="denhospitalId" onchange="loaddoctor(this.value)"  class="form-control input-md">
                 <option value="">Select Hospital</option>
                 @foreach ($hospitals as $val)
 
@@ -207,7 +197,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label" >Select Doctor</label>
         <div class="col-sm-8">
-            <select name="doctorId" id="doctorId" onchange="changeValues(this.value)"  class="form-control input-md" placeholder="Hospital">
+            <select name="doctorId" id="dendoctorId" onchange="changeValues(this.value)"  class="form-control input-md">
             </select>
         </div>
     </div>
@@ -219,7 +209,7 @@ $time_array = array(
             @if ($errors->has('examinationDate'))<p class="error" style="">{!!$errors->first('examinationDate')!!}</p>@endif
         </div>
         <div class="col-sm-4">
-            <select class="form-control" name="ExaminationTime" id="ExaminationTime"
+            <select class="form-control" name="examinationTime" id="ExaminationTime"
                     required="required">
 
                 <option value=""> --:----</option>
@@ -262,13 +252,11 @@ $time_array = array(
 @endforeach
 
 <div class="col-sm-12 form-group">
-<div class="col-sm-4"></div>
-<div class="col-sm-6">
+    <div class="col-sm-4"></div>
     <div class="col-sm-6">
         <input type="hidden" class="form-control" name="patientId" value="{{session('patient_id')}}" required="required" />
         <input type="submit" name="addblood" value="Save" class="btn btn-success"/>
         <input type="button" value="Cancel" class="btn btn-info waves-effect waves-light" onclick="window.history.back()"/>
-
     </div>
 </div>
 </form>
