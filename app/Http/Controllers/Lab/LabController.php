@@ -787,6 +787,7 @@ class LabController extends Controller {
             $patientDetails =$this->labService->getPatientProfile($patientId);
             // $patientExaminations = HospitalServiceFacade::getExaminationDates($patientId, $hid);
             $patientExaminations = $this->labService->getExaminationDatesByDate($patientId, $hid, $date);
+            //dd($patientExaminations);
         } catch (HospitalException $hospitalExc) {
             //$jsonResponse = new ResponseJson(ErrorEnum::FAILURE, trans('messages.'.ErrorEnum::PATIENT_DETAILS_ERROR));
             $errorMsg = $hospitalExc->getMessageForCode();

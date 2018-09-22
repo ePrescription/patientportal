@@ -241,11 +241,9 @@
                     <br>
                     <div id="ExaminationInfoPrint1"  class="form-group">
                        @if(count($patientExaminations['recentBloodTests'])>0)
-
-                        <!--<div class="form-group" style="background-color: #ffff99; color: black;">
-                <label class="col-sm-12 control-label">Blood Test
-                   </label>
-            </div>-->
+                            <div class="form-group" style="color: black;">
+                                <label class="col-sm-12 control-label">Blood Test</label>
+                            </div>
                             <div class="form-group" style="font-family:traditional">
                                 <div class="col-sm-4" style="width:100%;float:left;">
                                     <table style="width:100%;">
@@ -258,7 +256,6 @@
                                                 <tr style="font-size: 15px; font-weight: bold; align-content: center">
                                                     <td colspan="3"> <b>{{$patientExaminations['recentBloodTests']->parent_examination_name}}</b> </td>
                                                 </tr>
-
                                             @endif
                                             <tr style="font-size: 13px;font-weight: bold; align-content: center">
                                                 <td >
@@ -276,12 +273,10 @@
                                          @endforeach
                                     </table>
                                 </div>
-
                             </div>
                         @endif
 
                            @if(count($patientExaminations['recentMotionExaminations'])>0)
-
                                <div class="form-group" style="color: black;">
                                    <label class="col-sm-12 control-label">Motion Test
                                        - {{$patientExaminations['recentMotionExaminations'][0]->examination_date}}</label>
@@ -295,17 +290,14 @@
                                                    <td>{{$patientExaminations['recentMotionExaminations']->test_readings}}</td>
                                                    <td>&nbsp;</td>
                                                </tr>
-
-
                                            @endforeach
                                        </table>
                                    </div>
                                    -
-
                                </div>
                            @endif
-                           @if(count($patientExaminations['recentUrineExaminations'])>0)
 
+                           @if(count($patientExaminations['recentUrineExaminations'])>0)
                                <div class="form-group" style="color: black;">
                                    <label class="col-sm-12 control-label">Urine Test
                                        - {{$patientExaminations['recentUrineExaminations'][0]->examination_date}}</label>
@@ -313,7 +305,6 @@
                                <div class="form-group ">
                                    <div class="col-sm-4" style="width:100%;float:left;">
                                        <table style="width:100%;float:left;">
-
                                            <?php $parentCheck = "";?>
                                            @foreach($patientExaminations['recentUrineExaminations'] as $patientExaminations['recentUrineExaminations'])
                                                @if($patientExaminations['recentUrineExaminations']->is_parent==0 && ($parentCheck=="" || $parentCheck!=$patientExaminations['recentUrineExaminations']->parent_examination_name))
@@ -321,32 +312,109 @@
                                                    <tr style=" font-size: 15px;font-weight: bold; align-content: center">
                                                        <td colspan="3"> <b>{{$patientExaminations['recentUrineExaminations']->parent_examination_name}}</b> </td>
                                                    </tr>
-
-                                               @endif
+                                                   @endif
                                                <tr style="font-size: 13px;font-weight: bold; align-content: center">
-
                                                    <td style="width:33%;float:left;">
                                                        @if($patientExaminations['recentUrineExaminations']->is_parent==0)
                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                        @endif
                                                        {{$patientExaminations['recentUrineExaminations']->examination_name}}
                                                    </td>
-
                                                    <td style="width:33%;float:left;"> {{$patientExaminations['recentUrineExaminations']->test_readings}}</td>
                                                    <td style="width:33%;float:left;">{{$patientExaminations['recentUrineExaminations']->normal_default_values}}</td>
-
                                                </tr>
+                                               @endforeach
+                                       </table>
+                                   </div>
+                                   -
+                               </div>
+                           @endif
 
-
-
-
+                           @if(count($patientExaminations['recentUltrasoundExaminations'])>0)
+                               <div class="form-group" style="color: black;">
+                                   <label class="col-sm-12 control-label">UltraSound Test
+                                       - {{$patientExaminations['recentUltrasoundExaminations'][0]->examination_date}}</label>
+                               </div>
+                               <div class="form-group ">
+                                   <div class="col-sm-4" style="width:100%;float:left;">
+                                       <table style="width:100%;float:left;">
+                                           @foreach($patientExaminations['recentUltrasoundExaminations'] as $patientExaminations['recentUltrasoundExaminations'])
+                                               <tr style="font-size: 13px;font-weight: bold; align-content: center">
+                                                   <td>{{$patientExaminations['recentUltrasoundExaminations']->examination_name}}</td>
+                                                   <td>{{$patientExaminations['recentUltrasoundExaminations']->test_readings}}</td>
+                                                   <td>&nbsp;</td>
+                                               </tr>
                                            @endforeach
                                        </table>
                                    </div>
                                    -
+                               </div>
+                               @endif
 
-                    </div>
-                           @endif
+                           @if(count($patientExaminations['recentScanExaminations'])>0)
+                               <div class="form-group" style="color: black;">
+                                   <label class="col-sm-12 control-label">Scan
+                                       - {{$patientExaminations['recentScanExaminations'][0]->scan_date}}</label>
+                               </div>
+                               <div class="form-group ">
+                                   <div class="col-sm-4" style="width:100%;float:left;">
+                                       <table style="width:100%;float:left;">
+                                           @foreach($patientExaminations['recentScanExaminations'] as $patientExaminations['recentScanExaminations'])
+                                               <tr style="font-size: 13px;font-weight: bold; align-content: center">
+                                                   <td>{{$patientExaminations['recentScanExaminations']->scan_name}}</td>
+                                                   <td>{{$patientExaminations['recentScanExaminations']->test_readings}}</td>
+                                                   <td>&nbsp;</td>
+                                               </tr>
+                                           @endforeach
+                                       </table>
+                                   </div>
+                                   -
+                               </div>
+                               @endif
+
+                           @if(count($patientExaminations['recentDentalExaminations'])>0)
+                               <div class="form-group" style="color: black;">
+                                   <label class="col-sm-12 control-label">Dental Test
+                                       - {{$patientExaminations['recentDentalExaminations'][0]->examination_date}}</label>
+                               </div>
+                               <div class="form-group ">
+                                   <div class="col-sm-4" style="width:100%;float:left;">
+                                       <table style="width:100%;float:left;">
+                                           <?php $parentCheck = "";?>
+                                           @foreach($patientExaminations['recentDentalExaminations'] as $patientExaminations['recentDentalExaminations'])
+                                               <tr style="font-size: 13px;font-weight: bold; align-content: center">
+                                                   <td style="width:33%;float:left;">
+                                                       {{$patientExaminations['recentDentalExaminations']->examination_name}}
+                                                   </td>
+                                                   <td style="width:33%;float:left;">{{$patientExaminations['recentDentalExaminations']->normal_default_values}}</td>
+                                               </tr>
+                                           @endforeach
+                                       </table>
+                                   </div>
+                                   -
+                               </div>
+                               @endif
+
+                           @if(count($patientExaminations['recentXrayExaminations'])>0)
+                               <div class="form-group" style="color: black;">
+                                   <label class="col-sm-12 control-label">X-ray
+                                       - {{$patientExaminations['recentXrayExaminations'][0]->examination_date}}</label>
+                               </div>
+                               <div class="form-group ">
+                                   <div class="col-sm-4" style="width:100%;float:left;">
+                                       <table style="width:100%;float:left;">
+                                           @foreach($patientExaminations['recentXrayExaminations'] as $patientExaminations['recentXrayExaminations'])
+                                               <tr style="font-size: 13px;font-weight: bold; align-content: center">
+                                                   <td>{{$patientExaminations['recentXrayExaminations']->examination_name}}</td>
+                                                   <td>&nbsp;</td>
+                                               </tr>
+                                           @endforeach
+                                       </table>
+                                   </div>
+                                   -
+                               </div>
+                               @endif
+
                        <!--     separate
                 {{$patientExaminations['recieptStatus']}}
 

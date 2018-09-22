@@ -2672,52 +2672,77 @@ class LabImpl implements LabInterface
                 throw new UserNotFoundException(null, ErrorEnum::PATIENT_USER_NOT_FOUND, null);
             }
 
-
             $latestBloodExamQuery = DB::table('patient_blood_examination as pbe');
             $latestBloodExamQuery->join('patient_blood_examination_item as pbei', 'pbei.patient_blood_examination_id', '=', 'pbe.id');
             $latestBloodExamQuery->join('blood_examination as be', 'be.id', '=', 'pbei.blood_examination_id');
             $latestBloodExamQuery->join('blood_examination as be1', 'be1.id', '=', 'be.parent_id');
             $latestBloodExamQuery->where('pbe.examination_date', '=', $date);
-
-
             $latestBloodExamQuery->where('pbe.patient_id', '=', $patientId);
             $latestBloodExamQuery->where('pbei.is_value_set', '=', 1);
             $latestBloodExamQuery->select('pbe.id as examinationId', 'pbei.id as examinationItemId', 'pbe.patient_id',
                 'pbe.hospital_id', 'be.examination_name', 'pbe.examination_date', 'pbei.test_readings', 'be.default_normal_values', 'be.is_parent', 'be1.examination_name AS parent_examination_name', 'be.units', 'pbe.doctor_id', 'pbe.fee_receipt_id');
             $bloodExaminations = $latestBloodExamQuery->get();
 
-            // dd($latestBloodExamQuery->toSql());
-            //dd($latestComplaintsQuery->toSql());
-
-            //dd($latestComplaints);
-
-
             $latestUrineExamQuery = DB::table('patient_urine_examination as pue');
             $latestUrineExamQuery->join('patient_urine_examination_item as puei', 'puei.patient_urine_examination_id', '=', 'pue.id');
             $latestUrineExamQuery->join('urine_examination as ue', 'ue.id', '=', 'puei.urine_examination_id');
             $latestUrineExamQuery->join('urine_examination as ue1', 'ue1.id', '=', 'ue.parent_id');
             $latestUrineExamQuery->where('pue.examination_date', '=', $date);
-
-
             $latestUrineExamQuery->where('pue.patient_id', '=', $patientId);
             $latestUrineExamQuery->where('puei.is_value_set', '=', 1);
             $latestUrineExamQuery->select('pue.id as examinationId', 'puei.id as examinationItemId',
                 'pue.patient_id', 'ue.examination_name', 'pue.examination_date', 'puei.test_readings', 'ue.normal_default_values', 'ue.is_parent', 'ue1.examination_name as parent_examination_name', 'pue.doctor_id', 'pue.fee_receipt_id');
             $latestUrineExaminations = $latestUrineExamQuery->get();
 
-
             $latestMotionExamQuery = DB::table('patient_motion_examination as pme');
             $latestMotionExamQuery->join('patient_motion_examination_item as pmei', 'pmei.patient_motion_examination_id', '=', 'pme.id');
             $latestMotionExamQuery->join('motion_examination as me', 'me.id', '=', 'pmei.motion_examination_id');
             $latestMotionExamQuery->where('pme.examination_date', '=', $date);
-
             $latestMotionExamQuery->where('pme.patient_id', '=', $patientId);
             $latestMotionExamQuery->where('pmei.is_value_set', '=', 1);
-
             $latestMotionExamQuery->select('pme.id as examinationId', 'pmei.id as examinationItemId',
                 'pme.patient_id', 'me.examination_name', 'pme.examination_date', 'pmei.test_readings', 'pme.doctor_id', 'pme.fee_receipt_id');
             $latestMotionExaminations = $latestMotionExamQuery->get();
 
+            $latestUltrasoundExamQuery = DB::table('patient_ultra_sound as pus');
+            $latestUltrasoundExamQuery->join('patient_ultra_sound_item as pusi', 'pusi.patient_ultra_sound_id', '=', 'pus.id');
+            $latestUltrasoundExamQuery->join('ultra_sound as us', 'us.id', '=', 'pusi.ultra_sound_id');
+            $latestUltrasoundExamQuery->where('pus.examination_date', '=', $date);
+            $latestUltrasoundExamQuery->where('pus.patient_id', '=', $patientId);
+            $latestUltrasoundExamQuery->where('pusi.is_value_set', '=', 1);
+            $latestUltrasoundExamQuery->select('pus.id as examinationId', 'pusi.id as examinationItemId',
+                'pus.patient_id', 'us.examination_name', 'pus.examination_date', 'pusi.test_readings', 'pus.doctor_id', 'pus.fee_receipt_id');
+            $latestUltrasoundExaminations = $latestUltrasoundExamQuery->get();
+
+            $latestScanQuery = DB::table('patient_scan as ps');
+            $latestScanQuery->join('patient_scan_item as psi', 'psi.patient_scan_id', '=', 'ps.id');
+            $latestScanQuery->join('scans as sc', 'sc.id', '=', 'psi.scan_id');
+            $latestScanQuery->where('ps.scan_date', '=', $date);
+            $latestScanQuery->where('ps.patient_id', '=', $patientId);
+            $latestScanQuery->where('psi.is_value_set', '=', 1);
+            $latestScanQuery->select('ps.id as examinationId', 'psi.id as examinationItemId',
+                'ps.patient_id', 'sc.scan_name', 'ps.scan_date', 'psi.test_readings', 'ps.doctor_id', 'ps.fee_receipt_id');
+            $latestScanExaminations = $latestScanQuery->get();
+
+            $latestDentalExamQuery = DB::table('patient_dental_examination as pde');
+            $latestDentalExamQuery->join('patient_dental_examination_item as pdei', 'pdei.patient_dental_examination_id', '=', 'pde.id');
+            $latestDentalExamQuery->join('dental_examination_items as dei', 'dei.id', '=', 'pdei.dental_examination_item_id');
+            $latestDentalExamQuery->where('pde.examination_date', '=', $date);
+            $latestDentalExamQuery->where('pde.patient_id', '=', $patientId);
+            //$latestDentalExamQuery->where('pdei.is_value_set', '=', 1);
+            $latestDentalExamQuery->select('pde.id as examinationId', 'pdei.id as examinationItemId',
+                'pde.patient_id', 'dei.examination_name', 'pde.examination_date', 'pde.doctor_id', 'dei.normal_default_values', 'pde.fee_receipt_id');
+            $latestDentalExaminations = $latestDentalExamQuery->get();
+
+            $latestXrayExamQuery = DB::table('patient_xray_examination as pxe');
+            $latestXrayExamQuery->join('patient_xray_examination_item as pxei', 'pxei.patient_xray_examination_id', '=', 'pxe.id');
+            $latestXrayExamQuery->join('xray_examination as xe', 'xe.id', '=', 'pxei.xray_examination_item_id');
+            $latestXrayExamQuery->where('pxe.examination_date', '=', $date);
+            $latestXrayExamQuery->where('pxe.patient_id', '=', $patientId);
+            //$latestXrayExamQuery->where('pxei.is_value_set', '=', 1);
+            $latestXrayExamQuery->select('pxe.id as examinationId', 'pxei.id as examinationItemId',
+                'pxe.patient_id', 'xe.examination_name', 'pxe.examination_date', 'pxe.doctor_id', 'pxe.fee_receipt_id');
+            $latestXrayExaminations = $latestXrayExamQuery->get();
 
             $patientQuery = DB::table('patient as p')->select('p.id', 'p.patient_id', 'p.name', 'p.email', 'p.pid',
                 'p.telephone', 'p.relationship', 'p.patient_spouse_name as spouseName', 'p.address', 'p.gender', 'p.age');
@@ -2734,38 +2759,44 @@ class LabImpl implements LabInterface
             $D = count($bloodExaminations) > 0 ? $bloodExaminations[0]->doctor_id: null;
             $U = count($latestUrineExaminations) > 0 ? $latestUrineExaminations[0]->doctor_id : null;
             $M = count($latestMotionExaminations) > 0 ? $latestMotionExaminations[0]->doctor_id : null;
-
+            $US = count($latestUltrasoundExaminations) > 0 ? $latestUltrasoundExaminations[0]->doctor_id : null;
+            $SC = count($latestScanExaminations) > 0 ? $latestScanExaminations[0]->doctor_id : null;
+            $DEN = count($latestDentalExaminations) > 0 ? $latestDentalExaminations[0]->doctor_id : null;
+            $X = count($latestXrayExaminations) > 0 ? $latestXrayExaminations[0]->doctor_id : null;
 
             $DID = count($bloodExaminations) > 0 ? $bloodExaminations[0]->fee_receipt_id : null;
             $UID = count($latestUrineExaminations) > 0 ? $latestUrineExaminations[0]->fee_receipt_id : null;
             $MID = count($latestMotionExaminations) > 0 ? $latestMotionExaminations[0]->fee_receipt_id : null;
+            $USID = count($latestUltrasoundExaminations) > 0 ? $latestUltrasoundExaminations[0]->fee_receipt_id : null;
+            $SCID = count($latestScanExaminations) > 0 ? $latestScanExaminations[0]->fee_receipt_id : null;
+            $DENID = count($latestDentalExaminations) > 0 ? $latestDentalExaminations[0]->fee_receipt_id : null;
+            $XID = count($latestXrayExaminations) > 0 ? $latestXrayExaminations[0]->fee_receipt_id : null;
 
             $receiptID = null;
             if ($DID != null) $receiptID = $DID;
             if ($UID != null) $receiptID = $UID;
             if ($MID != null) $receiptID = $MID;
-
+            if ($USID != null) $receiptID = $USID;
+            if ($SCID != null) $receiptID = $SCID;
+            if ($DENID != null) $receiptID = $DENID;
+            if ($XID != null) $receiptID = $XID;
 
             $doctor_id = null;
             if ($D != null) $doctor_id = $D;
             if ($U != null) $doctor_id = $U;
             if ($M != null) $doctor_id = $M;
+            if ($US != null) $doctor_id = $US;
+            if ($SC != null) $doctor_id = $SC;
+            if ($DEN != null) $doctor_id = $DEN;
+            if ($X != null) $doctor_id = $X;
             if ($doctor_id != null) {
                 $doctorinfo = Doctor::find($doctor_id);
-
-                //  dd($doctorinfo);
             }
             $receiptStatus = "notpaid";
             if ($receiptID != null) {
                 $LabDetails = LabFeeReceipt::find($receiptID);
-
                 $receiptStatus = (($LabDetails->total_fees - $LabDetails->paid_amount) == 0) ? "paid" : "notpaid";
-
-
-                // dd($doctorinfo);
             }
-
-            // dd($doctorinfo);
 
             $examinationDates['recieptId'] = $receiptID;
             $examinationDates['recieptStatus'] = $receiptStatus;
@@ -2774,11 +2805,11 @@ class LabImpl implements LabInterface
             $examinationDates['hospitalDetails'] = $hospitalDetails;
             $examinationDates['recentUrineExaminations'] = $latestUrineExaminations;
             $examinationDates['recentMotionExaminations'] = $latestMotionExaminations;
+            $examinationDates['recentUltrasoundExaminations'] = $latestUltrasoundExaminations;
+            $examinationDates['recentScanExaminations'] = $latestScanExaminations;
+            $examinationDates['recentDentalExaminations'] = $latestDentalExaminations;
+            $examinationDates['recentXrayExaminations'] = $latestXrayExaminations;
             $examinationDates['doctorDetails'] = $doctorinfo;
-
-
-            //dd($examinationDates);
-
         } catch (QueryException $queryEx) {
             //dd($queryEx);
             throw new HospitalException(null, ErrorEnum::PATIENT_EXAMINATION_DATES_ERROR, $queryEx);
