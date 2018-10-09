@@ -68,12 +68,10 @@ class PharmaImpl implements PharmaInterface
         $doctorname = $request->get("doctorname");
         $date = $request->get("date");
         $patient_id = session('patient_id');
+        //dd($request->all());
         $Pharmacy = new PharmacyAppointment();
 
         $path = '';
-        $nooffiles = 0;
-
-
 
         $Pharmacy->patient_id = $patient_id;
         $Pharmacy->hospital_id = $hospital_id;

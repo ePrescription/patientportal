@@ -82,25 +82,21 @@
                                 <div id="errormessage"></div>
                                 @if (session()->has('msg'))
                                     <div class='success'>
-                                        <b>  {{session()->get('msg')}}</b>
-
+                                        <b style="color:green;">  {{session()->get('msg')}}</b>
                                     </div>
                                 @endif
-                                <form action="Savesecondopinion" method="post" id="registration" enctype="multipart/form-data">
+                                <form action="savesecondopinion" method="post" id="registration" enctype="multipart/form-data">
                                     {{ csrf_field() }}
-
 
                                     <div class="row">
                                         <div class="col-xs-6 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Speciality</label>
-                                                <select name="specialist" id="specialist" class="form-control input-md"
-                                                        placeholder="Specialist">
+                                                <select name="specialist" id="specialist" class="form-control input-md">
                                                     <option value="">Select Speciality</option>
                                                     @foreach ($specialty as $val)
                                                         <option value="{{ $val->id }}">{{ $val->specialty }}</option>
                                                     @endforeach
-
                                                 </select>
 
                                                 <div class="validation"></div>

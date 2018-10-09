@@ -144,7 +144,7 @@ Route::post('/askquestsendmail', array('as' => 'user.saveaskquestion', 'uses' =>
 Route::get('/singledoctor', array('as' => 'user.saveaskquestion', 'uses' => 'Doctor\DoctorController@SingleDoctor'));
 
 Route::get('/secondoption', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@SecondOptionPage'));
-Route::post('/Savesecondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@saveSecondOpinion'));
+Route::post('/savesecondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@saveSecondOpinion'));
 
 Route::get('/doctors', array('as' => 'user.askquestion', 'uses' => 'Doctor\DoctorController@DoctorsPage'));
 
@@ -223,7 +223,7 @@ Route::post('/makelabappointment', 'LabappointmentController@insert');
 Route::get("loadpharmacy",'Pharma\PharmaController@LoadPharmacy');
 
 
-Route::post('/makepharmacyappointment', 'Pharma\PharmaController@save');
+Route::post('/makepharmacyappointment', 'Pharma\PharmaController@savePharmaAppointment');
 
 
 

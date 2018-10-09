@@ -666,15 +666,12 @@ public function getPharmacyAppointments()
         return $specialty;
     }
 
-    public function saveSecondOpinion($request) {
-
-        //dd($request);
-       $OrgfileName=null;
+    public function saveSecondOpinion($request)
+    {
+        //dd($request->all());
+        $OrgfileName=null;
         $fileType=null;
-
-
         try{
-
             $specialist = $request->get("specialist");
             $doctor1 = $request->get("doctor");
             $hospital = $request->get("hospital");
@@ -684,63 +681,49 @@ public function getPharmacyAppointments()
             $patient_id = session('patient_id');
             $patientname = session('userID');
             $priority = $request->get("expectedtime");
-
-            $SecondOpinion=new SecondOpinion();
-
             $path='';
             $nooffiles=0;
 
-
-
+            $SecondOpinion=new SecondOpinion();
+            //dd($SecondOpinion);
             $SecondOpinion->patient_id = $patient_id;
             $SecondOpinion->specialty_id = $specialist;
             $SecondOpinion->doctor_id = $doctor1;
             $SecondOpinion->hospital_id = $hospital;
             $SecondOpinion->subject = $subject;
             $SecondOpinion->so_priority_id = $priority;
-            //$SecondOpinion->subject = $message;
-            // $askquestion->filepath = $path;
             $SecondOpinion->detailed_description = $message;
             $SecondOpinion->created_by = 'Admin';
             $SecondOpinion->updated_by = 'Admin';
             $SecondOpinion->save();
 
-
-
-
-
-                if ($request->hasFile('image')) {
-
-                    $files= $request->file('image');
-                    foreach ($files as $file){
-                        $randomName = $this->generateUniqueFileName();
-                        $fileType= $file->getClientOriginalExtension();
-                        $OrgfileName=$file->getClientOriginalName();
-                        $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
-                        $path=$path.$filename."@@";
-                        $destinationPath = 'public/askquestion'; // upload path
-                        $extension = $file->getClientOriginalExtension();
-                        $fileName = rand(11111,99999).'.'.$extension; // renaming image
-                        $path = $filename;
-                        // dd($filename.'-------'.$destinationPath);
-                        $file->move($destinationPath, $filename);
-
-
-
-                    }
-
-                    $SecondOpinionItems=new SecondOpinionItems();
-                    $SecondOpinionItems->patient_second_opinion_id=$SecondOpinion->id;
-                    $SecondOpinionItems->document_path=$path;
-                    $SecondOpinionItems->document_filename=$OrgfileName;
-                    $SecondOpinionItems->document_extension=$fileType;
-                    $SecondOpinionItems->document_upload_status="1";
-                    $SecondOpinionItems->created_by = 'Admin';
-                    $SecondOpinionItems->updated_by = 'Admin';
-                    //$AskQuestionDocumentItems->patient_ask_question_id="";
-                    $SecondOpinionItems->save();
-
+            if ($request->hasFile('image')) {
+                $files= $request->file('image');
+                foreach ($files as $file){
+                    $randomName = $this->generateUniqueFileName();
+                    $fileType= $file->getClientOriginalExtension();
+                    $OrgfileName=$file->getClientOriginalName();
+                    $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
+                    $path=$path.$filename."@@";
+                    $destinationPath = 'public/askquestion'; // upload path
+                    $extension = $file->getClientOriginalExtension();
+                    $fileName = rand(11111,99999).'.'.$extension; // renaming image
+                    $path = $filename;
+                    // dd($filename.'-------'.$destinationPath);
+                    $file->move($destinationPath, $filename);
                 }
+
+                $SecondOpinionItems=new SecondOpinionItems();
+                $SecondOpinionItems->patient_second_opinion_id=$SecondOpinion->id;
+                $SecondOpinionItems->document_path=$path;
+                $SecondOpinionItems->document_filename=$OrgfileName;
+                $SecondOpinionItems->document_extension=$fileType;
+                $SecondOpinionItems->document_upload_status="1";
+                $SecondOpinionItems->created_by = 'Admin';
+                $SecondOpinionItems->updated_by = 'Admin';
+                //$AskQuestionDocumentItems->patient_ask_question_id="";
+                $SecondOpinionItems->save();
+            }
 
 
             $dc = Doctor::where('doctor_id', '=', $doctor1)->get();
@@ -748,6 +731,7 @@ public function getPharmacyAppointments()
 
             $did=$doctor1;
             $date=$SecondOpinion->created_at;
+            //dd($date);
             $askquestions=DB::table('patient_second_opinion as pso')
                 ->join('doctor as d','d.doctor_id','=','pso.doctor_id')
                 ->join('hospital as h','h.hospital_id','=','pso.hospital_id')
@@ -767,6 +751,7 @@ public function getPharmacyAppointments()
             if($dc[0]->email!=""){
                 $mails[count($mails)]=$dc[0]->email;
             }
+
             if(count($mails)>0){
                 Mail::send('maillayout.ask_appointment', ['doctorappointments' =>  $askquestions], function($msg) use($mails,$questiontype) {
                     $msg->subject($questiontype);
@@ -774,7 +759,6 @@ public function getPharmacyAppointments()
                     $msg->to($mails);
                 });
             }
-            //  dd($mails);
 
             $mblno='';
             if(session('patient_id')!=""){
@@ -783,6 +767,7 @@ public function getPharmacyAppointments()
                     $mblno=$patient[0]['telephone'];
                 }
             }
+
             if ($dc[0]->telephone != "") {
                 $mblno =$mblno.",".$dc[0]->telephone;
             }
@@ -796,21 +781,16 @@ public function getPharmacyAppointments()
                 // dd('Test');
                 Sms::sendMSG($mblno, $msg);
             }
-
-        } catch (Exception $userExc) {
-
+        }
+        catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
-            dd($userExc);
             $msg = AppendMessage::appendMessage($userExc);
-
-
         } catch (Exception $exc) {
             dd($exc);
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
         return "true";
-
     }
 
 

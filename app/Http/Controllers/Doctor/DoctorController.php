@@ -435,7 +435,7 @@ class DoctorController extends Controller
             //error_log($status);
         }
 
-        return redirect()->back()->with('msg', 'Your Query is submited Successfully !');
+        return redirect()->back()->with('msg', 'Your Query is submitted Successfully !');
     }
 
 
