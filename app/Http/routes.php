@@ -128,9 +128,27 @@ Route::get('loaddoctorlab', array('as' => 'lab.loaddoctorforlab', 'uses' => 'Lab
 Route::get('rest/api/{hospitalId}/patient/{patientId}/lab-details-results', array('as' => 'hospital.patientlabReportsresults', 'uses' => 'Lab\LabController@PatientLabDetailsResultsByHospitalForFront'));
 Route::get('rest/api/hospital/{hospitalId}/patient/{patientId}/{date}/lab-reports', array('as' => 'hospital.patientlabreports', 'uses' => 'Lab\LabController@PatientLabReportsByHospitalForDoctor'));
 
-
+//Pharmacy Pickup
 Route::get('pharmaciesappointment',array('as' => 'pharma.getappointment', 'uses' => 'Pharma\PharmaController@getAppointment'));
 Route::post('/makepharmacyappointment', 'Pharma\PharmaController@savePharmaAppointment');
+Route::get('/pharmacy_appointmentmsg', function(\Illuminate\Http\Request $request) {
+    if (session('userID') && time() - session('logintime') < 900) {
+        $id = $request->input("id");
+        $pharmacyappointments = PharmacyAppointment::
+        join('pharmacy', 'pharmacy.pharmacy_id', '=', 'pharmacy_pickup.pharmacy_id')
+            ->join('hospital', 'hospital.hospital_id', '=', 'pharmacy_pickup.hospital_id')
+            ->join('pharmacy_pickup_documents as ppd','ppd.pharmacy_pickup_id','=','pharmacy_pickup.id')
+            ->where('pharmacy_pickup.patient_id', '=', session('patient_id'))
+            ->where('pharmacy_pickup.id', '=', $id)
+            ->select('ppd.document_path as reports', 'pharmacy_pickup.id', 'pharmacy.address as pharmacyaddress', 'pharmacy.name as pharmacy', 'pharmacy_pickup.pickup_date as appointment_date', 'pharmacy_pickup.brief_notes as brief_history', 'hospital.hospital_name', 'hospital.email', 'hospital.address as hsaddress', 'hospital.telephone')->paginate(10);
+
+        //$labappointments= \App\Labappointment::join('lab','lab.lab_id','=','lab_appointment.lab_id')->join('hospital','hospital.hospital_id','=','lab_appointment.hospital_id')->where('lab_appointment.patient_id','=',session('patient_id'))->select('lab_appointment.id','lab.address as labaddress','lab.name as lab','lab_appointment.appointment_date','lab_appointment.brief_history','hospital.hospital_name','hospital.email','hospital.address as hsaddress','hospital.telephone')->paginate(10);
+        return view("maillayout.pharmacy_appointment")->with('doctorappointments', $pharmacyappointments);
+    } else {
+        $hospitals =  App\patientportal\modal\Hospital::all();
+        return view('welcome')->with('hospitals', $hospitals)->with('sessionmsg', 'Session timed out Please Login again');
+    }
+});
 
 
 Route::get('/lab_appointmentmsg/patientId/{patientId}/hospitalId/{hospitalId}/date/{date}', array('as' => 'lab.labresult', 'uses' => 'Lab\LabController@PatientLabReportsByHospitalForDoctor'));
@@ -142,6 +160,7 @@ Route::post('/askquestsendmail', array('as' => 'user.saveaskquestion', 'uses' =>
 
 Route::get('/singledoctor', array('as' => 'user.saveaskquestion', 'uses' => 'Doctor\DoctorController@SingleDoctor'));
 
+//Second Opinion
 Route::get('/secondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@SecondOptionPage'));
 Route::post('/savesecondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@saveSecondOpinion'));
 Route::get('/secondopiniondetails', function(\Illuminate\Http\Request $request) {
@@ -230,26 +249,6 @@ Route::get('/appointmentlabel', function(\Illuminate\Http\Request $request) {
 
 // }
 //});
-
-
-Route::get('/pharmacy_appointmentmsg', function(\Illuminate\Http\Request $request) {
-    if (session('userID') && time() - session('logintime') < 900) {
-        $id = $request->input("id");
-        $pharmacyappointments = PharmacyAppointment::
-        join('pharmacy', 'pharmacy.pharmacy_id', '=', 'pharmacy_pickup.pharmacy_id')
-            ->join('hospital', 'hospital.hospital_id', '=', 'pharmacy_pickup.hospital_id')
-            ->join('pharmacy_pickup_documents as ppd','ppd.pharmacy_pickup_id','=','pharmacy_pickup.id')
-            ->where('pharmacy_pickup.patient_id', '=', session('patient_id'))
-            ->where('pharmacy_pickup.id', '=', $id)
-            ->select('ppd.document_path as reports', 'pharmacy_pickup.id', 'pharmacy.address as pharmacyaddress', 'pharmacy.name as pharmacy', 'pharmacy_pickup.pickup_date as appointment_date', 'pharmacy_pickup.brief_notes as brief_history', 'hospital.hospital_name', 'hospital.email', 'hospital.address as hsaddress', 'hospital.telephone')->paginate(10);
-
-        //$labappointments= \App\Labappointment::join('lab','lab.lab_id','=','lab_appointment.lab_id')->join('hospital','hospital.hospital_id','=','lab_appointment.hospital_id')->where('lab_appointment.patient_id','=',session('patient_id'))->select('lab_appointment.id','lab.address as labaddress','lab.name as lab','lab_appointment.appointment_date','lab_appointment.brief_history','hospital.hospital_name','hospital.email','hospital.address as hsaddress','hospital.telephone')->paginate(10);
-        return view("maillayout.pharmacy_appointment")->with('doctorappointments', $pharmacyappointments);
-    } else {
-        $hospitals =  App\patientportal\modal\Hospital::all();
-        return view('welcome')->with('hospitals', $hospitals)->with('sessionmsg', 'Session timed out Please Login again');
-    }
-});
 
 
 

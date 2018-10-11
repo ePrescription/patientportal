@@ -150,15 +150,15 @@ class DoctorImpl implements DoctorInterface
 
 
         } catch (QueryException $queryEx) {
-            dd($queryEx);
+            //dd($queryEx);
             $status = false;
            // throw new UserNotFoundException($queryEx);
         } catch (UserNotFoundException $userExc) {
-            dd($userExc);
+            //dd($userExc);
             $status = false;
          //   throw new UserNotFoundException($userExc);
         } catch (Exception $exc) {
-            dd($exc);
+            //dd($exc);
             $status = false;
           //  throw new UserNotFoundException($exc);
         }
@@ -442,7 +442,6 @@ class DoctorImpl implements DoctorInterface
 
     public function getAppointment($request)
     {
-
         $doctors = null;
         try {
             session(['methode' => $request->input('methode')]);
@@ -453,9 +452,6 @@ class DoctorImpl implements DoctorInterface
             $totalInfo['specialty']=$specialty;
             $totalInfo['typeoftest']=$typeoftest;
             $totalInfo['hospitals']=$hospitals;
-
-
-
         } catch (Exception $userExc) {
 
             $errorMsg = $userExc->getMessageForCode();
