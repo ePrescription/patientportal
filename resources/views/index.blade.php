@@ -48,7 +48,7 @@
             </div>
           </div>
             </a>
-            <a href="secondoption" class="opt-grids">
+            <a href="secondopinion" class="opt-grids">
           <div class="col-sm-3 col-md-3">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">

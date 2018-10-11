@@ -48,7 +48,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <li><a href="index">Home</a></li>
                     <li><a href="appointment?methode=Doctor">Appointments</a></li>
                     <li><a href="labappointment?methode=Lab">Diagnostics</a></li>
-                    <li><a href="secondoption">Second Opinion</a></li>
+                    <li><a href="secondopinion">Second Opinion</a></li>
                     <li><a href="doctors">Connect to Doctor</a></li>
                     <li><a href="pharmaciesappointment?methode=Pharmacy">Pharmacies</a></li>
                      <!-- <li><a href="#">Clinics/Hospitals/Doctors</a></li>                 -->

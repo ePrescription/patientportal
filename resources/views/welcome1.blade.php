@@ -195,7 +195,7 @@ box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.38);
                     <li><a href="index">Home</a></li>
                     <li><a href="appointment?methode=Doctor">Appointments</a></li>
                     <li><a href="labappointment?methode=Lab">Diagnostics</a></li>
-                    <li><a href="secondoption">Second Opinion</a></li>
+                    <li><a href="secondopinion">Second Opinion</a></li>
                     <li><a href="doctors">Connect to Doctor</a></li>
                     <li><a href="pharmaciesappointment?methode=Pharmacy">Pharmacies</a></li>
                      <!-- <li><a href="#">Clinics/Hospitals/Doctors</a></li>                 -->
