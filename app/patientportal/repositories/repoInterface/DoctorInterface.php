@@ -34,6 +34,7 @@ public function getHospitalDoctors($hospitalId);
     public function saveHealthCheckup($request);
 
     public function getPatientHealthCheckups();
+    public function getPatientSecondOpinion();
 
 
 }

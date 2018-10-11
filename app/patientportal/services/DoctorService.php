@@ -438,4 +438,21 @@ class DoctorService
         }
         return $healthcheckups;
     }
+
+    public function getPatientSecondOpinion()
+    {
+        $secondOpinion=null;
+        try {
+            $secondOpinion = $this->doctorRepo->getPatientSecondOpinion();
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::SECOND_OPINION_LIST_ERROR, $exc);
+        }
+        return $secondOpinion;
+    }
 }

@@ -246,6 +246,8 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
     </button>
     <button class="tablinks" onclick="openCity(event, 'Pharmacy')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Pharmacy Pickup"></i><span>Pharmacy Pickup </span></label>
     </button>
+    <button class="tablinks" onclick="openCity(event, 'Opinion')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Second Opinion"></i><span>Second Opinion </span></label>
+    </button>
     <button class="tablinks" onclick="openCity(event, 'Checkup')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Health Checkups"></i><span>Health Checkups </span></label>
     </button>
     <button class="tablinks" onclick="openCity(event, 'askquestion')"><label for="tab4"><i class="fa fa-question" data-toggle="tooltip" title="Answered Questions"></i><span>Answered Questions</span></label>
@@ -536,7 +538,6 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 
 <div id="Pharmacy" class="tabcontent">
     <div class="container">
-
         <h5> Pharmacy Pickup</h5>
         @if(count($pharmacyappointments)>0)
          <table class="table table-bordred table-striped"><thead class='th'><th>Pharmacy Name</th><th>Hospital Name</th><th>Pickup Date&Time </th><th>More Details</th></thead>
@@ -550,9 +551,22 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
     </div>
 </div>
 
+<div id="Opinion" class="tabcontent">
+    <div class="container">
+        <h5> Second Opinion</h5>
+        @if(count($secondOpinion)>0)
+            <table class="table table-bordred table-striped"><thead class='th'><th>Doctor Name</th><th>Hospital Name</th><th>Specialty</th><th>Appointment Date </th><th>More Details</th></thead>
+                @foreach ($secondOpinion as $opinion)
+                    <tr><td>{{ $opinion->name }} </td><td>{{ $opinion->hospital_name }}</td><td>{{ $opinion->specialty }}</td><td>{{ $opinion->appointment_date }}</td><td><a href="secondopiniondetails?id={{ $opinion->id }}" target="_blank">Details</a></td></tr>
+                @endforeach
+            </table>
+            {{ $secondOpinion ->links() }}
+        @endif
+    </div>
+</div>
+
 <div id="Checkup" class="tabcontent">
     <div class="container">
-
         <h5> Health Checkup</h5>
         @if(count($healthcheckups)>0)
             <table class="table table-bordred table-striped"><thead class='th'><th>Health Checkup</th><th>Hospital Name</th><th>Appointment </th><th>More Details</th></thead>
@@ -561,7 +575,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 
                 @endforeach
             </table>
-            {{ $pharmacyappointments ->links() }}
+            {{ $healthcheckups ->links() }}
         @endif
     </div>
 </div>

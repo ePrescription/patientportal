@@ -1175,7 +1175,7 @@ public function getPharmacyAppointments()
                 ->join('health_packages as hp','hp.id','=','phc.package_id')
                 ->where('phc.patient_id','=',session('patient_id'))
                 ->select('phc.*','hp.package_name');
-            $healthcheckups = $query->get();
+            $healthcheckups = $query->paginate(10);
         } catch(HospitalException $hospitalExc)
         {
             throw $hospitalExc;
@@ -1185,6 +1185,28 @@ public function getPharmacyAppointments()
             throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
         }
         return $healthcheckups;
+    }
+
+    public function getPatientSecondOpinion()
+    {
+        $secondOpinion = null;
+        try {
+            $secondOpinion=DB::table('patient_second_opinion as pso')
+                ->join('doctor as d','d.doctor_id','=','pso.doctor_id')
+                ->join('hospital as h','h.hospital_id','=','pso.hospital_id')
+                ->join('patient_second_opinion_documents as psoi','psoi.patient_second_opinion_id','=','pso.id')
+                ->where('pso.patient_id','=',session('patient_id'))
+                ->select('d.name','d.specialty','pso.created_at as appointment_date','pso.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','psoi.document_path as reports','pso.subject', 'pso.id')
+                ->paginate(10);
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::SECOND_OPINION_LIST_ERROR, $exc);
+        }
+        return $secondOpinion;
     }
 
 

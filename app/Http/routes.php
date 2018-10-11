@@ -144,6 +144,21 @@ Route::get('/singledoctor', array('as' => 'user.saveaskquestion', 'uses' => 'Doc
 
 Route::get('/secondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@SecondOptionPage'));
 Route::post('/savesecondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@saveSecondOpinion'));
+Route::get('/secondopiniondetails', function(\Illuminate\Http\Request $request) {
+    if (session('userID') && time() - session('logintime') < 900) {
+        $id = $request->input("id");
+        $secondopinion=DB::table('patient_second_opinion as pso')
+            ->join('doctor as d','d.doctor_id','=','pso.doctor_id')
+            ->join('hospital as h','h.hospital_id','=','pso.hospital_id')
+            ->join('patient_second_opinion_documents as psoi','psoi.patient_second_opinion_id','=','pso.id')
+            ->where('pso.patient_id','=',session('patient_id'))
+            ->select('d.name','d.specialty','pso.created_at as appointment_date','pso.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','psoi.document_path as reports','pso.subject')->get();
+        return view("maillayout.ask_appointment")->with('doctorappointments', $secondopinion);
+    } else {
+        $hospitals =  App\patientportal\modal\Hospital::all();
+        return view('welcome')->with('hospitals', $hospitals)->with('sessionmsg', 'Session timed out Please Login again');
+    }
+});
 
 //Health Checkups
 Route::get('/healthcheckup', array('as' => 'user.healthcheckup', 'uses' => 'Doctor\DoctorController@getHealthCheckupList'));
