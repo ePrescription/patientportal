@@ -43,6 +43,9 @@ class ErrorEnum extends Enum{
     const XRAY_LIST_ERROR = 144;
     const PATIENT_TEST_RESULTS_ERROR = 145;
 
+    const HEALTH_CHECKUPS_LIST_ERROR = 146;
+    const HEALTH_CHECKUPS_SAVE_ERROR = 147;
+
 
 
 

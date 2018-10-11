@@ -17,18 +17,21 @@ use App\patientportal\modal\PharmacyAppointment;
 use App\patientportal\modal\Role;
 use App\patientportal\model\SecondOpinion;
 use App\patientportal\model\SecondOpinionItems;
+use App\patientportal\model\PatientHealthCheckup;
 use App\patientportal\modal\Sms;
 use App\User;
 use App\patientportal\repositories\repoInterface\DoctorInterface;
 use App\patientportal\utilities\AppointmentType;
 use App\patientportal\utilities\ErrorEnum\ErrorEnum;
 use App\patientportal\utilities\UserType;
+use Mockery\Exception;
 use App\patientportal\utilities\Exception\UserNotFoundException;
+use App\patientportal\utilities\Exception\HospitalException;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use Mockery\Exception;
 use Numbers_Words;
 use Storage;
 use Carbon\Carbon;
@@ -874,7 +877,7 @@ public function getPharmacyAppointments()
         if($dc[0]->email!=""){
             $mails[count($mails)]=$dc[0]->email;
         }
-      //dd($askquestions[0]->telephone);
+
         if(count($mails)>0){
             Mail::send('maillayout.ask_appointment', ['doctorappointments' =>  $askquestions], function($msg) use($mails,$questiontype) {
                 $msg->subject($questiontype);
@@ -882,7 +885,6 @@ public function getPharmacyAppointments()
                 $msg->to($mails);
             });
         }
-           //  dd($mails);
 
         $mblno='';
         if(session('patient_id')!=""){
@@ -1047,6 +1049,122 @@ public function getPharmacyAppointments()
         }
         //dd($doctors);
         return $doctors;
+    }
+
+    public function getHealthCheckupList()
+    {
+        $healthcheckups = null;
+        try {
+            $query = DB::table('health_packages as hp');
+            $query->where('hp.package_status','=','1');
+            $healthcheckups = $query->get();
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
+
+    public function getLabTestListforHealthCheckup()
+    {
+        $healthcheckups = null;
+        try {
+            $query = DB::table('labtest as lt')->select('lt.*','ltp.package_id');
+            $query->rightjoin('lab_test_package as ltp','ltp.lab_test_id','=','lt.id');
+            $query->leftjoin('health_packages as hp','hp.id','=','ltp.package_id');
+            $query->where('lt.test_status','=','1');
+            $healthcheckups = $query->get();
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
+
+    public function saveHealthCheckup($request)
+    {
+        //dd($request->all());
+        try{
+            $patientName = $request->get("patientName");
+            $referral = $request->get("referral");
+            $hospital = $request->get("hospital");
+            $emailId = $request->get("emailId");
+            $mobile = $request->get("mobile");
+            $date = $request->get("date");
+            $packageId = $request->get("packageId");
+            $patient_id = session('patient_id');
+            $userName = session('userID');
+
+            $healthCheckup = new PatientHealthCheckup();
+            $healthCheckup->package_id = $packageId;
+            $healthCheckup->patient_id = $patient_id;
+            $healthCheckup->patient_name = $patientName;
+            $healthCheckup->referral = $referral;
+            $healthCheckup->hospital_name = $hospital;
+            $healthCheckup->email_id = $emailId;
+            $healthCheckup->mobile = $mobile;
+            $healthCheckup->appointment_date = $date;
+            $healthCheckup->created_by = $userName;
+            $healthCheckup->updated_by = $userName;
+            $healthCheckup->save();
+
+            $checkup=DB::table('patient_health_checkup as phc')
+                ->join('health_packages as hp','hp.id','=','phc.package_id')
+                ->where('phc.patient_id','=',session('patient_id'))
+                ->select('phc.*','hp.package_name')->get();
+
+            $mails=array();
+            if(session('email')!="")   {
+                $mails[count($mails)]=session('email');
+            }
+            $questiontype="HealthCheckup";
+
+            if(count($mails)>0){
+                Mail::send('maillayout.health_checkup_mail', ['doctorappointments' =>  $checkup], function($msg) use($mails,$questiontype) {
+                    $msg->subject($questiontype);
+                    $msg->from(session('email'));
+                    $msg->to($mails);
+                });
+            }
+
+            $mblno='';
+            if(session('patient_id')!=""){
+                $patient=Patient::where('patient_id', '=', session('patient_id'))->get();
+                if($patient[0]['telephone']!=""){
+                    $mblno=$patient[0]['telephone'];
+                }
+            }
+
+            if ($checkup[0]->mobile != "") {
+                $mblno =$mblno.",".$checkup[0]->mobile;
+            }
+
+            if($mblno!=""){
+                $msg="Patient ID:".session('patient_id');
+                $msg=$msg."%0APatient Name:".$checkup[0]->patient_name;
+                $msg=$msg."%0AHospital Name:".$checkup[0]->hospital_name;
+                $msg=$msg."%0AHealth Checkup:".$checkup[0]->package_name;
+                $msg=$msg."%0ADOA:".$checkup[0]->appointment_date;
+                Sms::sendMSG($mblno, $msg);
+            }
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_SAVE_ERROR, $exc);
+        }
+        return "true";
     }
 
 }

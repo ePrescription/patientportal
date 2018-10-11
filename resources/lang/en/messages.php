@@ -28,5 +28,8 @@
         "142" => "Scan Test Save Error ",
         "143" => "Dental Test Save Error ",
         "144" => "X-ray Test Save Error ",
-        "145" => "Patient Test Results Error "
+        "145" => "Patient Test Results Error",
+
+        "146" => "Health Checkups List Error",
+        "147" => "Health Checkups Save Error"
     ];

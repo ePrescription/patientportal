@@ -10,6 +10,11 @@
         <title>@yield('title')</title>   
 
         <!-- css -->
+        <style>
+            .nav>li>a{
+                padding: 10px 7px !important;
+            }
+        </style>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="plugins/cubeportfolio/css/cubeportfolio.min.css">
@@ -86,6 +91,7 @@
                         <!-- <li><a href="#">Clinics/Hospitals/Doctors</a></li>                 -->
                         <li><a href="articles">Feeds</a></li>
                         <li><a href="askquest">Ask a Question</a></li>
+                        <li><a href="healthcheckup">Health Checkups</a></li>
                         <li><a href="history">Patient Records</a></li>
                         <li><a href="logout">Logout</a></li>
                     </ul>

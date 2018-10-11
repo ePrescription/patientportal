@@ -6,7 +6,9 @@ use App\Http\ViewModels\NewAppointmentViewModel;
 use App\patientportal\repositories\repoInterface\DoctorInterface;
 use Illuminate\Support\Facades\DB;
 
-
+use Mockery\Exception;
+use App\patientportal\utilities\Exception\HospitalException;
+use App\patientportal\utilities\ErrorEnum\ErrorEnum;
 /**
  * Created by PhpStorm.
  * User: glodeveloper
@@ -368,5 +370,55 @@ class DoctorService
             //error_log($status);
         }
         return $doctors;
+    }
+
+    public function getHealthCheckupList()
+    {
+        $healthcheckups=null;
+        try {
+            $healthcheckups = $this->doctorRepo->getHealthCheckupList();
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
+
+    public function getLabTestListforHealthCheckup()
+    {
+        $healthcheckups=null;
+        try {
+            $healthcheckups = $this->doctorRepo->getLabTestListforHealthCheckup();
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
+
+    public function saveHealthCheckup($request){
+        $status=null;
+        try{
+            $status=$this->doctorRepo->saveHealthCheckup($request);
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_SAVE_ERROR, $exc);
+        }
+        return $status;
     }
 }

@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Mockery\Exception;
 use App\patientportal\services\DoctorService;
+use App\patientportal\utilities\Exception\HospitalException;
 
 class DoctorController extends Controller
 {
@@ -993,4 +994,60 @@ public function HealthCheck(){
 
     }
 */
+
+    public function getHealthCheckupList(){
+        $healthcheckups=null;
+        $hospitals = null;
+        try{
+            $hospitals =Hospital::all();
+            $healthcheckups=$this->doctorService->getHealthCheckupList();
+            $labtest = $this->doctorService->getLabTestListforHealthCheckup();
+            //dd($labtest);
+        } catch (HospitalException $userExc) {
+            $errorMsg = $userExc->getMessageForCode();
+            $msg = AppendMessage::appendMessage($userExc);
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+        return view('health-checkups')->with('hospitals', $hospitals)->with('healthcheckups', $healthcheckups)->with('labtest', $labtest);
+    }
+
+    public function bookHealthCheckup(Request $request){
+        $packageId = null;
+        try{
+            $hospitals =Hospital::all();
+            $packageId = $request->packageId;
+            $packageName = $request->packageName;
+            //dd($packageName);
+        } catch (HospitalException $userExc) {
+            $errorMsg = $userExc->getMessageForCode();
+            $msg = AppendMessage::appendMessage($userExc);
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+        return view('book-health-checkups')->with('hospitals', $hospitals)->with('packageId', $packageId)->with('packageName', $packageName);
+    }
+
+    public function saveHealthCheckup(Request $request){
+        $status=null;
+        try{
+            $hospitals = Hospital::all();
+            $healthcheckups=$this->doctorService->getHealthCheckupList();
+            $labtest = $this->doctorService->getLabTestListforHealthCheckup();
+            $status=$this->doctorService->saveHealthCheckup($request);
+        } catch (HospitalException $userExc) {
+            $errorMsg = $userExc->getMessageForCode();
+            $msg = AppendMessage::appendMessage($userExc);
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+        return redirect('healthcheckup')->with('msg', 'Your Query is submitted Successfully !');
+        //return redirect()->back()->with('msg', 'Your Query is submitted Successfully !');
+    }
 }

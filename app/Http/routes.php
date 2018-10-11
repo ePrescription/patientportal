@@ -51,7 +51,7 @@ Route::post('/otpconfirm', array('as' => 'user.otpconfirm', 'uses' => 'User\User
 
 /* authetication login routes */
 
-Route::post('login', 'AuthenticateController@AuthenticateUser');
+Route::post('login', 'AuthenticateController@authenticateUser');
 
 Route::get('/login1', function () {
     $hospitals = App\Hospital::all();
@@ -145,6 +145,12 @@ Route::get('/singledoctor', array('as' => 'user.saveaskquestion', 'uses' => 'Doc
 
 Route::get('/secondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@SecondOptionPage'));
 Route::post('/savesecondopinion', array('as' => 'user.secondopinion', 'uses' => 'Doctor\DoctorController@saveSecondOpinion'));
+
+//Health Checkups
+Route::get('/healthcheckup', array('as' => 'user.healthcheckup', 'uses' => 'Doctor\DoctorController@getHealthCheckupList'));
+Route::post('/bookhealthcheckup', array('as' => 'user.bookhealthcheckup', 'uses' => 'Doctor\DoctorController@bookHealthCheckup'));
+Route::post('/savehealthcheckup', array('as' => 'user.savehealthcheckup', 'uses' => 'Doctor\DoctorController@saveHealthCheckup'));
+
 
 Route::get('/doctors', array('as' => 'user.askquestion', 'uses' => 'Doctor\DoctorController@DoctorsPage'));
 
