@@ -130,7 +130,7 @@ Route::get('rest/api/hospital/{hospitalId}/patient/{patientId}/{date}/lab-report
 
 
 Route::get('pharmaciesappointment',array('as' => 'pharma.getappointment', 'uses' => 'Pharma\PharmaController@getAppointment'));
-
+Route::post('/makepharmacyappointment', 'Pharma\PharmaController@savePharmaAppointment');
 
 
 Route::get('/lab_appointmentmsg/patientId/{patientId}/hospitalId/{hospitalId}/date/{date}', array('as' => 'lab.labresult', 'uses' => 'Lab\LabController@PatientLabReportsByHospitalForDoctor'));
@@ -221,12 +221,6 @@ Route::get('/pharmacy_appointmentmsg', function(\Illuminate\Http\Request $reques
 
 Route::post('/makelabappointment', 'LabappointmentController@insert');
 Route::get("loadpharmacy",'Pharma\PharmaController@LoadPharmacy');
-
-
-Route::post('/makepharmacyappointment', 'Pharma\PharmaController@savePharmaAppointment');
-
-
-
 
 Route::get("doctoravailability", function(Illuminate\Http\Request $request) {
     if (session('userID') && time() - session('logintime') < 900) {

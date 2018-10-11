@@ -3,7 +3,7 @@
 @section('styletext')
 <script>
     $('#datepicker3').datepicker({
-        dateFormat: "mm/dd/yy",
+        dateFormat: "mm/dd/yy"
     });
 
     jQuery(document).ready(function ($) {
@@ -244,7 +244,7 @@
             changeMonth: true,
             changeYear: true,
             // showSeconds: true,
-            showMonthAfterYear: true,
+            showMonthAfterYear: true
         };
 
 
@@ -275,8 +275,7 @@
                             <div id="errormessage"></div>
                             @if (session()->has('msg'))
                             <div class='success'>
-                                <b>  {{session()->get('msg')}}</b>
-
+                                <b style="color: green;">  {{session()->get('msg')}}</b>
                             </div>
                             @endif
                             <form action="makepharmacyappointment" method="post" enctype="multipart/form-data">

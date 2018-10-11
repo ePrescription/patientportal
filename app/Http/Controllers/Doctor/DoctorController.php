@@ -223,24 +223,15 @@ class DoctorController extends Controller
     /*To Get Appointment View Page*/
 
       public function getAppointment(Request $request){
-
           $appointment=null;
-
-
           try{
-
               $totalInfo=$this->doctorService->getAppointment($request);
               $specialty=$totalInfo['specialty'];
               $typeoftest=$totalInfo['typeoftest'];
               $hospitals= $totalInfo['hospitals'];
-
-
           } catch (Exception $userExc) {
-
               $errorMsg = $userExc->getMessageForCode();
-
               $msg = AppendMessage::appendMessage($userExc);
-
           } catch (Exception $exc) {
               //dd($exc);
               $msg = AppendMessage::appendGeneralException($exc);
@@ -418,14 +409,12 @@ class DoctorController extends Controller
         }
         return view('secondoption')->with('specialty', $specialty)->with('hospitals', $hospitals);
     }
+
     public function saveSecondOpinion(Request $request){
-
         $status=null;
-
         try{
             $hospitals = Hospital::all();
             $status=$this->doctorService->saveSecondOpinion($request);
-
         } catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
             $msg = AppendMessage::appendMessage($userExc);
