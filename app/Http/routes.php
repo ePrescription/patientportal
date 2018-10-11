@@ -136,7 +136,6 @@ Route::post('/makepharmacyappointment', 'Pharma\PharmaController@savePharmaAppoi
 Route::get('/lab_appointmentmsg/patientId/{patientId}/hospitalId/{hospitalId}/date/{date}', array('as' => 'lab.labresult', 'uses' => 'Lab\LabController@PatientLabReportsByHospitalForDoctor'));
 
 /* book appointment route */
-Route::get('/history', array('as' => 'user.history', 'uses' => 'Doctor\DoctorController@getHistory'));
 Route::get('/askquest', array('as' => 'user.askquestion', 'uses' => 'Doctor\DoctorController@AskQuestionPage'));
 //Route::post('/askquestsendmail', 'AskquestionController@sendmail');
 Route::post('/askquestsendmail', array('as' => 'user.saveaskquestion', 'uses' => 'Doctor\DoctorController@saveQuestion'));
@@ -150,6 +149,23 @@ Route::post('/savesecondopinion', array('as' => 'user.secondopinion', 'uses' => 
 Route::get('/healthcheckup', array('as' => 'user.healthcheckup', 'uses' => 'Doctor\DoctorController@getHealthCheckupList'));
 Route::post('/bookhealthcheckup', array('as' => 'user.bookhealthcheckup', 'uses' => 'Doctor\DoctorController@bookHealthCheckup'));
 Route::post('/savehealthcheckup', array('as' => 'user.savehealthcheckup', 'uses' => 'Doctor\DoctorController@saveHealthCheckup'));
+Route::get('/healthcheckupdetails', function(\Illuminate\Http\Request $request) {
+    if (session('userID') && time() - session('logintime') < 900) {
+        $id = $request->input("id");
+        $query = DB::table('patient_health_checkup as phc')
+            ->join('health_packages as hp','hp.id','=','phc.package_id')
+            ->where('phc.id','=',$id)
+            ->select('phc.*','hp.package_name');
+        $healthcheckups = $query->get();
+        return view("maillayout.health_checkup_mail")->with('doctorappointments', $healthcheckups);
+    } else {
+        $hospitals =  App\patientportal\modal\Hospital::all();
+        return view('welcome')->with('hospitals', $hospitals)->with('sessionmsg', 'Session timed out Please Login again');
+    }
+});
+
+//Patient Records
+Route::get('/history', array('as' => 'user.history', 'uses' => 'Doctor\DoctorController@getHistory'));
 
 
 Route::get('/doctors', array('as' => 'user.askquestion', 'uses' => 'Doctor\DoctorController@DoctorsPage'));

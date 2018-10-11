@@ -1167,4 +1167,25 @@ public function getPharmacyAppointments()
         return "true";
     }
 
+    public function getPatientHealthCheckups()
+    {
+        $healthcheckups = null;
+        try {
+            $query = DB::table('patient_health_checkup as phc')
+                ->join('health_packages as hp','hp.id','=','phc.package_id')
+                ->where('phc.patient_id','=',session('patient_id'))
+                ->select('phc.*','hp.package_name');
+            $healthcheckups = $query->get();
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
+
+
 }

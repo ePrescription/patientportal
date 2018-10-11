@@ -304,6 +304,7 @@ class DoctorController extends Controller
         $askquestions=null;
         $labappointments=null;
         $pharmacyappointments=null;
+        $healthcheckups=null;
         $examinationDates=null;
         $doctorappointments=null;
         try{
@@ -312,6 +313,7 @@ class DoctorController extends Controller
             //$labappointments=$this->doctorService->getAppointments();
             $askquestions=$this->doctorService->getAskQuestions();
             $pharmacyappointments=$this->doctorService->getPharmacyAppointments();
+            $healthcheckups = $this->doctorService->getPatientHealthCheckups();
             $examinationDates=$this->doctorService->getLabDates();
             $doctorappointments=$this->doctorService->getDoctorAppointment();
     } catch (Exception $userExc) {
@@ -323,7 +325,7 @@ class DoctorController extends Controller
             //error_log($status);
         }
         //dd($pharmacyappointments);
-        return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates);
+        return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('healthcheckups', $healthcheckups)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates);
     }
 
 

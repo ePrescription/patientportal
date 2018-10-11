@@ -421,4 +421,21 @@ class DoctorService
         }
         return $status;
     }
+
+    public function getPatientHealthCheckups()
+    {
+        $healthcheckups=null;
+        try {
+            $healthcheckups = $this->doctorRepo->getPatientHealthCheckups();
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
 }

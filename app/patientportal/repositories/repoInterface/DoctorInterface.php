@@ -33,7 +33,7 @@ public function getHospitalDoctors($hospitalId);
     public function getLabTestListforHealthCheckup();
     public function saveHealthCheckup($request);
 
-
+    public function getPatientHealthCheckups();
 
 
 }

@@ -139,7 +139,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             changeMonth : true,
             changeYear : true,
             // showSeconds: true,
-            showMonthAfterYear : true,
+            showMonthAfterYear : true
     };
     $("#datepicker1").datetimepicker(pickerOpts);
     // $("#toDate").datetimepicker(pickerOpts1);
@@ -240,13 +240,15 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 
 
 <div class="tab tab_container">
-    <button class="tablinks" onclick="openCity(event, 'Doctor')"><label for="tab1"><i class="fa fa-calendar data-toggle="tooltip" title="Doctor Appointments""></i><span>Doctor Appointments </span></label>
+    <button class="tablinks" onclick="openCity(event, 'Doctor')"><label for="tab1"><i class="fa fa-calendar" data-toggle="tooltip" title="Doctor Appointments"></i><span>Doctor Appointments </span></label>
     </button>
-    <button class="tablinks" onclick="openCity(event, 'Diagnostics')"><label for="tab2"><i class="fa fa-calendar data-toggle="tooltip" title="Diagnostics Appointments""></i><span>Diagnostics Appointments </span></label>
+    <button class="tablinks" onclick="openCity(event, 'Diagnostics')"><label for="tab2"><i class="fa fa-calendar" data-toggle="tooltip" title="Diagnostics Appointments"></i><span>Diagnostics Appointments </span></label>
     </button>
-    <button class="tablinks" onclick="openCity(event, 'Pharmacy')">			<label for="tab3"><i class="fa fa-medkit data-toggle="tooltip" title="Pharmacy Pickup ""></i><span>Pharmacy Pickup </span></label>
+    <button class="tablinks" onclick="openCity(event, 'Pharmacy')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Pharmacy Pickup"></i><span>Pharmacy Pickup </span></label>
     </button>
-    <button class="tablinks" onclick="openCity(event, 'askquestion')"><label for="tab4"><i class="fa fa-question data-toggle="tooltip" title="Answered Questions ""></i><span>Answered Questions</span></label>
+    <button class="tablinks" onclick="openCity(event, 'Checkup')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Health Checkups"></i><span>Health Checkups </span></label>
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'askquestion')"><label for="tab4"><i class="fa fa-question" data-toggle="tooltip" title="Answered Questions"></i><span>Answered Questions</span></label>
     </button>
 </div>
 
@@ -532,9 +534,6 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 </div>
 
 
-
-
-
 <div id="Pharmacy" class="tabcontent">
     <div class="container">
 
@@ -549,10 +548,23 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
         {{ $pharmacyappointments ->links() }}
             @endif
     </div>
-
 </div>
 
+<div id="Checkup" class="tabcontent">
+    <div class="container">
 
+        <h5> Health Checkup</h5>
+        @if(count($healthcheckups)>0)
+            <table class="table table-bordred table-striped"><thead class='th'><th>Health Checkup</th><th>Hospital Name</th><th>Appointment </th><th>More Details</th></thead>
+                @foreach ($healthcheckups as $checkup)
+                    <tr><td>{{ $checkup->package_name }} </td><td>{{ $checkup->hospital_name }}</td><td>{{ $checkup->appointment_date }}</td><td><a href="healthcheckupdetails?id={{ $checkup->id }}" target="_blank">Details</a></td></tr>
+
+                @endforeach
+            </table>
+            {{ $pharmacyappointments ->links() }}
+        @endif
+    </div>
+</div>
 
 <!-- modal -->
 <div class="modal about-modal w3-agileits fade" id="model" tabindex="-1" role="dialog">
