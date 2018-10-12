@@ -44,6 +44,7 @@ class DoctorController extends Controller
     /*To Book Patient Appointment From PSSP*/
     public function BookDoctorAppointment(Request $patientProfileRequest)
     {
+      //dd($patientProfileRequest->all());
         $patientProfileVM = null;
         $status = true;
         //$jsonResponse = null;

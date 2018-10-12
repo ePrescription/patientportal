@@ -110,11 +110,10 @@ class PatientProfileMapper
 
     public static function setPatientProfilePSSP(Request $patientProfileRequest)
     {
-
-        //  dd($patientProfileRequest);
+      //  dd($patientProfileRequest);
         $profileVM = new PatientProfileViewModel();
         $profile = (object) $patientProfileRequest->all();
-
+//dd($profile->briefnote);
         //$userName = Session::get('DisplayName');
         $userName = 'Admin';
 
@@ -142,16 +141,10 @@ class PatientProfileMapper
 
         $profileVM->setHospitalId(property_exists($profile, 'hospitalId') ? $profile->hospitalId : null);
         $profileVM->setDoctorId(property_exists($profile, 'doctorId') ? $profile->doctorId : null);
-
-        //dd($profile->appointmentTime);
-        //$profileVM->setAppointmentTime($profile->appointmentTime);
-        //$profileVM->setAppointmentDate($profile->appointmentDate);
-        //$appDate = date("Y-m-d", strtotime($profile->appointmentDate));
-
         //$profileVM->setAppointmentDate(property_exists($profile, 'appointmentDate') ? $profile->appointmentDate : null);
         $profileVM->setAppointmentDate(property_exists($profile, 'appointmentDate') ? date("Y-m-d", strtotime($profile->appointmentDate)) : null);
         $profileVM->setAppointmentTime(property_exists($profile, 'appointmentTime') ? $profile->appointmentTime : null);
-        $profileVM->setBriefHistory(property_exists($profile, 'briefHistory') ? $profile->briefHistory : null);
+        $profileVM->setBriefHistory(property_exists($profile, 'briefnote') ? $profile->briefnote : null);
         //$profileVM->setAppointmentDate($profile->appointmentDate);
         $profileVM->setAppointmentCategory(property_exists($profile, 'appointmentCategory') ? $profile->appointmentCategory : null);
         $profileVM->setReferralType(property_exists($profile, 'referralType') ? $profile->referralType : null);
@@ -178,7 +171,6 @@ class PatientProfileMapper
         $profileVM->setUpdatedBy($userName);
         $profileVM->setCreatedAt(date("Y-m-d H:i:s"));
         $profileVM->setUpdatedAt(date("Y-m-d H:i:s"));
-
         return $profileVM;
     }
 

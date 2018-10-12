@@ -17,6 +17,26 @@
             }
         }
     </style>
+    <script>
+        function loaddoctor(hid) {
+            var BASEURL = "{{ URL::to('/') }}/";
+            var status = 1;
+            var callurl = BASEURL + '/hospital/'+hid+'/HospitalDoctors';
+            //  alert(callurl);
+            $.ajax({
+                url: callurl,
+                type: "get",
+                data: {"id": hid, "status": status},
+                success: function (data) {
+                    var list = "<option value=''>Select Doctor</option>";
+                    for (var i = 0; i < data.length; i++) {
+                        list = list + "<option value='" + data[i]['doctor_id'] + "'>" + data[i]['name'] + "</option>";
+                    }
+                    $("#appdoctorId").html(list);
+                }
+            });
+        }
+    </script>
     <?php
     $time_array = array(
         '00:00:00' => '12:00 AM', '00:05:00' => '12:05 AM', '00:10:00' => '12:10 AM', '00:15:00' => '12:15 AM', '00:20:00' => '12:20 AM', '00:25:00' => '12:25 AM', '00:30:00' => '12:30 AM', '00:35:00' => '12:35 AM', '00:40:00' => '12:40 AM', '00:45:00' => '12:45 AM', '00:50:00' => '12:50 AM', '00:55:00' => '12:55 AM',
@@ -489,27 +509,20 @@
                                         <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Hospital</label>
-                                                <select name="hospitalId" id="hospitalId"
-                                                        onchange="LoadDoctors(this.value)" class="form-control input-md"
-                                                        placeholder="Hospital" required>
+                                                <select name="hospitalId" id="hospitalId" onchange="loaddoctor(this.value)" class="form-control input-md" required>
                                                     <option value="">Select Hospital</option>
                                                     @foreach ($hospitals as $val)
-
                                                         <option value="{{ $val['hospital_id'] }}">{{ $val['hospital_name'] }}</option>
-
                                                     @endforeach
-
                                                 </select>
                                                 <div class="validation"></div>
                                             </div>
                                         </div>
+
                                         <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Doctor</label>
-                                                <select name="doctorId" id="doctorId"
-                                                        onchange="javascript:appointmentTypePatient(); "
-                                                        class="form-control input-md"
-                                                        placeholder="doctor">
+                                                <select name="doctorId" id="appdoctorId" onchange="javascript:appointmentTypePatient();" class="form-control input-md" placeholder="doctor">
                                                     <option value="">Select Doctor</option>
                                                 </select>
                                                 <div class="validation"></div>
