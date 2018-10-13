@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Mail;
 use Mockery\Exception;
 use App\patientportal\services\DoctorService;
 use App\patientportal\utilities\Exception\HospitalException;
+use Illuminate\Http\Response;
 
 class DoctorController extends Controller
 {
@@ -309,6 +310,7 @@ class DoctorController extends Controller
         $examinationDates=null;
         $doctorappointments=null;
         $secondOpinion=null;
+        $patientDocuments=null;
         try{
             $hospitals = Hospital::all();
 
@@ -318,6 +320,7 @@ class DoctorController extends Controller
             $secondOpinion = $this->doctorService->getPatientSecondOpinion();
             $examinationDates=$this->doctorService->getLabDates();
             $doctorappointments=$this->doctorService->getDoctorAppointment();
+            $patientDocuments=$this->doctorService->getPatientHealthRecords();
             //dd($secondOpinion);
     } catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
@@ -328,7 +331,7 @@ class DoctorController extends Controller
             //error_log($status);
         }
         //dd($pharmacyappointments);
-        return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('healthcheckups', $healthcheckups)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates)->with('secondOpinion', $secondOpinion);
+        return view('history')->with('hospitals', $hospitals)->with('patientDocuments', $patientDocuments)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('healthcheckups', $healthcheckups)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates)->with('secondOpinion', $secondOpinion);
     }
 
 
@@ -1040,9 +1043,6 @@ public function HealthCheck(){
     public function saveHealthCheckup(Request $request){
         $status=null;
         try{
-            $hospitals = Hospital::all();
-            $healthcheckups=$this->doctorService->getHealthCheckupList();
-            $labtest = $this->doctorService->getLabTestListforHealthCheckup();
             $status=$this->doctorService->saveHealthCheckup($request);
         } catch (HospitalException $userExc) {
             $errorMsg = $userExc->getMessageForCode();
@@ -1054,5 +1054,49 @@ public function HealthCheck(){
         }
         return redirect('healthcheckup')->with('msg', 'Your Query is submitted Successfully !');
         //return redirect()->back()->with('msg', 'Your Query is submitted Successfully !');
+    }
+
+    public function savePatientOldDocuments(Request $request){
+        //dd($request->all());
+        $status=null;
+        try{
+            $hospitals = Hospital::all();
+            $status=$this->doctorService->savePatientOldDocuments($request);
+        } catch (Exception $userExc) {
+            $errorMsg = $userExc->getMessageForCode();
+            $msg = AppendMessage::appendMessage($userExc);
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+
+        return redirect()->back()->with('msg', 'Your Query is submitted Successfully !');
+    }
+
+    public function fileDownload(Request $request){
+        $oldDocument = null;
+        $file = null;
+        try{
+            $id = $request->input("id");
+            $query = DB::table('patient_old_document as doc')
+                ->where('doc.id','=',$id)
+                ->select('doc.*');
+            $oldDocument = $query->get();
+            $document = $oldDocument[0]->document_path;
+
+            $file= public_path(). "/public/olddocument/" . $document;
+            $headers = array(
+                'Content-Type: application/octet-stream',
+            );
+            return response()->download($file);
+        } catch (Exception $userExc) {
+            $errorMsg = $userExc->getMessageForCode();
+            $msg = AppendMessage::appendMessage($userExc);
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
     }
 }

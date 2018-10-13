@@ -46,6 +46,8 @@ class ErrorEnum extends Enum{
     const HEALTH_CHECKUPS_LIST_ERROR = 146;
     const HEALTH_CHECKUPS_SAVE_ERROR = 147;
     const SECOND_OPINION_LIST_ERROR = 148;
+    const HEALTH_RECORDS_LIST_ERROR = 149;
+    const HEALTH_RECORDS_SAVE_ERROR = 150;
 
 
 

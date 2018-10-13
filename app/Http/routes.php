@@ -200,6 +200,8 @@ Route::get('/healthcheckupdetails', function(\Illuminate\Http\Request $request) 
 
 //Patient Records
 Route::get('/history', array('as' => 'user.history', 'uses' => 'Doctor\DoctorController@getHistory'));
+Route::post('/saveolddocuments', array('as' => 'user.saveolddocuments', 'uses' => 'Doctor\DoctorController@savePatientOldDocuments'));
+Route::get('/olddocumentdownload', array('as' => 'user.olddocumentdownload', 'uses' => 'Doctor\DoctorController@fileDownload'));
 
 
 Route::get('/doctors', array('as' => 'user.askquestion', 'uses' => 'Doctor\DoctorController@DoctorsPage'));

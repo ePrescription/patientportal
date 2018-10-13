@@ -32,5 +32,7 @@
 
         "146" => "Health Checkups List Error",
         "147" => "Health Checkups Save Error",
-        "148" => "Second Opinion List Error"
+        "148" => "Second Opinion List Error",
+        "149" => "Health Records List Error",
+        "150" => "Health Records Save Error"
     ];

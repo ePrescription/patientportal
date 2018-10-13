@@ -455,4 +455,38 @@ class DoctorService
         }
         return $secondOpinion;
     }
+
+    public function getPatientHealthRecords()
+    {
+        $secondOpinion=null;
+        try {
+            $secondOpinion = $this->doctorRepo->getPatientHealthRecords();
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_RECORDS_LIST_ERROR, $exc);
+        }
+        return $secondOpinion;
+    }
+
+    public function savePatientOldDocuments($request)
+    {
+        $secondOpinion=null;
+        try {
+            $secondOpinion = $this->doctorRepo->savePatientOldDocuments($request);
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_RECORDS_SAVE_ERROR, $exc);
+        }
+        return $secondOpinion;
+    }
 }

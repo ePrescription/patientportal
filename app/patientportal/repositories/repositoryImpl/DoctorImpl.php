@@ -18,6 +18,7 @@ use App\patientportal\modal\Role;
 use App\patientportal\model\SecondOpinion;
 use App\patientportal\model\SecondOpinionItems;
 use App\patientportal\model\PatientHealthCheckup;
+use App\patientportal\model\PatientOldDocuments;
 use App\patientportal\modal\Sms;
 use App\User;
 use App\patientportal\repositories\repoInterface\DoctorInterface;
@@ -1205,5 +1206,68 @@ public function getPharmacyAppointments()
         return $secondOpinion;
     }
 
+    public function getPatientHealthRecords()
+    {
+        $secondOpinion = null;
+        try {
+            $secondOpinion=DB::table('patient_old_document as doc')
+                ->where('doc.patient_id','=',session('patient_id'))
+                ->select('doc.*')
+                ->paginate(10);
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_RECORDS_LIST_ERROR, $exc);
+        }
+        return $secondOpinion;
+    }
+
+    public function savePatientOldDocuments($request)
+    {
+        $date = date('Y-m-d');
+        $status = 'true';
+        $oldDocuments = null;
+        $patient_id = session('patient_id');
+        $path = '';
+        try {
+            if ($request->hasFile('oldDocument')) {
+                $file= $request->file('oldDocument');
+                $randomName = $this->generateUniqueFileName();
+                //dd($randomName);
+                $fileType= $file->getClientOriginalExtension();
+                $OrgfileName=$file->getClientOriginalName();
+                $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
+                $path=$path.$filename."@@";
+                $destinationPath = 'public/olddocument'; // upload path
+                $extension = $file->getClientOriginalExtension();
+                //$fileName = rand(11111,99999).'.'.$extension; // renaming image
+                $path = $filename;
+                $file->move($destinationPath, $filename);
+
+                $oldDocuments=new PatientOldDocuments();
+                $oldDocuments->patient_id=$patient_id;
+                $oldDocuments->document_path=$path;
+                $oldDocuments->document_filename=$OrgfileName;
+                $oldDocuments->document_extension=$fileType;
+                $oldDocuments->document_upload_date=$date;
+                $oldDocuments->document_upload_status="1";
+                $oldDocuments->created_by = 'Admin';
+                $oldDocuments->updated_by = 'Admin';
+                $oldDocuments->save();
+            }
+
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_RECORDS_LIST_ERROR, $exc);
+        }
+        return $status;
+    }
 
 }

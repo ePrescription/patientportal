@@ -250,6 +250,8 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
     </button>
     <button class="tablinks" onclick="openCity(event, 'Checkup')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Health Checkups"></i><span>Health Checkups </span></label>
     </button>
+    <button class="tablinks" onclick="openCity(event, 'Records')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Health Checkups"></i><span>Health Records </span></label>
+    </button>
     <button class="tablinks" onclick="openCity(event, 'askquestion')"><label for="tab4"><i class="fa fa-question" data-toggle="tooltip" title="Answered Questions"></i><span>Answered Questions</span></label>
     </button>
 </div>
@@ -260,8 +262,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
         <h5> Doctor Appointments</h5>
         @if (session()->has('msg'))
         <div class='success' align="center">
-            <b>  {{session()->get('msg')}}</b>
-
+            <b style="color: green;">  {{session()->get('msg')}}</b>
         </div>
         @endif
         <?php $count=1;?>
@@ -579,6 +580,31 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
         @endif
     </div>
 </div>
+
+<div id="Records" class="tabcontent">
+    <div class="container">
+        <h5> Health Records</h5>
+        <div class="row">
+            <form action="saveolddocuments" method="post" enctype="multipart/form-data">
+                <input class="col-md-3" type="file" name="oldDocument" required/>
+                <button class="col-md-2 btn btn-info">Upload</button>
+            </form>
+        </div>
+        </br>
+
+        @if(count($patientDocuments)>0)
+            <?php $count=1;?>
+            <table class="table table-bordred table-striped"><thead class='th'><th>S.No.</th><th>Document Name</th><th>Uploaded Date</th><th>Download</th></thead>
+                @foreach ($patientDocuments as $document)
+                    <tr><td>{{ $count }} </td><td>{{ $document->document_filename }}</td><td>{{ $document->document_upload_date }}</td><td><a href="olddocumentdownload?id={{ $document->id }}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></td></tr>
+                    <?php $count++;?>
+                @endforeach
+            </table>
+            {{ $patientDocuments ->links() }}
+        @endif
+    </div>
+</div>
+
 
 <!-- modal -->
 <div class="modal about-modal w3-agileits fade" id="model" tabindex="-1" role="dialog">
