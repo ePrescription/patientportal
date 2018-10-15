@@ -213,18 +213,18 @@
                     {{ csrf_field() }}
                     <input type="text" name="name" id="name" placeholder="Username" required=""/>
                     <input type="text" name="email" id="email" placeholder="Email" required=""/>
-                    <input type="password" name="password" password="password" placeholder="Password" required=""/>
+                    <input type="password" name="password" id="password" placeholder="Password" required=""/>
                     <?php /* ?>
                     <input type="file" class="form-controlx" name="patient_photo" placeholder="patient_photo"/>
                     <?php */ ?>
                     <input type="text" name="telephone" id="telephone" placeholder="MobileNumber" required=""/>
-                    <input name="dob" onblur="calculateAge(this.value)" id="dob1"  class="form-control" type="text" value="2018/01/01" style="line-height: 20px;" placeholder="Select DateofBirth" required="">
+                    <input name="dob" onChange="calculateAge(this.value)" id="dob1"  class="form-control" type="text" style="line-height: 20px;" placeholder="DOB" required="">
                     <input type="radio" class="form-controlx" id="gender1" name="gender" value="1" required="required"/>&nbsp;&nbsp;Male
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="radio" class="form-controlx" id="gender2" name="gender" value="2" required="required"/>&nbsp;&nbsp;Female
 
                     <input type="text" name="age" id="age" placeholder="Age" required=""/>
-                    <textarea name="address" id="address" required style="width: 301px; height: 89px;"></textarea>
+                    <textarea name="address" id="address" placeholder="Address" required style="width: 301px; height: 89px;"></textarea>
                     <select id="nationality" name="nationality">
                         <option value="">Select Nationality</option>
                         <option value="1">India</option>
@@ -456,9 +456,7 @@
     };
 
     function calculateAge(dob) {
-
-        var dateofbirth = $("#dob").val();
-       // alert(dob+""+dateofbirth);
+        var dateofbirth = $("#dob1").val();
         var dateOfBirth = new Date(dob + " 00:00:00");
         var age = getAge(new Date(dateOfBirth.getFullYear(), dateOfBirth.getMonth(), dateOfBirth.getDay()));
         // calculate age

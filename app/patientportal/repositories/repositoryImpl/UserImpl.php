@@ -114,7 +114,7 @@ class UserImpl implements UserInterface
             // return $user['confirmation_code'];
             if ($otp == $user['confirmation_code']) {
                 session(['userID' => $user['name']]);
-                session(['patient_id' => $user]);
+                session(['patient_id' => $user['id']]);
                 session(['email' => $user['email']]);
 
                 session(['logintime' => time()]);

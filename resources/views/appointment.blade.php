@@ -607,7 +607,7 @@
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-6 col-md-6 ">
                                                 <div class="form-group">
-                                                    <label>Briefnote</label>
+                                                    <label>Brief Note</label>
                                                     <textarea id="briefnote" name="briefnote"
                                                               class="form-control input-md"
                                                               value="" placeholder="Brief Note" required></textarea>
