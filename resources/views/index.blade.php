@@ -78,7 +78,7 @@
               <div class="box text-center">
 
                 <i class="fa fa-envelope fa-3x circled bg-skin5"></i>
-                <h4 class="h-bold">Feeds</h4>
+                <h4 class="h-bold">Health Bulletin</h4>
                 
               </div>
             </div>

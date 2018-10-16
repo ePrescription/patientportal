@@ -12,7 +12,7 @@
         <!-- css -->
         <style>
             .nav>li>a{
-                padding: 10px 7px !important;
+                padding: 10px 3px !important;
             }
         </style>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -76,9 +76,9 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="index">Home</a></li>
+                        <li><a href="index">Home </a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" <span class="badge custom-badge red pull-right">Appointments</span> <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" <span class="badge custom-badge red pull-right">Appointments</span> <b class="caret"></b> </a>
                             <ul class="dropdown-menu">
                                 <li><a href="appointment?methode=Doctor">Doctor Appointments</a></li>
                                 <li><a href="labappointment?methode=Lab">Diagnostics Appointments</a></li>
@@ -86,13 +86,13 @@
                             </ul>
                         </li>
 
-                        <li><a href="secondopinion">Second Opinion</a></li>
-                        <li><a href="doctors">Connect to Doctor</a></li>
+                        <li><a href="secondopinion">Second Opinion </a></li>
+                        <li><a href="doctors">Connect to Doctor </a></li>
                         <!-- <li><a href="#">Clinics/Hospitals/Doctors</a></li>                 -->
-                        <li><a href="articles">Feeds</a></li>
-                        <li><a href="askquest">Ask a Question</a></li>
-                        <li><a href="healthcheckup">Health Checkups</a></li>
-                        <li><a href="history">Patient Records</a></li>
+                        <li><a href="articles">Health Bulletin </a></li>
+                        <li><a href="askquest">Ask a Question </a></li>
+                        <li><a href="healthcheckup">Health Checkups </a></li>
+                        <li><a href="history">Patient Records </a></li>
                         <li><a href="logout">Logout</a></li>
                     </ul>
                 </div>
@@ -153,7 +153,7 @@
                     <li>
                         <img src="img/subban6.jpg" alt="" />
                         <div class="flex-caption">
-                            <h3 style="color:blue; font-style: italic">Feeds</h3>
+                            <h3 style="color:blue; font-style: italic">Health Bulletin</h3>
                             <!--<p>You can trust us</p> -->
                         </div>
                     </li>
