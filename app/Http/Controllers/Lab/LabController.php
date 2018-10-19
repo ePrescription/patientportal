@@ -438,7 +438,7 @@ class LabController extends Controller {
             //lab/4/hospital/1/patient/317/lab-details
             if($status)
             {
-                return redirect()->back()->with('msg','Appointment Booked Successfully');
+                return redirect()->back()->with('msg','Blood Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -478,7 +478,7 @@ class LabController extends Controller {
 
             if($status)
             {
-                return  redirect()->back()->with('msg','Appointment Booked Successfully');
+                return  redirect()->back()->with('msg','Motion Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -517,7 +517,7 @@ class LabController extends Controller {
             $status = $this->labService->savePatientUltraSoundTests($patientUltraSoundVM);
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','Appointment Booked Successfully');
+                return redirect('labappointment?methode=Lab')->with('msg','UltraSound Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -559,7 +559,7 @@ class LabController extends Controller {
 
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','Appointment Booked Successfully');
+                return redirect('labappointment?methode=Lab')->with('msg','Urine Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -605,7 +605,7 @@ class LabController extends Controller {
 
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','Appointment Booked Successfully');
+                return redirect('labappointment?methode=Lab')->with('msg','XRay Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -649,7 +649,7 @@ class LabController extends Controller {
 
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','Appointment Booked Successfully');
+                return redirect('labappointment?methode=Lab')->with('msg','Dental Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -691,7 +691,7 @@ class LabController extends Controller {
             $status = $this->labService->savePatientScanDetails($patientScanVM);
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','Appointment Booked Successfully');
+                return redirect('labappointment?methode=Lab')->with('msg','Scan Diagnostics Appointment Booked Successfully');
             }
             else
             {
