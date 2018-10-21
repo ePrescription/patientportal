@@ -372,7 +372,8 @@ class DoctorController extends Controller
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
-        return redirect()->back()->with('msg', 'Your Query is submited Successfully !');
+        return redirect('history')->with('msg', 'Your Question is submitted Successfully !');
+        //return redirect()->back()->with('msg', 'Your Query is submited Successfully !');
     }
 
 
@@ -433,7 +434,8 @@ class DoctorController extends Controller
             //error_log($status);
         }
 
-        return redirect()->back()->with('msg', 'Your Query is submitted Successfully !');
+        return redirect('history')->with('msg', 'Your Second Opinion Query is submitted Successfully !');
+        //return redirect()->back()->with('msg', 'Your Query is submitted Successfully !');
     }
 
 
