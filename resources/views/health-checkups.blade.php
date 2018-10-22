@@ -5,6 +5,12 @@
         .error{
             color: red;
         }
+        .li-lab{
+            font-size: 13px;
+        }
+        h6{
+          margin: 10px 0px;
+        }
     </style>
     <script>
 
@@ -97,7 +103,7 @@
                                                     <ul>
                                                         @foreach($labtest as $test)
                                                             @if($test->package_id == $checkup->id)
-                                                                <li>{{$test->test_name}}</li>
+                                                                <li class="li-lab">{{$test->test_name}}</li>
                                                             @endif
                                                         @endforeach
                                                     </ul>
