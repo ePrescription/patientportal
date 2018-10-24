@@ -198,6 +198,7 @@ class DoctorImpl implements DoctorInterface
         $doctorAppointment->referral_hospital_location = $patientProfileVM->getHospitalLocation();
         $doctorAppointment->fee = $patientProfileVM->getAmount();
         $doctorAppointment->payment_type = $patientProfileVM->getPaymentType();
+        $doctorAppointment->is_from_patient_portal = '1';
         $doctorAppointment->created_by = $patientProfileVM->getCreatedBy();
         $doctorAppointment->modified_by = $patientProfileVM->getUpdatedBy();
         $doctorAppointment->created_at = $patientProfileVM->getCreatedAt();
