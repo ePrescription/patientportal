@@ -171,7 +171,8 @@ Route::get('/secondopiniondetails', function(\Illuminate\Http\Request $request) 
             ->join('hospital as h','h.hospital_id','=','pso.hospital_id')
             ->join('patient_second_opinion_documents as psoi','psoi.patient_second_opinion_id','=','pso.id')
             ->where('pso.patient_id','=',session('patient_id'))
-            ->select('d.name','d.specialty','pso.created_at as appointment_date','pso.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','psoi.document_path as reports','pso.subject')->get();
+            ->where('pso.id','=',$id)
+            ->select('d.name','d.specialty','pso.created_at as appointment_date','pso.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','psoi.document_path as reports','psoi.document_extension','pso.subject')->get();
         return view("maillayout.ask_appointment")->with('doctorappointments', $secondopinion);
     } else {
         $hospitals =  App\patientportal\modal\Hospital::all();

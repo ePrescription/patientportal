@@ -239,8 +239,12 @@
 
                                 @if($path!= "")
                                     <a href="public/askquestion/{{$path}}" target="_blank">
-                                        <img src="public/askquestion/{{$path}}" with="200" height="200px">
-                                        </a>
+                                        @if(($doctorappointments[0]->document_extension == 'jpg') || ($doctorappointments[0]->document_extension == 'jpeg') || ($doctorappointments[0]->document_extension == 'png') || ($doctorappointments[0]->document_extension == 'JPG') || ($doctorappointments[0]->document_extension == 'JPEG') || ($doctorappointments[0]->document_extension == 'PNG'))
+                                            <img src="public/askquestion/{{$path}}" width="200px" height="200px">
+                                        @else
+                                            <i class="fa fa-download"></i>
+                                        @endif
+                                    </a>
                                 @endif
 
                             @endforeach
