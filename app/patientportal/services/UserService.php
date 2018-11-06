@@ -88,5 +88,36 @@ class UserService
     }
 
 
+    public function EditPatientProfile($patientProfileVM)
+    {
+        $status = true;
+
+        try
+        {
+            DB::transaction(function() use ($patientProfileVM, &$status)
+            {
+                $status = $this->userRepo->EditPatientProfile($patientProfileVM);
+            });
+
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            $status = false;
+            throw $hospitalExc;
+        }
+        catch(UserNotFoundException $userExc)
+        {
+            $status = false;
+            throw $userExc;
+        }
+        catch (Exception $ex) {
+
+            $status = false;
+            throw new HospitalException(null, ErrorEnum::PATIENT_PROFILE_SAVE_ERROR, $ex);
+        }
+
+        return $status;
+    }
+
 
 }

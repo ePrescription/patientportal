@@ -314,6 +314,7 @@ class DoctorController extends Controller
         $pharmacyappointments=null;
         $examinationDates=null;
         $doctorappointments=null;
+
         try{
             $hospitals = Hospital::all();
 
@@ -330,8 +331,8 @@ class DoctorController extends Controller
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
-        //dd($pharmacyappointments);
-        return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates);
+       // dd($doctorappointments);
+      return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates);
     }
 
 

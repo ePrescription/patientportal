@@ -14,7 +14,7 @@
       <div class="container">
         <div class="row">
              <a href="appointment?methode=Doctor" class="opt-grids">
-          <div class="col-sm-3 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">
 
@@ -26,7 +26,7 @@
           </div>
              </a> 
             <a href="labappointment?methode=Lab" class="opt-grids">
-          <div class="col-sm-3 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">
 
@@ -38,7 +38,7 @@
           </div>
             </a>
             <a href="pharmaciesappointment?methode=Pharmacy" class="opt-grids">
-          <div class="col-sm-3 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">
                 <i class="fa fa-medkit fa-3x circled bg-skin2"></i>
@@ -49,7 +49,7 @@
           </div>
             </a>
             <a href="secondoption" class="opt-grids">
-          <div class="col-sm-3 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">
 
@@ -61,7 +61,7 @@
           </div>
             </a>
              <a href="doctors" class="opt-grids">
-          <div class="col-sm-3 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">
 
@@ -73,7 +73,7 @@
           </div>
              </a>
             <a href="articles" class="opt-grids">
-          <div class="col-sm-3 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">
 
@@ -85,7 +85,7 @@
           </div>
             </a>
           <a href="askquest" class="opt-grids">
-          <div class="col-sm-3 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">
 
@@ -97,7 +97,7 @@
           </div>
           </a>
             <a href="history" class="opt-grids">
-          <div class="col-sm-3 col-md-3">
+          <div class="col-sm-4 col-md-4">
             <div class="wow fadeInUp" data-wow-delay="0.2s">
               <div class="box text-center">
 
@@ -108,6 +108,18 @@
             </div>
           </div>
             </a>
+          <a href="editprofile" class="opt-grids">
+            <div class="col-sm-4 col-md-4">
+              <div class="wow fadeInUp" data-wow-delay="0.2s">
+                <div class="box text-center">
+
+                  <i class="fa fa fa-edit fa-3x circled bg-skin7"></i>
+                  <h4 class="h-bold">Edit Profile</h4>
+
+                </div>
+              </div>
+            </div>
+          </a>
             
           
         </div>

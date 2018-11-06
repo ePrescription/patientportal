@@ -365,7 +365,7 @@
 
                                     </div>
 
-                                    <input type="submit" value="submit" class="btn btn-skin btn-block btn-lg">
+                                    <input type="submit" value="submit" style="color: white;" class="btn btn-skin btn-block btn-lg">
 
 
                                 </form>
@@ -493,7 +493,7 @@
                                            id='patientId'/>
 
                                     <div style="width:100%;" class="name" id="timeslots"></div>
-                                    <input type="submit" value="Book Appointment" class="btn btn-skin btn-block btn-lg">
+                                    <input type="submit" value="Book Appointment" style="color: white;" class="btn btn-skin btn-block btn-lg">
 
 
                                 </form>
@@ -635,7 +635,6 @@
 
 
 
-    <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js"
             type="text/javascript"></script>

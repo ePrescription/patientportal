@@ -248,6 +248,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
     </button>
     <button class="tablinks" onclick="openCity(event, 'askquestion')"><label for="tab4"><i class="fa fa-question data-toggle="tooltip" title="Answered Questions ""></i><span>Answered Questions</span></label>
     </button>
+
 </div>
 
 <div id="Doctor" class="tabcontent">

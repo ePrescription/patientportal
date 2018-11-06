@@ -334,7 +334,7 @@ Navigation
 }
 
 .navbar-custom ul.nav li a {
-	font-size: 11px;
+	font-size: 10px;
 	letter-spacing: 1px;
     color: #666;
 	text-transform: uppercase;
@@ -550,10 +550,10 @@ Navigation
 
 @keyframes shadowSpin{
   0%{
-    box-shadow: 10px -10px #39CCCC, -10px 10px #FFDC00;
+    box-shadow: 10px -10px #39CCCC, 10px 10px #FFDC00;
   }
   25%{
-    box-shadow: 10px 10px #39CCCC, -10px -10px #FFDC00;
+    box-shadow: 10px 10px #39CCCC, 10px -10px #FFDC00;
   }
   50%{
     box-shadow: -10px 10px #39CCCC, 10px -10px #FFDC00;
@@ -562,7 +562,7 @@ Navigation
     box-shadow: -10px -10px #39CCCC, 10px 10px #FFDC00;
   }
   100%{
-    box-shadow: 10px -10px #39CCCC, -10px 10px #FFDC00;
+    box-shadow: 10px -10px #39CCCC, 10px 10px #FFDC00;
   }
 }
 
@@ -1118,7 +1118,7 @@ Testimonial
 }
 
 .carousel-control.left,.carousel-control.right  {background:none;width:25px; z-index: 999;}
-.carousel-control.left {top:left:-25px;}
+.carousel-control.left {left:-25px;}
 .carousel-control.right {right:-25px;}
 
 .block-text {
@@ -1555,39 +1555,39 @@ a.scrollup i:hover {
     -moz-animation-timing-function: linear;
 }
 
-@-webkit-keyframes pulse {    
-    0 {
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
+/*@-webkit-keyframes pulse {*/
+    /*0 {*/
+        /*-webkit-transform: scale(1);*/
+        /*transform: scale(1);*/
+    /*},*/
 
-    50% {
-        -webkit-transform: scale(1.2);
-        transform: scale(1.2);
-    }
+    /*50% {*/
+        /*-webkit-transform: scale(1.2);*/
+        /*transform: scale(1.2);*/
+    /*},*/
 
-    100% {
-        -webkit-transform: scale(1);
-        transform: scale(1);
-    }
-}
+    /*100% {*/
+        /*-webkit-transform: scale(1);*/
+        /*transform: scale(1);*/
+    /*},*/
+/*}*/
 
-@-moz-keyframes pulse {    
-    0 {
-        -moz-transform: scale(1);
-        transform: scale(1);
-    }
+/*@-moz-keyframes pulse {    */
+    /*0 {*/
+        /*-moz-transform: scale(1);*/
+        /*transform: scale(1);*/
+    /*},*/
 
-    50% {
-        -moz-transform: scale(1.2);
-        transform: scale(1.2);
-    }
+    /*50%{*/
+        /*-moz-transform: scale(1.2);*/
+        /*transform: scale(1.2);*/
+    /*},*/
 
-    100% {
-        -moz-transform: scale(1);
-        transform: scale(1);
-    }
-}
+    /*100% {*/
+        /*-moz-transform: scale(1);*/
+        /*transform: scale(1);*/
+    /*}*/
+/*}*/
 
 
 

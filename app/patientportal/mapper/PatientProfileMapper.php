@@ -8,6 +8,7 @@
 
 namespace App\patientportal\mapper;
 
+use App\Http\Requests\FeeReceiptRequest;
 use App\Http\ViewModels\DoctorReferralsViewModel;
 use App\Http\ViewModels\FeeReceiptViewModel;
 use App\Http\ViewModels\NewAppointmentViewModel;
@@ -21,25 +22,23 @@ use App\Http\ViewModels\PatientLabDocumentsViewModel;
 use App\Http\ViewModels\PatientLabReceiptViewModel;
 use App\Http\ViewModels\PatientPastIllnessViewModel;
 use App\Http\ViewModels\PatientPersonalHistoryViewModel;
-use App\Http\ViewModels\PatientProfileViewModel;
 use App\Http\ViewModels\PatientPregnancyViewModel;
+use App\Http\ViewModels\PatientProfileViewModel;
 use App\Http\ViewModels\PatientScanViewModel;
 use App\Http\ViewModels\PatientSymptomsViewModel;
 use App\Http\ViewModels\PatientUrineExaminationViewModel;
 use App\Http\ViewModels\PatientXRayViewModel;
 use Illuminate\Http\Request;
-use App\Http\Requests\FeeReceiptRequest;
 use Session;
-use Exception;
 
 class PatientProfileMapper
 {
     public static function setPatientProfile(Request $patientProfileRequest)
     {
 
-      //  dd($patientProfileRequest);
+        //  dd($patientProfileRequest);
         $profileVM = new PatientProfileViewModel();
-        $profile = (object) $patientProfileRequest->all();
+        $profile = (object)$patientProfileRequest->all();
 
         //$userName = Session::get('DisplayName');
         $userName = 'Admin';
@@ -113,32 +112,32 @@ class PatientProfileMapper
 
         //  dd($patientProfileRequest);
         $profileVM = new PatientProfileViewModel();
-        $profile = (object) $patientProfileRequest->all();
+        $profile = (object)$patientProfileRequest->all();
 
         //$userName = Session::get('DisplayName');
         $userName = 'Admin';
 
-      //  $profileVM->setPatientId($profile->patientId);
-      //  $profileVM->setName($profile->name);
-      //  $profileVM->setAddress(property_exists($profile, 'address') ? $profile->address : null);
-     //   $profileVM->setOccupation(property_exists($profile, 'occupation') ? $profile->occupation : null);
-     //   $profileVM->setCareOf(property_exists($profile, 'careof') ? $profile->careof : null);
-      //  $profileVM->setCity(property_exists($profile, 'city') ? $profile->city : null);
-      //  $profileVM->setCountry(property_exists($profile, 'country') ? $profile->country : null);
-      //  $profileVM->setTelephone(property_exists($profile, 'telephone') ? $profile->telephone : null);
+        //  $profileVM->setPatientId($profile->patientId);
+        //  $profileVM->setName($profile->name);
+        //  $profileVM->setAddress(property_exists($profile, 'address') ? $profile->address : null);
+        //   $profileVM->setOccupation(property_exists($profile, 'occupation') ? $profile->occupation : null);
+        //   $profileVM->setCareOf(property_exists($profile, 'careof') ? $profile->careof : null);
+        //  $profileVM->setCity(property_exists($profile, 'city') ? $profile->city : null);
+        //  $profileVM->setCountry(property_exists($profile, 'country') ? $profile->country : null);
+        //  $profileVM->setTelephone(property_exists($profile, 'telephone') ? $profile->telephone : null);
         //$profileVM->setTelephone($profile->telephone);
-      //  $profileVM->setEmail(property_exists($profile, 'email') ? $profile->email : null);
-       // $profileVM->setRelationship(property_exists($profile, 'relationship') ? $profile->relationship : null);
-     //   $profileVM->setSpouseName(property_exists($profile, 'spouseName') ? $profile->spouseName : null);
+        //  $profileVM->setEmail(property_exists($profile, 'email') ? $profile->email : null);
+        // $profileVM->setRelationship(property_exists($profile, 'relationship') ? $profile->relationship : null);
+        //   $profileVM->setSpouseName(property_exists($profile, 'spouseName') ? $profile->spouseName : null);
         //$profileVM->setPatientPhoto(property_exists($profile, 'patientPhoto') ? $profile->patientPhoto : null);
-      //  $profileVM->setPatientPhoto(property_exists($profile, 'patientPhoto') ? $profile->patientPhoto : null);
-      //  $profileVM->setDob(property_exists($profile, 'dob') ? $profile->dob : null);
-       // $profileVM->setAge(property_exists($profile, 'age') ? $profile->age : null);
-       // $profileVM->setPlaceOfBirth(property_exists($profile, 'placeOfBirth') ? $profile->placeOfBirth : null);
-       // $profileVM->setNationality(property_exists($profile, 'nationality') ? $profile->nationality : null);
-      ////  $profileVM->setGender(property_exists($profile, 'gender') ? $profile->gender : null);
+        //  $profileVM->setPatientPhoto(property_exists($profile, 'patientPhoto') ? $profile->patientPhoto : null);
+        //  $profileVM->setDob(property_exists($profile, 'dob') ? $profile->dob : null);
+        // $profileVM->setAge(property_exists($profile, 'age') ? $profile->age : null);
+        // $profileVM->setPlaceOfBirth(property_exists($profile, 'placeOfBirth') ? $profile->placeOfBirth : null);
+        // $profileVM->setNationality(property_exists($profile, 'nationality') ? $profile->nationality : null);
+        ////  $profileVM->setGender(property_exists($profile, 'gender') ? $profile->gender : null);
         //$profileVM->setGender($profile->gender);
-      //  $profileVM->setMaritalStatus(property_exists($profile, 'married') ? $profile->married : null);
+        //  $profileVM->setMaritalStatus(property_exists($profile, 'married') ? $profile->married : null);
 
         $profileVM->setHospitalId(property_exists($profile, 'hospitalId') ? $profile->hospitalId : null);
         $profileVM->setDoctorId(property_exists($profile, 'doctorId') ? $profile->doctorId : null);
@@ -183,8 +182,6 @@ class PatientProfileMapper
     }
 
 
-
-
     public static function setLabApiDocumentDetails(Request $uploadRequest)
     {
         $labDocumentsVM = new PatientLabDocumentsViewModel();
@@ -194,7 +191,7 @@ class PatientProfileMapper
 
         //dd($files);
 
-        $resultsObj = (object) $uploadRequest->all();
+        $resultsObj = (object)$uploadRequest->all();
 
         $labDocumentsVM->setDoctorUploads($files);
         //$labDocumentsVM->setDocumentName($uploadRequest['document_name']);
@@ -213,7 +210,7 @@ class PatientProfileMapper
     public static function setPatientAppointment(Request $patientAppointmentRequest)
     {
         $appointmentVM = new NewAppointmentViewModel();
-        $appointment = (object) $patientAppointmentRequest->all();
+        $appointment = (object)$patientAppointmentRequest->all();
 
         //$userName = Session::get('DisplayName');
         $userName = 'Admin';
@@ -259,7 +256,7 @@ class PatientProfileMapper
     {
         $patientHistoryVM = new PatientPersonalHistoryViewModel();
 
-        $patientHistory = (object) $personalHistoryRequest->all();
+        $patientHistory = (object)$personalHistoryRequest->all();
 
         $patientHistoryVM->setPatientId($patientHistory->patientId);
         $patientHistoryVM->setDoctorId(property_exists($patientHistory, 'doctorId') ? $patientHistory->doctorId : null);
@@ -270,8 +267,7 @@ class PatientProfileMapper
         $medicalHistory = $patientHistory->personalHistory;
         //dd($candidateEmployments);
 
-        foreach($medicalHistory as $history)
-        {
+        foreach ($medicalHistory as $history) {
             $patientHistoryVM->setPatientPersonalHistory($history);
         }
 
@@ -290,7 +286,7 @@ class PatientProfileMapper
     {
         $patientGenExaminationVM = new PatientGeneralExaminationViewModel();
 
-        $generalExaminationObj = (object) $personalExaminationRequest->all();
+        $generalExaminationObj = (object)$personalExaminationRequest->all();
 
         $patientGenExaminationVM->setPatientId($generalExaminationObj->patientId);
         $patientGenExaminationVM->setDoctorId(property_exists($generalExaminationObj, 'doctorId') ? $generalExaminationObj->doctorId : null);
@@ -301,8 +297,7 @@ class PatientProfileMapper
         $generalExamination = $generalExaminationObj->generalExamination;
         //dd($candidateEmployments);
 
-        foreach($generalExamination as $examination)
-        {
+        foreach ($generalExamination as $examination) {
             $patientGenExaminationVM->setPatientGeneralExamination($examination);
         }
 
@@ -321,7 +316,7 @@ class PatientProfileMapper
     {
         $patientPastIllnessVM = new PatientPastIllnessViewModel();
 
-        $pastIllnessObj = (object) $pastIllnessRequest->all();
+        $pastIllnessObj = (object)$pastIllnessRequest->all();
         $patientPastIllnessVM->setPatientId($pastIllnessObj->patientId);
         /*$patientPastIllnessVM->setDoctorId($pastIllnessObj->doctorId);
         $patientPastIllnessVM->setHospitalId($pastIllnessObj->hospitalId);*/
@@ -330,8 +325,7 @@ class PatientProfileMapper
         $pastIllness = $pastIllnessObj->pastIllness;
         //dd($candidateEmployments);
 
-        foreach($pastIllness as $illness)
-        {
+        foreach ($pastIllness as $illness) {
             $patientPastIllnessVM->setPatientPastIllness($illness);
         }
 
@@ -350,7 +344,7 @@ class PatientProfileMapper
     {
         $patientFamilyIllnessVM = new PatientFamilyIllnessViewModel();
 
-        $familyIllnessObj = (object) $familyIllnessRequest->all();
+        $familyIllnessObj = (object)$familyIllnessRequest->all();
         $patientFamilyIllnessVM->setPatientId($familyIllnessObj->patientId);
         /*$patientFamilyIllnessVM->setDoctorId($familyIllnessObj->doctorId);
         $patientFamilyIllnessVM->setHospitalId($familyIllnessObj->hospitalId);*/
@@ -359,8 +353,7 @@ class PatientProfileMapper
         $familyIllness = $familyIllnessObj->familyIllness;
         //dd($candidateEmployments);
 
-        foreach($familyIllness as $illness)
-        {
+        foreach ($familyIllness as $illness) {
             $patientFamilyIllnessVM->setPatientFamilyIllness($illness);
         }
 
@@ -379,7 +372,7 @@ class PatientProfileMapper
     {
         $patientPregnancyVM = new PatientPregnancyViewModel();
 
-        $pregnancyObj = (object) $pregnancyRequest->all();
+        $pregnancyObj = (object)$pregnancyRequest->all();
         $patientPregnancyVM->setPatientId($pregnancyObj->patientId);
         /*$patientPregnancyVM->setDoctorId($pregnancyObj->doctorId);
         $patientPregnancyVM->setHospitalId($pregnancyObj->hospitalId);*/
@@ -388,8 +381,7 @@ class PatientProfileMapper
         $pregnancyDetails = $pregnancyObj->pregnancyDetails;
         //dd($candidateEmployments);
 
-        foreach($pregnancyDetails as $pregnancy)
-        {
+        foreach ($pregnancyDetails as $pregnancy) {
             $patientPregnancyVM->setPatientPregnancy($pregnancy);
         }
 
@@ -408,7 +400,7 @@ class PatientProfileMapper
     {
         $patientScanVM = new PatientScanViewModel();
 
-        $scanObj = (object) $scanRequest->all();
+        $scanObj = (object)$scanRequest->all();
         $patientScanVM->setPatientId($scanObj->patientId);
         /*$patientScanVM->setDoctorId($scanObj->doctorId);
         $patientScanVM->setHospitalId($scanObj->hospitalId);*/
@@ -420,8 +412,7 @@ class PatientProfileMapper
         $scanDetails = $scanObj->scanDetails;
         //dd($candidateEmployments);
 
-        foreach($scanDetails as $scan)
-        {
+        foreach ($scanDetails as $scan) {
             $patientScanVM->setPatientScans($scan);
         }
 
@@ -440,7 +431,7 @@ class PatientProfileMapper
     {
         $patientSymVM = new PatientSymptomsViewModel();
 
-        $symObj = (object) $symptomsRequest->all();
+        $symObj = (object)$symptomsRequest->all();
         $patientSymVM->setPatientId($symObj->patientId);
         $patientSymVM->setDoctorId(property_exists($symObj, 'doctorId') ? $symObj->doctorId : null);
         $patientSymVM->setHospitalId(property_exists($symObj, 'hospitalId') ? $symObj->hospitalId : null);
@@ -449,8 +440,7 @@ class PatientProfileMapper
         $symptomDetails = $symObj->symptomDetails;
         //dd($candidateEmployments);
 
-        foreach($symptomDetails as $symptom)
-        {
+        foreach ($symptomDetails as $symptom) {
             $patientSymVM->setPatientSymptoms($symptom);
         }
 
@@ -469,7 +459,7 @@ class PatientProfileMapper
     {
         $patientComVM = new PatientComplaintsViewModel();
 
-        $comObj = (object) $complaintRequest->all();
+        $comObj = (object)$complaintRequest->all();
         $patientComVM->setPatientId($comObj->patientId);
         $patientComVM->setDoctorId(property_exists($comObj, 'doctorId') ? $comObj->doctorId : null);
         $patientComVM->setHospitalId(property_exists($comObj, 'hospitalId') ? $comObj->hospitalId : null);
@@ -481,8 +471,7 @@ class PatientProfileMapper
         $complaintDetails = $comObj->complaints;
         //dd($candidateEmployments);
 
-        foreach($complaintDetails as $complaint)
-        {
+        foreach ($complaintDetails as $complaint) {
             $patientComVM->setPatientComplaints($complaint);
         }
 
@@ -501,7 +490,7 @@ class PatientProfileMapper
     {
         $patientDiagnosisVM = new PatientDiagnosisViewModel();
 
-        $diagnosisObj = (object) $diagnosisRequest->all();
+        $diagnosisObj = (object)$diagnosisRequest->all();
         $patientDiagnosisVM->setPatientId($diagnosisObj->patientId);
         $patientDiagnosisVM->setDoctorId(property_exists($diagnosisObj, 'doctorId') ? $diagnosisObj->doctorId : null);
         $patientDiagnosisVM->setHospitalId(property_exists($diagnosisObj, 'hospitalId') ? $diagnosisObj->hospitalId : null);
@@ -531,7 +520,7 @@ class PatientProfileMapper
     {
         $patientDrugsVM = new PatientDrugHistoryViewModel();
 
-        $drugHistoryObj = (object) $drugHistoryRequest->all();
+        $drugHistoryObj = (object)$drugHistoryRequest->all();
         $patientDrugsVM->setPatientId($drugHistoryRequest->patientId);
         $patientDrugsVM->setDoctorId(property_exists($drugHistoryObj, 'doctorId') ? $drugHistoryObj->doctorId : null);
         $patientDrugsVM->setHospitalId(property_exists($drugHistoryObj, 'hospitalId') ? $drugHistoryObj->hospitalId : null);
@@ -540,13 +529,11 @@ class PatientProfileMapper
         $surgeryHistory = $drugHistoryObj->surgeryHistory;
         //dd($candidateEmployments);
 
-        foreach($drugHistory as $history)
-        {
+        foreach ($drugHistory as $history) {
             $patientDrugsVM->setDrugHistory($history);
         }
 
-        foreach($surgeryHistory as $history)
-        {
+        foreach ($surgeryHistory as $history) {
             $patientDrugsVM->setSurgeryHistory($history);
         }
 
@@ -565,7 +552,7 @@ class PatientProfileMapper
     {
         $patientUrineVM = new PatientUrineExaminationViewModel();
 
-        $examinationObj = (object) $examinationRequest->all();
+        $examinationObj = (object)$examinationRequest->all();
         $patientUrineVM->setPatientId($examinationObj->patientId);
         /*$patientUrineVM->setDoctorId($examinationObj->doctorId);
         $patientUrineVM->setHospitalId($examinationObj->hospitalId);*/
@@ -576,11 +563,10 @@ class PatientProfileMapper
         $patientUrineVM->setExaminationTime(property_exists($examinationObj, 'examinationTime') ? $examinationObj->examinationTime : null);
         $examinationDetails = $examinationObj->urineExaminations;
 
-        $filteredItems = array_filter($examinationDetails, function($elem)  use($patientUrineVM) {
+        $filteredItems = array_filter($examinationDetails, function ($elem) use ($patientUrineVM) {
 
             //dd($elem['isValueSet']);
-            if($elem['isValueSet'] != 1)
-            {
+            if ($elem['isValueSet'] != 1) {
                 return false;
             }
 
@@ -616,8 +602,8 @@ class PatientProfileMapper
     {
         $patientMotionVM = new PatientUrineExaminationViewModel();
 
-       // dd($examinationRequest);
-        $examinationObj = (object) $examinationRequest->all();
+        // dd($examinationRequest);
+        $examinationObj = (object)$examinationRequest->all();
         $patientMotionVM->setPatientId($examinationObj->patientId);
         /*$patientMotionVM->setDoctorId($examinationObj->doctorId);
         $patientMotionVM->setHospitalId($examinationObj->hospitalId);*/
@@ -626,12 +612,11 @@ class PatientProfileMapper
         //$patientMotionVM->setLabId(property_exists($examinationObj, 'labId') ? $examinationObj->labId : null);
         $patientMotionVM->setExaminationDate(property_exists($examinationObj, 'examinationDate') ? $examinationObj->examinationDate : null);
         $patientMotionVM->setExaminationTime(property_exists($examinationObj, 'examinationTime') ? $examinationObj->examinationTime : null);
-      //  dd($examinationObj->motionExaminations);
+        //  dd($examinationObj->motionExaminations);
         $examinationDetails = $examinationObj->motionExaminations;
         //dd($candidateEmployments);
 
-        foreach($examinationDetails as $examination)
-        {
+        foreach ($examinationDetails as $examination) {
             $patientMotionVM->setExaminations($examination);
         }
 
@@ -648,10 +633,10 @@ class PatientProfileMapper
 
     public static function setPatientBloodExamination(Request $examinationRequest)
     {
-       // dd($examinationRequest);
+        // dd($examinationRequest);
         $patientBloodVM = new PatientUrineExaminationViewModel();
 
-        $examinationObj = (object) $examinationRequest->all();
+        $examinationObj = (object)$examinationRequest->all();
         //dd($examinationObj);
         $patientBloodVM->setPatientId($examinationObj->patientId);
         /*$patientBloodVM->setDoctorId($examinationObj->doctorId);
@@ -665,11 +650,10 @@ class PatientProfileMapper
         $examinationDetails = $examinationObj->bloodExaminations;
         //dd($examinationDetails);
 
-        $filteredItems = array_filter($examinationDetails, function($elem)  use($patientBloodVM) {
+        $filteredItems = array_filter($examinationDetails, function ($elem) use ($patientBloodVM) {
 
             //dd($elem['isValueSet']);
-            if($elem['isValueSet'] != 1)
-            {
+            if ($elem['isValueSet'] != 1) {
                 return false;
             }
 
@@ -707,7 +691,7 @@ class PatientProfileMapper
     {
         $patientUltraSoundVM = new PatientUrineExaminationViewModel();
 
-        $examinationObj = (object) $examinationRequest->all();
+        $examinationObj = (object)$examinationRequest->all();
         $patientUltraSoundVM->setPatientId($examinationObj->patientId);
         //$patientUltraSoundVM->setDoctorId($examinationObj->doctorId);
         $patientUltraSoundVM->setDoctorId(property_exists($examinationObj, 'doctorId') ? $examinationObj->doctorId : null);
@@ -719,8 +703,7 @@ class PatientProfileMapper
         $examinationDetails = $examinationObj->ultraSoundExaminations;
         //dd($candidateEmployments);
 
-        foreach($examinationDetails as $examination)
-        {
+        foreach ($examinationDetails as $examination) {
             $patientUltraSoundVM->setExaminations($examination);
         }
 
@@ -741,7 +724,7 @@ class PatientProfileMapper
 
         $patientDentalVM = new PatientDentalViewModel();
 
-        $dentalObj = (object) $examinationRequest->all();
+        $dentalObj = (object)$examinationRequest->all();
         $patientDentalVM->setPatientId($dentalObj->patientId);
         //$patientUltraSoundVM->setDoctorId($examinationObj->doctorId);
         $patientDentalVM->setDoctorId(property_exists($dentalObj, 'doctorId') ? $dentalObj->doctorId : null);
@@ -753,8 +736,7 @@ class PatientProfileMapper
         $examinationDetails = $dentalObj->dentalExaminations;
         //dd($candidateEmployments);
 
-        foreach($examinationDetails as $examination)
-        {
+        foreach ($examinationDetails as $examination) {
             $patientDentalVM->setPatientDentalTests($examination);
             /*if(count($examination)==3)
             {
@@ -790,7 +772,7 @@ class PatientProfileMapper
     {
         $patientXRayVM = new PatientXRayViewModel();
 
-        $xRayObj = (object) $examinationRequest->all();
+        $xRayObj = (object)$examinationRequest->all();
         $patientXRayVM->setPatientId($xRayObj->patientId);
         //$patientUltraSoundVM->setDoctorId($examinationObj->doctorId);
         $patientXRayVM->setDoctorId(property_exists($xRayObj, 'doctorId') ? $xRayObj->doctorId : null);
@@ -802,8 +784,7 @@ class PatientProfileMapper
         $examinationDetails = $xRayObj->xrayExaminations;
         //dd($candidateEmployments);
 
-        foreach($examinationDetails as $examination)
-        {
+        foreach ($examinationDetails as $examination) {
             $patientXRayVM->setPatientXRayTests($examination);
             /*if(count($examination)==3)
             {
@@ -832,7 +813,7 @@ class PatientProfileMapper
     {
         $doctorReferralsVM = new DoctorReferralsViewModel();
 
-        $referralObj = (object) $doctorReferralRequest->all();
+        $referralObj = (object)$doctorReferralRequest->all();
         $doctorReferralsVM->setDoctorName($referralObj->doctorName);
         //$patientUltraSoundVM->setDoctorId($examinationObj->doctorId);
         $doctorReferralsVM->setHospitalName(property_exists($referralObj, 'hospitalName') ? $referralObj->hospitalName : null);
@@ -856,36 +837,29 @@ class PatientProfileMapper
     {
         $labReceiptsVM = new PatientLabReceiptViewModel();
         //$receiptObj = (object) $patientLabReceiptRequest->all();
-        $receiptObj = (object) $patientLabReceiptRequest;
+        $receiptObj = (object)$patientLabReceiptRequest;
         $labTests = $receiptObj->labTests;
         //dd($labTests);
 
-        if(array_key_exists('bloodTests', $labTests))
-        {
+        if (array_key_exists('bloodTests', $labTests)) {
             $labReceiptsVM->setBloodTests($labTests['bloodTests']);
         }
-        if(array_key_exists('urineTests', $labTests))
-        {
+        if (array_key_exists('urineTests', $labTests)) {
             $labReceiptsVM->setUrineTests($labTests['urineTests']);
         }
-        if(array_key_exists('motionTests', $labTests))
-        {
+        if (array_key_exists('motionTests', $labTests)) {
             $labReceiptsVM->setMotionTests($labTests['motionTests']);
         }
-        if(array_key_exists('scanTests', $labTests))
-        {
+        if (array_key_exists('scanTests', $labTests)) {
             $labReceiptsVM->setScanTests($labTests['scanTests']);
         }
-        if(array_key_exists('ultraSoundTests', $labTests))
-        {
+        if (array_key_exists('ultraSoundTests', $labTests)) {
             $labReceiptsVM->setUltraSoundTests($labTests['ultraSoundTests']);
         }
-        if(array_key_exists('dentalTests', $labTests))
-        {
+        if (array_key_exists('dentalTests', $labTests)) {
             $labReceiptsVM->setDentalTests($labTests['dentalTests']);
         }
-        if(array_key_exists('xrayTests', $labTests))
-        {
+        if (array_key_exists('xrayTests', $labTests)) {
             $labReceiptsVM->setXrayTests($labTests['xrayTests']);
         }
 
@@ -895,9 +869,9 @@ class PatientProfileMapper
         $labReceiptsVM->setHospitalId($receiptObj->hospitalId);
         $labReceiptsVM->setDoctorId(property_exists($receiptObj, 'doctorId') ? $receiptObj->doctorId : null);
         //$labReceiptsVM->setDoctorId($receiptObj->doctorId);
-         //ramana start 12-01-2018
-        $labReceiptsVM->setPaidAmount( $receiptObj->paidamount);//by ramana
-        $labReceiptsVM->setPaymentType( $receiptObj->paymenttype );//by ramana
+        //ramana start 12-01-2018
+        $labReceiptsVM->setPaidAmount($receiptObj->paidamount);//by ramana
+        $labReceiptsVM->setPaymentType($receiptObj->paymenttype);//by ramana
         //ramana end 12-01-2018
         $labReceiptsVM->setTotalFees($receiptObj->totalFees);
         $labReceiptsVM->setLabReceiptDate(date("Y-m-d H:i:s"));
@@ -909,40 +883,41 @@ class PatientProfileMapper
 
         return $labReceiptsVM;
     }
+
     public static function setNewPatientProfile(Request $patientProfileRequest)
     {
 
-        //  dd($patientProfileRequest);
+        // dd($patientProfileRequest);
         $profileVM = new PatientProfileViewModel();
-        $profile = (object) $patientProfileRequest->all();
+        $profile = (object)$patientProfileRequest->all();
 
         //$userName = Session::get('DisplayName');
         $userName = 'Admin';
 
         $profileVM->setPatientId(0);
         $profileVM->setName($profile->name);
-        $profileVM->setAddress(property_exists($profile, 'address') ? $profile->address : null);
-       // $profileVM->setOccupation(property_exists($profile, 'occupation') ? $profile->occupation : null);
-     //   $profileVM->setCareOf(property_exists($profile, 'careof') ? $profile->careof : null);
-        $profileVM->setCity(property_exists($profile, 'city') ? $profile->city : null);
-        $profileVM->setCountry(property_exists($profile, 'country') ? $profile->country : null);
+        //$profileVM->setAddress(property_exists($profile, 'address') ? $profile->address : null);
+        // $profileVM->setOccupation(property_exists($profile, 'occupation') ? $profile->occupation : null);
+        //   $profileVM->setCareOf(property_exists($profile, 'careof') ? $profile->careof : null);
+        // $profileVM->setCity(property_exists($profile, 'city') ? $profile->city : null);
+        // $profileVM->setCountry(property_exists($profile, 'country') ? $profile->country : null);
         $profileVM->setTelephone(property_exists($profile, 'telephone') ? $profile->telephone : null);
         //$profileVM->setTelephone($profile->telephone);
         $profileVM->setEmail(property_exists($profile, 'email') ? $profile->email : null);
-     //   $profileVM->setRelationship(property_exists($profile, 'relationship') ? $profile->relationship : null);
-       // $profileVM->setSpouseName(property_exists($profile, 'spouseName') ? $profile->spouseName : null);
+        //   $profileVM->setRelationship(property_exists($profile, 'relationship') ? $profile->relationship : null);
+        // $profileVM->setSpouseName(property_exists($profile, 'spouseName') ? $profile->spouseName : null);
         $profileVM->setPassword(property_exists($profile, 'password') ? $profile->password : null);
-        $profileVM->setPatientPhoto(property_exists($profile, 'patientPhoto') ? $profile->patientPhoto : null);
-        $profileVM->setDob(property_exists($profile, 'dob') ? $profile->dob : null);
-        $profileVM->setAge(property_exists($profile, 'age') ? $profile->age : null);
-      //  $profileVM->setPlaceOfBirth(property_exists($profile, 'placeOfBirth') ? $profile->placeOfBirth : null);
-        $profileVM->setNationality(property_exists($profile, 'nationality') ? $profile->nationality : null);
-        $profileVM->setGender(property_exists($profile, 'gender') ? $profile->gender : null);
+        //   $profileVM->setPatientPhoto(property_exists($profile, 'patientPhoto') ? $profile->patientPhoto : null);
+        //   $profileVM->setDob(property_exists($profile, 'dob') ? $profile->dob : null);
+        //    $profileVM->setAge(property_exists($profile, 'age') ? $profile->age : null);
+        //  $profileVM->setPlaceOfBirth(property_exists($profile, 'placeOfBirth') ? $profile->placeOfBirth : null);
+        // $profileVM->setNationality(property_exists($profile, 'nationality') ? $profile->nationality : null);
+        //    $profileVM->setGender(property_exists($profile, 'gender') ? $profile->gender : null);
         //$profileVM->setGender($profile->gender);
-        $profileVM->setMaritalStatus(property_exists($profile, 'married') ? $profile->married : null);
+        //  $profileVM->setMaritalStatus(property_exists($profile, 'married') ? $profile->married : null);
 
-       $profileVM->setHospitalId(property_exists($profile, 'hospitalId') ? $profile->hospitalId : null);
-      //  $profileVM->setDoctorId(property_exists($profile, 'doctorId') ? $profile->doctorId : null);
+        // $profileVM->setHospitalId(property_exists($profile, 'hospitalId') ? $profile->hospitalId : null);
+        //  $profileVM->setDoctorId(property_exists($profile, 'doctorId') ? $profile->doctorId : null);
 
         //dd($profile->appointmentTime);
         //$profileVM->setAppointmentTime($profile->appointmentTime);
@@ -950,18 +925,18 @@ class PatientProfileMapper
         //$appDate = date("Y-m-d", strtotime($profile->appointmentDate));
 
         //$profileVM->setAppointmentDate(property_exists($profile, 'appointmentDate') ? $profile->appointmentDate : null);
-       // $profileVM->setAppointmentDate(property_exists($profile, 'appointmentDate') ? date("Y-m-d", strtotime($profile->appointmentDate)) : null);
-       // $profileVM->setAppointmentTime(property_exists($profile, 'appointmentTime') ? $profile->appointmentTime : null);
-       // $profileVM->setBriefHistory(property_exists($profile, 'briefHistory') ? $profile->briefHistory : null);
-     //   //$profileVM->setAppointmentDate($profile->appointmentDate);
-      //  $profileVM->setAppointmentCategory(property_exists($profile, 'appointmentCategory') ? $profile->appointmentCategory : null);
-      //  $profileVM->setReferralType(property_exists($profile, 'referralType') ? $profile->referralType : null);
-      //  $profileVM->setReferralDoctor(property_exists($profile, 'referralDoctor') ? $profile->referralDoctor : null);
-     //   $profileVM->setReferralHospital(property_exists($profile, 'referralHospital') ? $profile->referralHospital : null);
-     //   $profileVM->setHospitalLocation(property_exists($profile, 'hospitalLocation') ? $profile->hospitalLocation : null);
-     //   $profileVM->setAmount(property_exists($profile, 'fee') ? $profile->fee : null);
-    //    $profileVM->setPaymentType(property_exists($profile, 'paymentType') ? $profile->paymentType : null);
-   //     $profileVM->setPaymentStatus(property_exists($profile, 'paymentStatus') ? $profile->paymentStatus : null);
+        // $profileVM->setAppointmentDate(property_exists($profile, 'appointmentDate') ? date("Y-m-d", strtotime($profile->appointmentDate)) : null);
+        // $profileVM->setAppointmentTime(property_exists($profile, 'appointmentTime') ? $profile->appointmentTime : null);
+        // $profileVM->setBriefHistory(property_exists($profile, 'briefHistory') ? $profile->briefHistory : null);
+        //   //$profileVM->setAppointmentDate($profile->appointmentDate);
+        //  $profileVM->setAppointmentCategory(property_exists($profile, 'appointmentCategory') ? $profile->appointmentCategory : null);
+        //  $profileVM->setReferralType(property_exists($profile, 'referralType') ? $profile->referralType : null);
+        //  $profileVM->setReferralDoctor(property_exists($profile, 'referralDoctor') ? $profile->referralDoctor : null);
+        //   $profileVM->setReferralHospital(property_exists($profile, 'referralHospital') ? $profile->referralHospital : null);
+        //   $profileVM->setHospitalLocation(property_exists($profile, 'hospitalLocation') ? $profile->hospitalLocation : null);
+        //   $profileVM->setAmount(property_exists($profile, 'fee') ? $profile->fee : null);
+        //    $profileVM->setPaymentType(property_exists($profile, 'paymentType') ? $profile->paymentType : null);
+        //     $profileVM->setPaymentStatus(property_exists($profile, 'paymentStatus') ? $profile->paymentStatus : null);
 
         /*$appointments = $profile->appointment;
 
@@ -982,4 +957,113 @@ class PatientProfileMapper
 
         return $profileVM;
     }
+
+
+    public static function EditPatientProfile(Request $patientEditProfileRequest)
+    {
+
+        //dd($patientEditProfileRequest);
+        $path = '';
+        $profileVM = new PatientProfileViewModel();
+        $profile = (object)$patientEditProfileRequest->all();
+
+        //$userName = Session::get('DisplayName');
+        $userName = 'Admin';
+
+        $profileVM->setPatientId($profile->patientId);
+        $profileVM->setName($profile->name);
+        $profileVM->setAddress(property_exists($profile, 'address') ? $profile->address : null);
+        $profileVM->setOccupation(property_exists($profile, 'occupation') ? $profile->occupation : null);
+        $profileVM->setCareOf(property_exists($profile, 'careof') ? $profile->careof : null);
+        $profileVM->setCity(property_exists($profile, 'city') ? $profile->city : null);
+        //$profileVM->setCountry(property_exists($profile, 'country') ? $profile->country : null);
+        $profileVM->setTelephone(property_exists($profile, 'telephone') ? $profile->telephone : null);
+        //$profileVM->setTelephone($profile->telephone);
+        $profileVM->setEmail(property_exists($profile, 'email') ? $profile->email : null);
+        //   $profileVM->setRelationship(property_exists($profile, 'relationship') ? $profile->relationship : null);
+        // $profileVM->setSpouseName(property_exists($profile, 'spouseName') ? $profile->spouseName : null);
+        $profileVM->setPassword(property_exists($profile, 'password') ? $profile->password : null);
+        if ($patientEditProfileRequest->hasFile('patientPhoto')) {
+
+            $files = $patientEditProfileRequest->file('patientPhoto');
+            foreach ($files as $file) {
+                //$randomName =generateUniqueFileName();
+                $filename=$profile->patientId.rand(11111,99999).'.'.$file->getClientOriginalExtension();
+                $path=$path.$filename."@@";
+                $destinationPath = 'public/storage'; // upload path
+                $extension = $file->getClientOriginalExtension();
+                $fileName = rand(11111,99999).'.'.$extension; // renaming image
+                $path = $filename;
+                // dd($filename.'-------'.$destinationPath);
+                $file->move($destinationPath, $path);
+
+                $profileVM->setPatientPhoto($profile, $path);
+            }
+            $profileVM->setPatientPhoto(property_exists($profile, 'patientPhoto') ? $profile->patientPhoto : null);
+
+        }
+
+
+        $profileVM->setDob(property_exists($profile, 'dob') ? $profile->dob : null);
+        $profileVM->setAge(property_exists($profile, 'age') ? $profile->age : null);
+        //  $profileVM->setPlaceOfBirth(property_exists($profile, 'placeOfBirth') ? $profile->placeOfBirth : null);
+        // $profileVM->setNationality(property_exists($profile, 'nationality') ? $profile->nationality : null);
+        $profileVM->setGender(property_exists($profile, 'gender') ? $profile->gender : null);
+        //$profileVM->setGender($profile->gender);
+        $profileVM->setMaritalStatus(property_exists($profile, 'married') ? $profile->married : null);
+
+        // $profileVM->setHospitalId(property_exists($profile, 'hospitalId') ? $profile->hospitalId : null);
+        //  $profileVM->setDoctorId(property_exists($profile, 'doctorId') ? $profile->doctorId : null);
+
+        //dd($profile->appointmentTime);
+        //$profileVM->setAppointmentTime($profile->appointmentTime);
+        //$profileVM->setAppointmentDate($profile->appointmentDate);
+        //$appDate = date("Y-m-d", strtotime($profile->appointmentDate));
+
+        //$profileVM->setAppointmentDate(property_exists($profile, 'appointmentDate') ? $profile->appointmentDate : null);
+        // $profileVM->setAppointmentDate(property_exists($profile, 'appointmentDate') ? date("Y-m-d", strtotime($profile->appointmentDate)) : null);
+        // $profileVM->setAppointmentTime(property_exists($profile, 'appointmentTime') ? $profile->appointmentTime : null);
+        // $profileVM->setBriefHistory(property_exists($profile, 'briefHistory') ? $profile->briefHistory : null);
+        //   //$profileVM->setAppointmentDate($profile->appointmentDate);
+        //  $profileVM->setAppointmentCategory(property_exists($profile, 'appointmentCategory') ? $profile->appointmentCategory : null);
+        //  $profileVM->setReferralType(property_exists($profile, 'referralType') ? $profile->referralType : null);
+        //  $profileVM->setReferralDoctor(property_exists($profile, 'referralDoctor') ? $profile->referralDoctor : null);
+        //   $profileVM->setReferralHospital(property_exists($profile, 'referralHospital') ? $profile->referralHospital : null);
+        //   $profileVM->setHospitalLocation(property_exists($profile, 'hospitalLocation') ? $profile->hospitalLocation : null);
+        //   $profileVM->setAmount(property_exists($profile, 'fee') ? $profile->fee : null);
+        //    $profileVM->setPaymentType(property_exists($profile, 'paymentType') ? $profile->paymentType : null);
+        //     $profileVM->setPaymentStatus(property_exists($profile, 'paymentStatus') ? $profile->paymentStatus : null);
+
+        /*$appointments = $profile->appointment;
+
+        foreach($appointments as $appointment)
+        {
+            $profileVM->setAppointment($appointment);
+        }*/
+
+        //$profileVM->setAppointment();
+        //$profileVM->setMainSymptomId(property_exists($profile, 'mainSymptomId') ? $profile->mainSymptomId : null);
+        //$profileVM->setSubSymptomId(property_exists($profile, 'subSymptomId') ? $profile->subSymptomId : null);
+        //$profileVM->setSymptomId(property_exists($profile, 'symptomId') ? $profile->symptomId : null);
+
+        $profileVM->setCreatedBy($userName);
+        $profileVM->setUpdatedBy($userName);
+        $profileVM->setCreatedAt(date("Y-m-d H:i:s"));
+        $profileVM->setUpdatedAt(date("Y-m-d H:i:s"));
+
+        return $profileVM;
+    }
+
+    private function generateUniqueFileName()
+    {
+        $i = 0;
+        $randomString = mt_rand(1, 9);
+        do {
+            $randomString .= mt_rand(0, 9);
+        } while (++$i < 7);
+
+        return $randomString;
+    }
+
+
 }

@@ -81,7 +81,7 @@
                                 <div id="sendmessage">Your message has been sent. Thank you!</div>
                                 <div id="errormessage"></div>
                                 @if (session()->has('msg'))
-                                    <div class='success'>
+                                    <div class='success' style="color: green">
                                         <b>  {{session()->get('msg')}}</b>
 
                                     </div>
@@ -190,7 +190,7 @@
                                     </div>
 
 
-                                    <input type="submit" value="Submit" class="btn btn-skin btn-block btn-lg">
+                                    <input type="submit" style="color: white;" value="Submit" class="btn btn-skin btn-block btn-lg">
 
 
                                 </form>
@@ -226,7 +226,6 @@
             </div>
         </div>
     </section>
-    <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.js" type="text/javascript"></script>
 

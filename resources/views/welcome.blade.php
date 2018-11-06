@@ -214,45 +214,45 @@
                     <input type="text" name="name" id="name" placeholder="Username" required=""/>
                     <input type="text" name="email" id="email" placeholder="Email" required=""/>
                     <input type="password" name="password" password="password" placeholder="Password" required=""/>
-                    <input type="file" class="form-controlx" name="patient_photo" placeholder="patient_photo"/>
+                    {{--<input type="file" class="form-controlx" name="patient_photo" placeholder="patient_photo"/>--}}
                     <input type="text" name="telephone" id="telephone" placeholder="MobileNumber" required=""/>
-                    <input name="dob" onblur="calculateAge(this.value)" id="dob1"  class="form-control" type="text" value="2018/01/01" style="line-height: 20px;" placeholder="Select DateofBirth" required="">
-                    <input type="radio" class="form-controlx" id="gender1" name="gender" value="1" required="required"/>&nbsp;&nbsp;Male
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" class="form-controlx" id="gender2" name="gender" value="2" required="required"/>&nbsp;&nbsp;Female
+                    {{--<input name="dob" onblur="calculateAge(this.value)" id="dob1"  class="form-control" type="text" value="2018/01/01" style="line-height: 20px;" placeholder="Select DateofBirth" required="">--}}
+                    {{--<input type="radio" class="form-controlx" id="gender1" name="gender" value="1" required="required"/>&nbsp;&nbsp;Male--}}
+                    {{--&nbsp;&nbsp;&nbsp;&nbsp;--}}
+                    {{--<input type="radio" class="form-controlx" id="gender2" name="gender" value="2" required="required"/>&nbsp;&nbsp;Female--}}
 
-                    <input type="text" name="age" id="age" placeholder="Age" required=""/>
-                    <textarea name="address" id="address" required style="width: 301px; height: 89px;"></textarea>
-                    <select id="nationality" name="nationality">
-                        <option value="">Select Nationality</option>
-                        <option value="1">India</option>
-                        <option value="2">America</option>
-                        <option value="3">Australia</option>
-                    </select>
-                    <select id="city" name="city">
-                        <option value="">Select City</option>
-                        <option value="1">Andra Pradesh</option>
-                        <option value="2">Telangana</option>
-                        <option value="3">Karnataka</option>
-                        <option value="4">Chennai</option>
+                    {{--<input type="text" name="age" id="age" placeholder="Age" required=""/>--}}
+                    {{--<textarea name="address" id="address" required style="width: 301px; height: 89px;"></textarea>--}}
+                    {{--<select id="nationality" name="nationality">--}}
+                        {{--<option value="">Select Nationality</option>--}}
+                        {{--<option value="1">India</option>--}}
+                        {{--<option value="2">America</option>--}}
+                        {{--<option value="3">Australia</option>--}}
+                    {{--</select>--}}
+                    {{--<select id="city" name="city">--}}
+                        {{--<option value="">Select City</option>--}}
+                        {{--<option value="1">Andra Pradesh</option>--}}
+                        {{--<option value="2">Telangana</option>--}}
+                        {{--<option value="3">Karnataka</option>--}}
+                        {{--<option value="4">Chennai</option>--}}
 
-                    </select>
-                    <br>
+                    {{--</select>--}}
+                    {{--<br>--}}
 
-                    <input type="radio" class="form-controlx" id="married" name="married" value="1"
-                           required="required"/>&nbsp;&nbsp;Married
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" class="form-controlx" id="married" name="married" value="2"
-                           required="required"/>Un Married
+                    {{--<input type="radio" class="form-controlx" id="married" name="married" value="1"--}}
+                           {{--required="required"/>&nbsp;&nbsp;Married--}}
+                    {{--&nbsp;&nbsp;&nbsp;&nbsp;--}}
+                    {{--<input type="radio" class="form-controlx" id="married" name="married" value="2"--}}
+                           {{--required="required"/>Un Married--}}
 
-                    <select id="hospitalId" name="hospitalId">
-                        @foreach($hospitals as $hospital)
-                            <option value="{{ $hospital['hospital_id'] }}">
+                    {{--<select id="hospitalId" name="hospitalId">--}}
+                        {{--@foreach($hospitals as $hospital)--}}
+                            {{--<option value="{{ $hospital['hospital_id'] }}">--}}
 
-                                {{ $hospital['hospital_name'] }}
-                            </option>
-                        @endforeach
-                    </select>
+                                {{--{{ $hospital['hospital_name'] }}--}}
+                            {{--</option>--}}
+                        {{--@endforeach--}}
+                    {{--</select>--}}
                     <div class="wthree-text">
 
                         <input type="checkbox" class="checkbox">
@@ -487,8 +487,8 @@
                 // The key name on the left side is the name attribute
                 // of an input field. Validation rules are defined
                 // on the right side
-                hospitalId: "required",
-                role: "required",
+                //hospitalId: "required",
+               // role: "required",
                 name: {
                     required: true,
                     lettersonly: true
@@ -505,18 +505,18 @@
                     minlength: 10,
                     maxlength: 10
                 },
-                age: {
-                    required: true,
-                    number: true,
-                    minlength: 1,
-                    maxlength: 3
-                }
+               // / age: {
+               //      required: true,
+               //      number: true,
+               //      minlength: 1,
+               //      maxlength: 3
+               //  }
 
             },
             // Specify validation error messages
             messages: {
-                role: "Please choose role",
-                hospitalId: "Please choose Hospital",
+               // role: "Please choose role",
+               // hospitalId: "Please choose Hospital",
                 name: {
                     required: "Please enter your name",
                     lettersonly: "Your name must be characters"

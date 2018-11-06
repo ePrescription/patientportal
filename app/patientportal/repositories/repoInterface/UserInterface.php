@@ -12,7 +12,7 @@ use App\Http\ViewModels\PatientProfileViewModel;
 interface UserInterface
 {
     public function registerPatientDetails($regrequest);
-    public function saveNewPatientProfile(PatientProfileViewModel $patientProfileVM);
+    public function saveNewPatientProfile($patientProfileVM);
 
 
 }

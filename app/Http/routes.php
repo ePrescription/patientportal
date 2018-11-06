@@ -44,6 +44,9 @@ Route::get('/home111', function(){
 
 //var_dump(Route::post('/register', array('as' => 'user.register', 'uses' => 'User\RegisterPatientController@registerPatient')));
 Route::post('/register', array('as' => 'user.register', 'uses' => 'User\UserController@saveNewPatientProfile'));
+Route::get('/editprofile', array('as' => 'user.editprofile', 'uses' => 'User\UserController@PatientProfile'));
+
+Route::post('/SaveEditProfile', array('as' => 'user.editprofile', 'uses' => 'User\UserController@EditPatientProfile'));
 Route::post('/otpconfirm', array('as' => 'user.otpconfirm', 'uses' => 'User\UserController@otpconfirm'));
 
 

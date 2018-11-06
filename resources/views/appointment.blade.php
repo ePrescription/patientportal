@@ -684,7 +684,7 @@
                                                  </div>
                                              </div>-->
                                             <div class="col-xs-12 col-sm-6 col-md-6 ">
-                                           <center> <input type="submit" value="Book Appointment" class="btn btn-skin btn-block" style="width: 50% font-size:14px;"></center>
+                                           <center> <input type="submit" value="Book Appointment" class="btn btn-skin btn-block" style="width: 50% font-size:14px; color: white;"></center>
 
 
                                 </form>

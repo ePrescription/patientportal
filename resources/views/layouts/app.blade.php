@@ -98,8 +98,21 @@
                             <!-- <li><a href="#">Clinics/Hospitals/Doctors</a></li>                 -->
                             <li><a href="articles">Feeds</a></li>
                             <li><a href="askquest">Ask a Question</a></li>
-                            <li><a href="history">Patient Records</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" <span class="badge custom-badge red pull-right">Patient Information</span> <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="history">Patient Records</a></li>
+                                    <li><a href="editprofile">Edit Profile</a></li>
+
+                                </ul>
+                            </li>
+
+
+
+
+
                             <li><a href="logout">Logout</a></li>
+
 
                         </ul>
                     </div>

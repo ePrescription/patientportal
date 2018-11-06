@@ -111,11 +111,13 @@ class UserImpl implements UserInterface
             $id = session('patient_id');
             // $user=session('userID');
             $user =User::find($id);
+          //  dd($user->id);
             // return $user['confirmation_code'];
             if ($otp == $user['confirmation_code']) {
-                session(['userID' => $user['name']]);
-                session(['patient_id' => $user]);
-                session(['email' => $user['email']]);
+
+                session(['userID' => $user->name]);
+                session(['patient_id' => $user->id]);
+                session(['email' => $user->email]);
 
                 session(['logintime' => time()]);
                 // return $user;
@@ -142,7 +144,7 @@ class UserImpl implements UserInterface
 
 
     }
-    public function saveNewPatientProfile(PatientProfileViewModel $patientProfileVM)
+    public function saveNewPatientProfile($patientProfileVM)
     {
         $status = true;
         $user = null;
@@ -151,7 +153,7 @@ class UserImpl implements UserInterface
         $hospitalPatient = null;
         $hospitalId = null;
         $msg=null;
-//dd($patientProfileVM);
+       //dd($patientProfileVM);
         try {
             $patientId = $patientProfileVM->getPatientId();
             $hospitalId = $patientProfileVM->getHospitalId();
@@ -171,7 +173,7 @@ class UserImpl implements UserInterface
                     $user = $this->registerNewPatient($patientProfileVM);
                 }
             }
-          // dd($user->id);
+        // dd($user->id);
 
 
             $insertedId = $user->id;
@@ -199,21 +201,23 @@ class UserImpl implements UserInterface
             $patient->updated_by = $patientProfileVM->getUpdatedBy();
             $patient->updated_at = $patientProfileVM->getUpdatedAt();
 
+            //dd($patient);
             $user=$patient->save();
 
             $roleUser=new RoleUser();
             $roleUser->user_id=$insertedId;
             $roleUser->role_id=4;
             $roleUser->save();
-            $hospitalPatient=new HospitalPatient();
-            $hospitalPatient->patient_id=$insertedId;
-            $hospitalPatient->hospital_id=$hospitalId;
-            $hospitalPatient->created_by = $patientProfileVM->getCreatedBy();
-            $hospitalPatient->created_at = $patientProfileVM->getCreatedAt();
-            $hospitalPatient->updated_by = $patientProfileVM->getUpdatedBy();
-            $hospitalPatient->updated_at = $patientProfileVM->getUpdatedAt();
 
-            $hospitalPatient->save();
+//            $hospitalPatient=new HospitalPatient();
+//            $hospitalPatient->patient_id=$insertedId;
+//            $hospitalPatient->hospital_id=$hospitalId;
+//            $hospitalPatient->created_by = $patientProfileVM->getCreatedBy();
+//            $hospitalPatient->created_at = $patientProfileVM->getCreatedAt();
+//            $hospitalPatient->updated_by = $patientProfileVM->getUpdatedBy();
+//            $hospitalPatient->updated_at = $patientProfileVM->getUpdatedAt();
+
+          //  $hospitalPatient->save();
 
             session(['patient_id' => $insertedId]);
 
@@ -221,11 +225,11 @@ class UserImpl implements UserInterface
            // $user->patienthospitals()->attach($hospitalId, array('created_by' => $patientProfileVM->getCreatedBy(),
                // 'updated_by' => $patientProfileVM->getUpdatedBy()));
         } catch (QueryException $queryEx) {
-            //dd($queryEx);
+            dd($queryEx);
             $status = false;
             throw new HospitalException(null, ErrorEnum::PATIENT_PROFILE_SAVE_ERROR, $queryEx);
         } catch (Exception $exc) {
-            //dd($exc);
+            dd($exc);
             $status = false;
             throw new HospitalException(null, ErrorEnum::PATIENT_PROFILE_SAVE_ERROR, $exc);
         }
@@ -233,8 +237,9 @@ class UserImpl implements UserInterface
         return $status;
     }
 
-    private function registerNewPatient(PatientProfileViewModel $patientProfileVM)
+    private function registerNewPatient($patientProfileVM)
     {
+        //dd($patientProfileVM);
         $user = null;
         $patientId = $patientProfileVM->getPatientId();
 
@@ -246,14 +251,6 @@ class UserImpl implements UserInterface
         $otp = rand(10000, 99999);
 
         $email=$patientProfileVM->getEmail();
-
-        Mail::raw('Your one time Password is: ' . $otp, function ($msg) use ($email) {
-            $msg->subject('Your OTP');
-            $msg->from('prasanth@glovision.co');
-            $msg->to($email);
-        });
-
-
         $user->name = $patientProfileVM->getName();
         $user->email = $patientProfileVM->getEmail();
         $user->password =$patientProfileVM->getPassword();
@@ -265,6 +262,11 @@ class UserImpl implements UserInterface
         $user->updated_at = $patientProfileVM->getUpdatedAt();
 
         $user->save();
+        Mail::raw('Your one time Password is: ' . $otp, function ($msg) use ($email) {
+            $msg->subject('Your OTP');
+            $msg->from('prasanth@glovision.co');
+            $msg->to($email);
+        });
 
         return $user;
     }
@@ -288,6 +290,58 @@ class UserImpl implements UserInterface
         }
         return $randomString;
     }
+
+public function EditPatientProfile($patientProfileVM){
+    $p=null;
+    $destinationPath='';
+    $filename='';
+    $path='';
+    try{
+    $patienttest = Patient::where('patient_id', '=', $patientProfileVM->getPatientId())->first();
+
+    //dd($patienttest);
+     if(!is_null($patienttest)) {
+         // dd('dh');
+
+         if (!is_null($patientProfileVM->getPatientPhoto())) {
+                 $filename = $patientProfileVM->getPatientId() . '-' . $patientProfileVM->getPatientPhoto()->getClientOriginalName();
+                 $destinationPath = 'public/storage';
+                $patientProfileVM->getPatientPhoto()->move($destinationPath,$filename);
+             //dd($filename);
+
+             $p = $filename;
+
+         } else {
+             $p = $patienttest->getPatientPhoto();
+
+         }
+          //dd($p);
+
+
+         Patient::where('patient_id', $patientProfileVM->getPatientId())
+             ->update(['name' => $patientProfileVM->getName(),
+                 'patient_photo' => $p,
+                 'age' => $patientProfileVM->getAge(),
+                 'dob' => $patientProfileVM->getDob(),
+                 'gender' => $patientProfileVM->getGender()]);
+
+     }
+
+     } catch (QueryException $queryEx) {
+        dd($queryEx);
+        $status = false;
+        throw new HospitalException(null, ErrorEnum::PATIENT_PROFILE_SAVE_ERROR, $queryEx);
+    } catch (Exception $exc) {
+        dd($exc);
+        $status = false;
+        throw new HospitalException(null, ErrorEnum::PATIENT_PROFILE_SAVE_ERROR, $exc);
+    }
+
+     }
+
+
+
+
 
 }
 
