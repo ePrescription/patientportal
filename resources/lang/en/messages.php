@@ -13,5 +13,26 @@
         "4" => "No patient found",
 
 
+        "131" => "Patient Dental Test Save Error ",
+        "132" => "Patient Scan Test Save Error ",
+        "133" => "Patient Blood Test Save Error ",
+        "134" => "Patient X-ray Test Save Error ",
+        "135" => "Patient Ultra Sound Test Save Error ",
+        "136" => "Patient Urine Test Save Error ",
+        "137" => "Patient Motion Test Save Error ",
+        "138" => "Patient Motion Test Save Error ",
 
+        "139" => "Patient Examination Date Error ",
+        "140" => "Blood Test List Error ",
+        "141" => "Urine Test Save Error ",
+        "142" => "Scan Test Save Error ",
+        "143" => "Dental Test Save Error ",
+        "144" => "X-ray Test Save Error ",
+        "145" => "Patient Test Results Error",
+
+        "146" => "Health Checkups List Error",
+        "147" => "Health Checkups Save Error",
+        "148" => "Second Opinion List Error",
+        "149" => "Health Records List Error",
+        "150" => "Health Records Save Error"
     ];

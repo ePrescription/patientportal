@@ -139,7 +139,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             changeMonth : true,
             changeYear : true,
             // showSeconds: true,
-            showMonthAfterYear : true,
+            showMonthAfterYear : true
     };
     $("#datepicker1").datetimepicker(pickerOpts);
     // $("#toDate").datetimepicker(pickerOpts1);
@@ -240,13 +240,19 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 
 
 <div class="tab tab_container">
-    <button class="tablinks" onclick="openCity(event, 'Doctor')"><label for="tab1"><i class="fa fa-calendar data-toggle="tooltip" title="Doctor Appointments""></i><span>Doctor Appointments </span></label>
+    <button class="tablinks" onclick="openCity(event, 'Doctor')"><label for="tab1"><i class="fa fa-calendar" data-toggle="tooltip" title="Doctor Appointments"></i><span>Doctor Appointments </span></label>
     </button>
-    <button class="tablinks" onclick="openCity(event, 'Diagnostics')"><label for="tab2"><i class="fa fa-calendar data-toggle="tooltip" title="Diagnostics Appointments""></i><span>Diagnostics Appointments </span></label>
+    <button class="tablinks" onclick="openCity(event, 'Diagnostics')"><label for="tab2"><i class="fa fa-calendar" data-toggle="tooltip" title="Diagnostics Appointments"></i><span>Diagnostics Appointments </span></label>
     </button>
-    <button class="tablinks" onclick="openCity(event, 'Pharmacy')">			<label for="tab3"><i class="fa fa-medkit data-toggle="tooltip" title="Pharmacy Pickup ""></i><span>Pharmacy Pickup </span></label>
+    <button class="tablinks" onclick="openCity(event, 'Pharmacy')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Pharmacy Pickup"></i><span>Pharmacy Pickup </span></label>
     </button>
-    <button class="tablinks" onclick="openCity(event, 'askquestion')"><label for="tab4"><i class="fa fa-question data-toggle="tooltip" title="Answered Questions ""></i><span>Answered Questions</span></label>
+    <button class="tablinks" onclick="openCity(event, 'Opinion')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Second Opinion"></i><span>Second Opinion </span></label>
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'Checkup')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Health Checkups"></i><span>Health Checkups </span></label>
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'Records')"><label for="tab3"><i class="fa fa-medkit" data-toggle="tooltip" title="Health Checkups"></i><span>Health Records </span></label>
+    </button>
+    <button class="tablinks" onclick="openCity(event, 'askquestion')"><label for="tab4"><i class="fa fa-question" data-toggle="tooltip" title="Answered Questions"></i><span>Answered Questions</span></label>
     </button>
 
 </div>
@@ -257,8 +263,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
         <h5> Doctor Appointments</h5>
         @if (session()->has('msg'))
         <div class='success' align="center">
-            <b>  {{session()->get('msg')}}</b>
-
+            <b style="color: green;">  {{session()->get('msg')}}</b>
         </div>
         @endif
         <?php $count=1;?>
@@ -298,9 +303,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 <div id="Diagnostics" class="tabcontent">
 
 <b>Blood Tests</b>
-    <?php $count=1;
-
-    ?>
+    <?php $count=1;?>
     @if(count($examinationDates["bloodTestDates"])>0)
         <table class="table table-bordred table-striped"><thead class='th'>
             <th>SNO</th>
@@ -325,8 +328,8 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                 <?php $count=0;?>
             @endforeach
             </tbody></table>
-
     @endif
+
     <b>Motion Tests</b>
     <?php $count=1;?>
 @if(count($examinationDates["motionTestDates"])>0)
@@ -355,10 +358,12 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             @endforeach
             </tbody></table>
     @endif
+
     <b>Urine Tests</b>
     <?php $count=1;?>
 @if(count($examinationDates["urineTestDates"])>0)
-        <table class="table table-bordred table-striped"><thead class='th'>
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
                <th>SNO</th>
             <th>Hospital Name</th>
             <th>Appointment Date </th>
@@ -366,7 +371,8 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             {{--<th>Hospital ID</th>--}}
             <th>More Details</th>
             {{--<th>Reappointment</th>--}}
-            </thead><tbody>
+            </thead>
+            <tbody>
             @foreach ($examinationDates["urineTestDates"] as $appointment)
                 <tr>
                     <td>{{ $count}}</td>
@@ -380,9 +386,119 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                 </tr>
                 <?php $count++;?>
             @endforeach
-            </tbody></table>
-
+            </tbody>
+        </table>
     @endif
+
+    <b>Ultrasound Tests</b>
+    <?php $count=1;?>
+    @if(count($examinationDates["ultraSoundTestDates"])>0)
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
+            <th>SNO</th>
+            <th>Hospital Name</th>
+            <th>Appointment Date </th>
+            <th>Appointment Time </th>
+            {{--<th>Hospital ID</th>--}}
+            <th>More Details</th>
+            {{--<th>Reappointment</th>--}}
+            </thead>
+            <tbody>
+            @foreach ($examinationDates["ultraSoundTestDates"] as $appointment)
+                <tr>
+                    <td>{{ $count}}</td>
+                    <td>{{ $appointment->hospital_name}}</td>
+                    <td>{{ $appointment->examination_date}} </td>
+                    <td>{{ $appointment->examination_time}}</td>
+                    {{--<td>{{ $appointment->hospital_id}}</td>--}}
+                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                    {{--<td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>--}}
+
+                </tr>
+                <?php $count++;?>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
+
+    <b>Scan Tests</b>
+    <?php $count=1;?>
+    @if(count($examinationDates["scanTestDates"])>0)
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
+            <th>SNO</th>
+            <th>Hospital Name</th>
+            <th>Appointment Date </th>
+            <th>Appointment Time </th>
+            <th>More Details</th>
+            </thead>
+            <tbody>
+            @foreach ($examinationDates["scanTestDates"] as $appointment)
+                <tr>
+                    <td>{{ $count}}</td>
+                    <td>{{ $appointment->hospital_name}}</td>
+                    <td>{{ $appointment->scan_date}} </td>
+                    <td>{{ $appointment->examination_time}}</td>
+                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->scan_date}}" target="_blank">Details</a></td>
+                </tr>
+                <?php $count++;?>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
+
+    <b>Dental Tests</b>
+    <?php $count=1;?>
+    @if(count($examinationDates["dentalTestDates"])>0)
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
+            <th>SNO</th>
+            <th>Hospital Name</th>
+            <th>Appointment Date </th>
+            <th>Appointment Time </th>
+            <th>More Details</th>
+            </thead>
+            <tbody>
+            @foreach ($examinationDates["dentalTestDates"] as $appointment)
+                <tr>
+                    <td>{{ $count}}</td>
+                    <td>{{ $appointment->hospital_name}}</td>
+                    <td>{{ $appointment->examination_date}} </td>
+                    <td>{{ $appointment->examination_time}}</td>
+                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                </tr>
+                <?php $count++;?>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
+
+    <b>X-ray Tests</b>
+    <?php $count=1;?>
+    @if(count($examinationDates["xrayTestDates"])>0)
+        <table class="table table-bordred table-striped">
+            <thead class='th'>
+            <th>SNO</th>
+            <th>Hospital Name</th>
+            <th>Appointment Date </th>
+            <th>Appointment Time </th>
+            <th>More Details</th>
+            </thead>
+            <tbody>
+            @foreach ($examinationDates["xrayTestDates"] as $appointment)
+                <tr>
+                    <td>{{ $count}}</td>
+                    <td>{{ $appointment->hospital_name}}</td>
+                    <td>{{ $appointment->examination_date}} </td>
+                    <td>{{ $appointment->examination_time}}</td>
+                    <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
+                </tr>
+                <?php $count++;?>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
+
 
 </div>
 
@@ -422,12 +538,8 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 </div>
 
 
-
-
-
 <div id="Pharmacy" class="tabcontent">
     <div class="container">
-
         <h5> Pharmacy Pickup</h5>
         @if(count($pharmacyappointments)>0)
          <table class="table table-bordred table-striped"><thead class='th'><th>Pharmacy Name</th><th>Hospital Name</th><th>Pickup Date&Time </th><th>More Details</th></thead>
@@ -439,9 +551,60 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
         {{ $pharmacyappointments ->links() }}
             @endif
     </div>
-
 </div>
 
+<div id="Opinion" class="tabcontent">
+    <div class="container">
+        <h5> Second Opinion</h5>
+        @if(count($secondOpinion)>0)
+            <table class="table table-bordred table-striped"><thead class='th'><th>Doctor Name</th><th>Hospital Name</th><th>Specialty</th><th>Appointment Date </th><th>More Details</th></thead>
+                @foreach ($secondOpinion as $opinion)
+                    <tr><td>{{ $opinion->name }} </td><td>{{ $opinion->hospital_name }}</td><td>{{ $opinion->specialty }}</td><td>{{ $opinion->appointment_date }}</td><td><a href="secondopiniondetails?id={{ $opinion->id }}" target="_blank">Details</a></td></tr>
+                @endforeach
+            </table>
+            {{ $secondOpinion ->links() }}
+        @endif
+    </div>
+</div>
+
+<div id="Checkup" class="tabcontent">
+    <div class="container">
+        <h5> Health Checkup</h5>
+        @if(count($healthcheckups)>0)
+            <table class="table table-bordred table-striped"><thead class='th'><th>Health Checkup</th><th>Hospital Name</th><th>Appointment </th><th>More Details</th></thead>
+                @foreach ($healthcheckups as $checkup)
+                    <tr><td>{{ $checkup->package_name }} </td><td>{{ $checkup->hospital_name }}</td><td>{{ $checkup->appointment_date }}</td><td><a href="healthcheckupdetails?id={{ $checkup->id }}" target="_blank">Details</a></td></tr>
+
+                @endforeach
+            </table>
+            {{ $healthcheckups ->links() }}
+        @endif
+    </div>
+</div>
+
+<div id="Records" class="tabcontent">
+    <div class="container">
+        <h5> Health Records</h5>
+        <div class="row">
+            <form action="saveolddocuments" method="post" enctype="multipart/form-data">
+                <input class="col-md-3" type="file" name="oldDocument" required/>
+                <button class="col-md-2 btn btn-info">Upload</button>
+            </form>
+        </div>
+        </br>
+
+        @if(count($patientDocuments)>0)
+            <?php $count=1;?>
+            <table class="table table-bordred table-striped"><thead class='th'><th>S.No.</th><th>Document Name</th><th>Uploaded Date</th><th>Download</th></thead>
+                @foreach ($patientDocuments as $document)
+                    <tr><td>{{ $count }} </td><td>{{ $document->document_filename }}</td><td>{{ $document->document_upload_date }}</td><td><a href="olddocumentdownload?id={{ $document->id }}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></td></tr>
+                    <?php $count++;?>
+                @endforeach
+            </table>
+            {{ $patientDocuments ->links() }}
+        @endif
+    </div>
+</div>
 
 
 <!-- modal -->

@@ -20,6 +20,7 @@ use App\patientportal\modal\Sms;
 use App\patientportal\modal\Patient;
 use App\User;
 use App\patientportal\utilities\Exception\AppendMessage;
+use App\patientportal\utilities\Exception\LabException;
 use App\patientportal\utilities\Exception\HospitalException;
 use Illuminate\Support\Facades\DB;
 
@@ -45,10 +46,6 @@ class LabController extends Controller {
     }
 
     public function BookLabAppointment(Request $request) {
-
-
-
-
         try{
 
         } catch (Exception $userExc) {
@@ -155,7 +152,6 @@ class LabController extends Controller {
      *
      * @return void
      */
-
 
     public function getAppointment(Request $request){
 
@@ -442,7 +438,7 @@ class LabController extends Controller {
             //lab/4/hospital/1/patient/317/lab-details
             if($status)
             {
-                return redirect()->back()->with('msg','SUCCESS');
+                return redirect()->back()->with('msg','Blood Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -482,7 +478,7 @@ class LabController extends Controller {
 
             if($status)
             {
-                return  redirect()->back()->with('msg','SUCCESS');
+                return  redirect()->back()->with('msg','Motion Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -510,31 +506,22 @@ class LabController extends Controller {
      * @return true | false
      * @author Ramana
      */
-
-
-
-
     public function savePatientUltraSoundTests(Request $examinationRequest)
     {
-        //dd($examinationRequest);
         $patientUltraSoundVM = null;
         $status = true;
         $responseJson = null;
-
         try
         {
-            //dd($personalHistoryRequest->all());
             $patientUltraSoundVM = PatientProfileMapper::setPatientUltraSoundExamination($examinationRequest);
-            //dd($patientUltraSoundVM);
             $status = $this->labService->savePatientUltraSoundTests($patientUltraSoundVM);
-
             if($status)
             {
-                return redirect()->back()->with('msg','SUCCESS');
+                return redirect('labappointment?methode=Lab')->with('msg','UltraSound Diagnostics Appointment Booked Successfully');
             }
             else
             {
-                return redirect()->back()->with('msg','FAILURE');
+                return redirect('labappointment?methode=Lab')->with('msg','FAILURE');
             }
         }
         catch(LabException $labExc)
@@ -549,7 +536,6 @@ class LabController extends Controller {
             Log::error($msg);
         }
         return redirect('labappointment?methode=Lab')->with('msg','');
-
     }
 
     /**
@@ -568,14 +554,12 @@ class LabController extends Controller {
 
         try
         {
-            //dd($personalHistoryRequest->all());
             $patientUrineVM = PatientProfileMapper::setPatientUrineExamination($examinationRequest);
-            //dd($patientHistoryVM);
             $status = $this->labService->savePatientUrineTests($patientUrineVM);
 
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','SUCCESS');
+                return redirect('labappointment?methode=Lab')->with('msg','Urine Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -621,7 +605,7 @@ class LabController extends Controller {
 
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','SUCCESS');
+                return redirect('labappointment?methode=Lab')->with('msg','XRay Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -653,21 +637,19 @@ class LabController extends Controller {
 
     public function savePatientDentalTests(Request $dentalRequest)
     {
-        //dd($dentalRequest);
         $patientDentalVM = null;
         $status = true;
         $responseJson = null;
 
         try
         {
-            //dd($personalHistoryRequest->all());
+            //dd($dentalRequest->all());
             $patientDentalVM = PatientProfileMapper::setPatientDentalExamination($dentalRequest);
-            //dd($patientDentalVM);
             $status = $this->labService->savePatientDentalTests($patientDentalVM);
 
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','SUCCESS');
+                return redirect('labappointment?methode=Lab')->with('msg','Dental Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -699,22 +681,17 @@ class LabController extends Controller {
 
     public function savePatientScanDetails(Request $scanRequest)
     {
-        //dd($scanRequest);
         $patientScanVM = null;
         $status = true;
         $responseJson = null;
 
         try
         {
-            //dd($personalHistoryRequest->all());
             $patientScanVM = PatientProfileMapper::setPatientScanDetails($scanRequest);
-            //dd($patientScanVM);
             $status = $this->labService->savePatientScanDetails($patientScanVM);
-
-
             if($status)
             {
-                return redirect('labappointment?methode=Lab')->with('msg','SUCCESS');
+                return redirect('labappointment?methode=Lab')->with('msg','Scan Diagnostics Appointment Booked Successfully');
             }
             else
             {
@@ -733,8 +710,6 @@ class LabController extends Controller {
             Log::error($msg);
         }
         return redirect('labappointment?methode=Lab')->with('msg','');
-
-
     }
 
     public function loaddoctorLab(Request $request){
@@ -808,16 +783,12 @@ class LabController extends Controller {
         $labTests = null;
         $patientAppointment = null;
         //$jsonResponse = null;
-        //dd('Inside patient details');
         try {
-         //  dd($patientId);
             $patientDetails =$this->labService->getPatientProfile($patientId);
-            //dd($patientDetails);
             // $patientExaminations = HospitalServiceFacade::getExaminationDates($patientId, $hid);
             $patientExaminations = $this->labService->getExaminationDatesByDate($patientId, $hid, $date);
-           // dd($patientExaminations);
+            //dd($patientExaminations);
         } catch (HospitalException $hospitalExc) {
-            //dd($hospitalExc);
             //$jsonResponse = new ResponseJson(ErrorEnum::FAILURE, trans('messages.'.ErrorEnum::PATIENT_DETAILS_ERROR));
             $errorMsg = $hospitalExc->getMessageForCode();
             $msg = AppendMessage::appendMessage($hospitalExc);

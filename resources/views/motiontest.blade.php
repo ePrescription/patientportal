@@ -21,18 +21,17 @@
             showMonthAfterYear: true,
         }
     });
-    $('#TestDate').datepicker({
+    $('#motTestDate').datepicker({
         dateFormat: "mm/dd/yy",
         minDate: new Date()
     });
-    function changeValues(did) {
 
-        var dateValue = $("#TestDate").val();
+    function changeValues(did) {
+        var dateValue = $("#motTestDate").val();
         var hid = $("#hospitalId").val();
         var did = $("#doctorId").val();
 
         if (did != "Select Doctor") {
-
             var new_appointment_date = dateValue;
             var prev_appointment_date = $("input#prev_appointment_date").val();
 
@@ -41,8 +40,7 @@
             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-            //alert(diffDays);
-
+           //alert(diffDays);
 
             if (diffDays <= 15) {
                 $("#paymentTypeInfo").hide();
@@ -58,14 +56,11 @@
                 $('input#payment1').attr('required', true);
                 $('input#payment2').attr('required', true);
                 $('input#fee').attr('required', true);
-
             }
-
 
             var BASEURL = "{{ URL::to('/') }}/";
             var status = 1;
             var callurl = BASEURL + 'rest/api/appointmenttimes';
-
 
             var d = new Date();
             var h = (d.getHours() < 10 ? '0' : '') + d.getHours();
@@ -73,7 +68,6 @@
             var s = (d.getSeconds() < 10 ? '0' : '') + d.getSeconds();
             var t = h + ":" + m + ":" + s;
             var timeValue = h + ":" + m;
-
 
             $.ajax({
                 url: callurl,
@@ -85,16 +79,14 @@
                     if (data.result['result'] == "Doctor Is Not Available") {
                         alert(data.result['result']);
                         var terms = '<option value="">--Choose Time--</option>';
-                        $("#examinationTime").html(terms);
+                        $("#motionexaminationTime").html(terms);
                     } else {
-
                         var terms = '<option value="">--Choose Time--</option>';
                         $.each(data.result, function (index, value) {
                             terms += '<option value="' + index + '">' + value + '</option>';
                         });
-                        $("#examinationTime").html(terms);
+                        $("#motionexaminationTime").html(terms);
                     }
-
                 }
             });
         } else {
@@ -105,9 +97,6 @@
     }
     function loaddoctor(hid) {
         var BASEURL = "{{ URL::to('/') }}/";
-        var did=$("#doctorId").val();
-        var date=$("#TestDate").val();
-        //alert(date);
         var status = 1;
         var callurl = BASEURL + '/hospital/'+hid+'/HospitalDoctors';
         //  alert(callurl);
@@ -120,7 +109,7 @@
                 for (var i = 0; i < data.length; i++) {
                     list = list + "<option value='" + data[i]['doctor_id'] + "'>" + data[i]['name'] + "</option>";
                 }
-                $("#doctorId").html(list);
+                $("#motiondocId").html(list);
             }
         });
     }
@@ -207,7 +196,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label">Select Hospital</label>
         <div class="col-sm-8">
-            <select name="hospitalId" id="hospitalId" onchange="loaddoctor(this.value)"  class="form-control input-md" placeholder="Hospital">
+            <select name="hospitalId" id="hospitalId" onchange="loaddoctor(this.value)"  class="form-control input-md mothospId" placeholder="Hospital">
                 <option value="">Select Hospital</option>
                 @foreach ($hospitals as $val)
 
@@ -221,17 +210,17 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label" >Select Doctor</label>
         <div class="col-sm-8">
-            <select name="doctorId" id="doctorId" onchange="changeValues(this.value)"  class="form-control input-md" placeholder="Hospital">
+            <select name="doctorId" id="motiondocId" onchange="changeValues(this.value)"  class="form-control input-md" placeholder="Hospital">
             </select>
         </div>
     </div>
         <label class="col-sm-4 control-label">Test Date</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:UpdateTestDates(this.value);" />
+            <input type="text" class="form-control" name="examinationDate" id="motTestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:changeTimeSlots(this.value);" />
             @if ($errors->has('examinationDate'))<p class="error" style="">{!!$errors->first('examinationDate')!!}</p>@endif
         </div>
         <div class="col-sm-4">
-            <select class="form-control" name="examinationTime" id="examinationTime"
+            <select class="form-control" name="examinationTime" id="motionexaminationTime"
                     required="required">
 
                 <option value=""> --:----</option>
@@ -296,3 +285,56 @@ $time_array = array(
 </div>
  
     <!-- container -->
+
+<script>
+    function changeTimeSlots(sdate) {
+        var dateValue = $("#motTestDate").val();
+        var hid = $(".mothospId").val();
+        var did = $("#motiondocId").val();
+
+        var BASEURL = "{{ URL::to('/') }}/";
+        var status = 1;
+        var callurl = BASEURL + 'rest/api/appointmenttimes';
+
+        var d = new Date();
+
+        var dat = (d.getDate() < 10 ? '0' : '') + d.getDate();
+        var mon1 = d.getMonth() + 1;
+        var mon = (mon1 < 10 ? '0' : '') + mon1;
+        var yr = (d.getFullYear() < 10 ? '0' : '') + d.getFullYear();
+        var todayDate = mon + '/' + dat + '/' + yr;
+        var timeValue = null;
+
+        if(todayDate == dateValue){
+            var h = (d.getHours() < 10 ? '0' : '') + d.getHours();
+            var m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+            var s = (d.getSeconds() < 10 ? '0' : '') + d.getSeconds();
+            var t = h + ":" + m + ":" + s;
+            timeValue = h + ":" + m;
+        }
+        else{
+            timeValue = "00:00";
+        }
+
+        $.ajax({
+            url: callurl,
+            type: "get",
+            data: {"date": dateValue, "time": timeValue, "status": status, "doctorId": did, "hospitalId": hid},
+            success: function (data) {
+                //alert(data.result['result']);
+                console.log(data);
+                if (data.result['result'] == "Doctor Is Not Available") {
+                    alert(data.result['result']);
+                    var terms = '<option value="">--Choose Time--</option>';
+                    $("#motionexaminationTime").html(terms);
+                } else {
+                    var terms = '<option value="">--Choose Time--</option>';
+                    $.each(data.result, function (index, value) {
+                        terms += '<option value="' + index + '">' + value + '</option>';
+                    });
+                    $("#motionexaminationTime").html(terms);
+                }
+            }
+        });
+    }
+</script>

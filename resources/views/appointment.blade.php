@@ -17,6 +17,26 @@
             }
         }
     </style>
+    <script>
+        function loaddoctor(hid) {
+            var BASEURL = "{{ URL::to('/') }}/";
+            var status = 1;
+            var callurl = BASEURL + '/hospital/'+hid+'/HospitalDoctors';
+            //  alert(callurl);
+            $.ajax({
+                url: callurl,
+                type: "get",
+                data: {"id": hid, "status": status},
+                success: function (data) {
+                    var list = "<option value=''>Select Doctor</option>";
+                    for (var i = 0; i < data.length; i++) {
+                        list = list + "<option value='" + data[i]['doctor_id'] + "'>" + data[i]['name'] + "</option>";
+                    }
+                    $("#appdoctorId").html(list);
+                }
+            });
+        }
+    </script>
     <?php
     $time_array = array(
         '00:00:00' => '12:00 AM', '00:05:00' => '12:05 AM', '00:10:00' => '12:10 AM', '00:15:00' => '12:15 AM', '00:20:00' => '12:20 AM', '00:25:00' => '12:25 AM', '00:30:00' => '12:30 AM', '00:35:00' => '12:35 AM', '00:40:00' => '12:40 AM', '00:45:00' => '12:45 AM', '00:50:00' => '12:50 AM', '00:55:00' => '12:55 AM',
@@ -49,7 +69,6 @@
 
     <script>
         $(function () {
-
             var pickerOpts = {
                 format: 'd-m-Y',
                 //timepicker:true,
@@ -59,13 +78,9 @@
                 // showSeconds: true,
                 showMonthAfterYear: true,
             };
-
-
             $("#datepicker1").datetimepicker(pickerOpts);
             // $("#toDate").datetimepicker(pickerOpts1);
-
         });
-
 
         jQuery(document).ready(function ($) {
             $(".scroll").click(function (event) {
@@ -185,21 +200,55 @@
                     data: {specialist: specialist, doctor_id: doctor_id, hsp_id: hospital},
                     dataType: 'json',
                     success: function (msg) {
-
                         var list = "<table class='table table-bordered' style='color:black;font-size:13px;'><thead> <tr><th>Day</th> <th>Morning</th><th> Evening</th></tr></thead><tbody>";
                         for (var i = 0; i < msg.length; i++) {
 
                             list = list + "<tr><td>" + msg[i]['day'] + "</td><td> " + msg[i]['morning'] + "</td><td>" + msg[i]['evening'] + "</td></tr> ";
 
                         }
-
                         $("#availablity").html(list + "<tbody></table>");
 
                     }
                 });
-
-
             });
+
+
+            /*$("#datepicker1").change(function () {
+                var specialist = $('#specialist').val();
+                var doctor_id = $("#doctor").val();
+                var hospital = $("#hospital").val();
+                var date = $("#datepicker1").val();
+                $.ajax({
+                    type: "get",
+                    url: 'timeslots',
+                    data: {specialist: specialist, doctor_id: doctor_id, hsp_id: hospital, date: date},
+                    dataType: 'json',
+                    success: function (msg) {
+                        var timeslots = "<table><tr><th colspan='5'>Morning Time's</th></tr><tr>";
+                        var mrng = msg['mrng'];
+                        for (var i = 0; i < mrng.length; i++) {
+                            if (i % 5 == 0) {
+                                timeslots = timeslots + "</tr><tr>";
+                            }
+                            timeslots = timeslots + "<td><input name='timeslot' type='radio' value='" + mrng[i] + "'/>" + mrng[i] + "</td> ";
+
+                        }
+                        timeslots = timeslots + "</tr><tr><th colspan='5'>Evening Time's</th></tr>";
+
+                        var mrng = msg['evng'];
+
+                        for (var i = 0; i < mrng.length; i++) {
+                            if (i % 5 == 0) {
+                                timeslots = timeslots + "</tr><tr>";
+                            }
+                            timeslots = timeslots + "<td><input name='timeslot' type='radio' value='" + mrng[i] + "'/>" + mrng[i] + "</td> ";
+
+                        }
+                        timeslots = timeslots + "</tr>";
+                        $("#timeslots").html(timeslots);
+                    }
+                });
+            }); */
             /*
                         $("#hospitalId").change(function () {
                             var hospital_id = $('#hospitalId').val();
@@ -225,51 +274,6 @@
                                 }
                             });
                         });
-
-
-                        /*  $("#datepicker1").change(function () {
-                              var specialist = $('#specialist').val();
-                              var doctor_id = $("#doctor").val();
-                              var hospital = $("#hospital").val();
-                              var date = $("#datepicker1").val();
-
-                              $.ajax({
-                                  type: "get",
-                                  url: 'timeslots',
-                                  data: {specialist: specialist, doctor_id: doctor_id, hsp_id: hospital, date: date},
-                                  dataType: 'json',
-                                  success: function (msg) {
-
-                                      var timeslots = "<table><tr><th colspan='5'>Morning Time's</th></tr><tr>";
-                                      var mrng = msg['mrng'];
-
-                                      for (var i = 0; i < mrng.length; i++) {
-                                          if (i % 5 == 0) {
-                                              timeslots = timeslots + "</tr><tr>";
-                                          }
-                                          timeslots = timeslots + "<td><input name='timeslot' type='radio' value='" + mrng[i] + "'/>" + mrng[i] + "</td> ";
-
-                                      }
-                                      timeslots = timeslots + "</tr><tr><th colspan='5'>Evening Time's</th></tr>";
-
-                                      var mrng = msg['evng'];
-
-                                      for (var i = 0; i < mrng.length; i++) {
-                                          if (i % 5 == 0) {
-                                              timeslots = timeslots + "</tr><tr>";
-                                          }
-                                          timeslots = timeslots + "<td><input name='timeslot' type='radio' value='" + mrng[i] + "'/>" + mrng[i] + "</td> ";
-
-                                      }
-                                      timeslots = timeslots + "</tr>";
-                                      $("#timeslots").html(timeslots);
-                                  }
-                              });
-
-
-
-                          });*/
-
 
             $("#specialist").change(function () {
                 var specialist = $('#specialist').val();
@@ -484,8 +488,7 @@
                                         <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>AppointmentType<span class="red">*</span></label>
-                                                <select name="appointmentCategory" id="appointmentCategory"
-                                                        class="form-control" required="required">
+                                                <select name="appointmentCategory" id="appointmentCategory" class="form-control" required="required">
                                                     <option value="">--CHOOSE--</option>
                                                     <option value="Normal">Normal</option>
                                                     <option value="Special">Special</option>
@@ -498,10 +501,7 @@
                                         <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Date<span class="red">*</span></label>
-                                                <input type="text" class="form-control" name="appointmentDate"
-                                                       id="TestDate" value="{{date('Y-m-d')}}"
-                                                       style="line-height: 20px;" required="required"
-                                                       onchange="javascript:appointmentTypePatient(); "/>
+                                                <input type="text" class="form-control" name="appointmentDate"  id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:appointmentTypePatient(); "/>
                                                 <div class="validation"></div>
                                             </div>
                                         </div>
@@ -509,27 +509,20 @@
                                         <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Hospital</label>
-                                                <select name="hospitalId" id="hospitalId"
-                                                        onchange="LoadDoctors(this.value)" class="form-control input-md"
-                                                        placeholder="Hospital" required>
+                                                <select name="hospitalId" id="hospitalId" onchange="loaddoctor(this.value)" class="form-control input-md" required>
                                                     <option value="">Select Hospital</option>
                                                     @foreach ($hospitals as $val)
-
                                                         <option value="{{ $val['hospital_id'] }}">{{ $val['hospital_name'] }}</option>
-
                                                     @endforeach
-
                                                 </select>
                                                 <div class="validation"></div>
                                             </div>
                                         </div>
+
                                         <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Select Doctor</label>
-                                                <select name="doctorId" id="doctorId"
-                                                        onchange="javascript:appointmentTypePatient(); "
-                                                        class="form-control input-md"
-                                                        placeholder="doctor">
+                                                <select name="doctorId" id="appdoctorId" onchange="javascript:appointmentTypePatient();" class="form-control input-md" placeholder="doctor">
                                                     <option value="">Select Doctor</option>
                                                 </select>
                                                 <div class="validation"></div>
@@ -540,28 +533,21 @@
                                         <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Appointment Time<span class="red">*</span></label>
-                                                <select class="form-control text-width" name="appointmentTime" id="appointmentTime"
-                                                        required="required"
-                                                        onchange="javascript:getTokenId(this.value);">
-
+                                                <select class="form-control text-width" name="appointmentTime" id="appointmentTime" required="required" onchange="javascript:getTokenId(this.value);">
                                                     <option value=""> --:----</option>
                                                     @foreach($time_array as $time_value)
                                                         <?php $key = array_keys($time_array, $time_value); ?>
                                                         <option value="{{$key[0]}}"> {{$time_value}} </option>
                                                     @endforeach
-
                                                 </select>
                                                 <div class="validation"></div>
-
                                             </div>
                                         </div>
 
                                         <div class="col-xs-12 col-sm-6 col-md-6" id="token" style="display: none">
                                             <div class="form-group">
                                                 <b>Your Token ID:</b>
-                                                <p name="tokenId" id="tokenId" required="required" readonly
-                                                   style="font-size: 20px;color: blue;"></p>
-
+                                                <p name="tokenId" id="tokenId" required="required" readonly style="font-size: 20px;color: blue;"></p>
                                             </div>
                                         </div>
                                     <!--<div class="col-xs-6 col-sm-6 col-md-6">
@@ -621,7 +607,7 @@
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-6 col-md-6 ">
                                                 <div class="form-group">
-                                                    <label>Briefnote</label>
+                                                    <label>Brief Note</label>
                                                     <textarea id="briefnote" name="briefnote"
                                                               class="form-control input-md"
                                                               value="" placeholder="Brief Note" required></textarea>
@@ -688,6 +674,7 @@
 
 
                                 </form>
+
                             </div>
                         </div>
 
@@ -719,10 +706,10 @@
                 rules: {
 
                     doctorId: {
-                        required: true,
+                        required: true
                     },
                     hospitalId: {
-                        required: true,
+                        required: true
                     },
                     appointmentCategory:{
                         required: true
@@ -741,7 +728,7 @@
                 // Specify validation error messages
                 messages: {
                     doctorId: {
-                        required: "Please Select Doctor Id",
+                        required: "Please Select Doctor Id"
                     },
                     appointmentDate: "Please provide a valid Date",
                     appointmentTime:"Please Select Appointment Time",
@@ -863,13 +850,10 @@
             } else {
                 alert("Please Select Doctor");
             }
-
-
         }
 
 
         function getTokenId() {
-
             var BASEURL = "{{ URL::to('/') }}/";
             var hid = $("#hospitalId").val();
             var date = $("#TestDate").val();
@@ -886,7 +870,6 @@
                 success: function (data) {
                     document.getElementById('token').style.display = 'block';
                     $("#tokenId").html(data);
-
                 }
             });
 

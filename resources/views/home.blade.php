@@ -249,7 +249,7 @@ box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.38);
                         </div>
                     </div>
                 </a>
-                <a href="secondoption" class="opt-grids">
+                <a href="secondopinion" class="opt-grids">
                     <div class="col-md-3 col-sm-3 col-xs-12">
                         <div class="box">
                             <div class="box-icon bg-color3"> <span class="fa fa-4x fa-book"></span> </div>

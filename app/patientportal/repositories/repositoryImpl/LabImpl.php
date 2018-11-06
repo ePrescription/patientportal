@@ -13,6 +13,8 @@ use App\Http\ViewModels\PatientScanViewModel;
 use App\Http\ViewModels\PatientUrineExaminationViewModel;
 use App\Http\ViewModels\PatientXRayViewModel;
 use App\Http\ViewModels\TestResultsViewModel;
+use App\patientportal\modal\PatientUltrasoundExamination;
+use App\patientportal\modal\PatientUltrasoundExaminationItems;
 use App\patientportal\modal\BloodExamination;
 use App\patientportal\modal\Doctor;
 use App\patientportal\modal\DoctorAppointment;
@@ -42,12 +44,16 @@ use App\patientportal\repositories\repoInterface\LabInterface;
 use App\patientportal\utilities\AppointmentType;
 use App\patientportal\utilities\ErrorEnum\ErrorEnum;
 use App\patientportal\utilities\Helper;
-use App\prescription\model\entities\PatientUltrasoundExamination;
+//use App\prescription\model\entities\PatientUltrasoundExamination;
 use Illuminate\Support\Facades\DB;
 use Storage;
 use Carbon\Carbon;
 use Config as CA;
 use Crypt;
+
+use App\patientportal\utilities\Exception\UserNotFoundException;
+use App\patientportal\utilities\Exception\LabException;
+use App\patientportal\utilities\Exception\HospitalException;
 
 /**
  * Created by PhpStorm.
@@ -717,12 +723,10 @@ class LabImpl implements LabInterface
     {
         $status = true;
         //$hospitalLabId = null;
-        //dd($patientBloodVM);
 
         try {
             $patientId = $patientBloodVM->getPatientId();
             $doctorId = $patientBloodVM->getDoctorId();
-            //dd($doctorId);
             $hospitalId = $patientBloodVM->getHospitalId();
             //$labId = $patientBloodVM->getLabId();
             //$patientUser = User::find($patientId);
@@ -730,7 +734,6 @@ class LabImpl implements LabInterface
             $bloodExaminations = $patientBloodVM->getExaminations();
             $examinationDate = $patientBloodVM->getExaminationDate();
             $examinationTime = $patientBloodVM->getExaminationTime();
-            // dd($patientBloodVM);
 
             $bloodExamCategory = CA::get('constants.BLOOD_EXAMINATION_CATEGORY');
 
@@ -760,7 +763,6 @@ class LabImpl implements LabInterface
 
 
                 $patientTokenId = $this->generateTokenId($hospitalId, $doctorId, $examinationDate);
-                //dd($patientTokenId);
                 //$patientTokenId=intval($patientTokenId)+1;
                 $doctorAppointment->token_id = $patientTokenId;
                 //BY PRASANTH 24-01-2018 END//
@@ -782,9 +784,7 @@ class LabImpl implements LabInterface
                 //$patientUser = User::find($patientId);
                 //DB::table('patient_family_illness')->where('patient_id', $patientId)->delete();
                 //dd($patientDentalVM->getExaminationDate());
-                //dd('Test');
                 //$examinationDt = property_exists($patientBloodVM, 'examinationDate') ? $examinationDate : null;
-                //dd('After Test');
                 //dd($examinationDt);
 
                 if (!is_null($examinationDate)) {
@@ -815,23 +815,15 @@ class LabImpl implements LabInterface
                 $bloodExamination->save();
 
                 foreach ($bloodExaminations as $examination) {
-
-                    //dd($bloodExaminations);
                     $examinationId = $examination->examinationId;
                     $isValueSet = $examination->isValueSet;
 
                     if (in_array($examinationId, $bloodExamCategory)) {
-
-                        //dd($examinationId);
                         $categoryQuery = DB::table('blood_examination as be')->where('be.parent_id', '=', $examinationId);
                         $categoryQuery->where('be.has_child', '!=', 1);
                         $categoryQuery->where('be.status', '=', 1);
                         $categoryQuery->select('id');
-
-                        //dd($categoryQuery->toSql());
-
                         $categoryItems = $categoryQuery->get();
-                        //dd($categoryItems);
 
                         foreach ($categoryItems as $item) {
                             // dd($item);
@@ -1061,33 +1053,24 @@ class LabImpl implements LabInterface
     {
         $status = true;
         $patientExaminationDate = null;
-        //$hospitalLabId = null;
-        //$patientXRayExamination = null;
 
         try {
-            //dd('test');
             $patientId = $patientXRayVM->getPatientId();
             $doctorId = $patientXRayVM->getDoctorId();
-            //dd($doctorId);
             $hospitalId = $patientXRayVM->getHospitalId();
             //$labId = $patientXRayVM->getLabId();
-
             $xrayExaminations = $patientXRayVM->getPatientXRayTests();
             $examinationDate = $patientXRayVM->getExaminationDate();
             $examinationTime = $patientXRayVM->getExaminationTime();
-
-
             $patient = Helper::checkPatientExists($patientId);
 
             $date = date('Y-m-d');
             $doctorappment = DB::table('doctor_appointment')->where('patient_id', '=', $patient[0])->where('appointment_date', '=', $date)->select('patient_id')->get();
 
-
             if (is_null($doctorappment)) {
                 //$appointments = $patientProfileVM->getAppointment();
                 $appointmentStatus = AppointmentType::APPOINTMENT_OPEN;
                 $doctorAppointment = new DoctorAppointment();
-
                 $doctorAppointment->patient_id = $patientId;
                 $doctorAppointment->doctor_id = $doctorId;
                 $doctorAppointment->hospital_id = $hospitalId;
@@ -1102,7 +1085,6 @@ class LabImpl implements LabInterface
 
 
                 $patientTokenId = $this->generateTokenId($hospitalId, $doctorId, $examinationDate);
-                //dd($patientTokenId);
                 //$patientTokenId=intval($patientTokenId)+1;
                 $doctorAppointment->token_id = $patientTokenId;
                 //BY PRASANTH 24-01-2018 END//
@@ -1116,30 +1098,17 @@ class LabImpl implements LabInterface
                 $doctorAppointment->modified_by = "Admin";
                 $doctorAppointment->created_at = date("Y-m-d H:i:s");
                 $doctorAppointment->updated_at = date("Y-m-d H:i:s");
-
                 $doctorUser = $doctorAppointment->save();
-
             }
-
 
             if (!is_null($patient)) {
                 //DB::table('patient_family_illness')->where('patient_id', $patientId)->delete();
-                //dd($patientDentalVM->getExaminationDate());
                 $examinationDt = property_exists($patientXRayVM->getExaminationDate(), 'examinationDate') ? $examinationDate : null;
-                //dd($examinationDt);
-
                 if (!is_null($examinationDate)) {
                     $patientExaminationDate = date('Y-m-d', strtotime($examinationDate));
                 } else {
                     $patientExaminationDate = null;
                 }
-
-                /*if(is_null($labId))
-                {
-                    $hospitalLabId = $this->getLabIdForHospital($hospitalId);
-                }*/
-
-                //dd($patientExaminationDate);
 
                 $xrayExamination = new PatientXRayExamination();
                 $xrayExamination->patient_id = $patientId;
@@ -1155,14 +1124,11 @@ class LabImpl implements LabInterface
                 $xrayExamination->save();
 
                 foreach ($xrayExaminations as $examination) {
-                    //dd($examination);
                     $xrayExaminationItems = new PatientXRayExaminationItems();
                     $xrayExaminationItems->xray_examination_item_id = $examination->xrayExaminationId;
                     //$examinationDate = property_exists($patientDentalVM->getExaminationDate(), 'examinationDate') ? $examinationDate : null;
-
                     //$xrayExaminationItems->xray_examination_name = property_exists($examination->xrayExaminationName, 'xrayExaminationName') ? $examination->xrayExaminationName : null;
                     $xrayExaminationItems->xray_examination_name = (isset($examination->xrayExaminationName)) ? $examination->xrayExaminationName : null;
-
                     //$dentalExaminationItems->dental_examination_name = $examination->dentalExaminationName;
                     $xrayExaminationItems->created_by = $patientXRayVM->getCreatedBy();
                     $xrayExaminationItems->modified_by = $patientXRayVM->getUpdatedBy();
@@ -1171,7 +1137,6 @@ class LabImpl implements LabInterface
                     if (!is_null($xrayExaminationItems->xray_examination_name)) {
                         $xrayExamination->xrayexaminationitems()->save($xrayExaminationItems);
                     }
-
                 }
 
                 $this->setPatientLabTests($patientId, $hospitalId);
@@ -1324,29 +1289,23 @@ class LabImpl implements LabInterface
     public function savePatientUltraSoundTestsNew(PatientUrineExaminationViewModel $patientUltraSoundVM)
     {
         $status = true;
-        //$hospitalLabId = null;
-
         try {
             $patientId = $patientUltraSoundVM->getPatientId();
             $doctorId = $patientUltraSoundVM->getDoctorId();
-            //dd($doctorId);
             $hospitalId = $patientUltraSoundVM->getHospitalId();
-            //$labId = $patientUltraSoundVM->getLabId();
-            //$patientUser = User::find($patientId);
 
             $ultrasoundExaminations = $patientUltraSoundVM->getExaminations();
+            //dd($ultrasoundExaminations);
             $examinationDate = $patientUltraSoundVM->getExaminationDate();
             $examinationTime = $patientUltraSoundVM->getExaminationTime();
-            dd($patientId);
             $patient = Helper::checkPatientExists($patientId);
-            dd();
             $date = date('Y-m-d');
             $doctorappment = DB::table('doctor_appointment')->where('patient_id', '=', $patient[0])->where('appointment_date', '=', $date)->select('patient_id')->get();
-
 
             if (is_null($doctorappment)) {
                 //$appointments = $patientProfileVM->getAppointment();
                 $appointmentStatus = AppointmentType::APPOINTMENT_OPEN;
+                dd($appointmentStatus);
                 $doctorAppointment = new DoctorAppointment();
 
                 $doctorAppointment->patient_id = $patientId;
@@ -1357,16 +1316,10 @@ class LabImpl implements LabInterface
                 $doctorAppointment->appointment_time =
                 $doctorAppointment->appointment_category = $examinationTime;
                 $doctorAppointment->appointment_status_id = $appointmentStatus;
-                //BY PRASANTH 24-01-2018 START//
-                //we are adding+1 for existing count value for display current TokenID
-                // $patientTokenId=intval($patientTokenId)+1;
-
-
+                dd($examinationDate);
                 $patientTokenId = $this->generateTokenId($hospitalId, $doctorId, $examinationDate);
-                //dd($patientTokenId);
-                //$patientTokenId=intval($patientTokenId)+1;
+                dd($patientTokenId);
                 $doctorAppointment->token_id = $patientTokenId;
-                //BY PRASANTH 24-01-2018 END//
                 $doctorAppointment->referral_type = "";
                 $doctorAppointment->referral_doctor = "";
                 $doctorAppointment->referral_hospital = "";
@@ -1381,55 +1334,30 @@ class LabImpl implements LabInterface
                 $doctorUser = $doctorAppointment->save();
 
             }
-            if (!is_null($patient)) {
-                //$patientUser = User::find($patientId);
-                //DB::table('patient_family_illness')->where('patient_id', $patientId)->delete();
-                //dd($patientDentalVM->getExaminationDate());
-                //dd('Test');
-                //$examinationDt = property_exists($patientBloodVM, 'examinationDate') ? $examinationDate : null;
-                //dd('After Test');
-                //dd($examinationDt);
 
+            if (!is_null($patient)) {
                 if (!is_null($examinationDate)) {
                     $patientExaminationDate = date('Y-m-d', strtotime($examinationDate));
                 } else {
                     $patientExaminationDate = null;
                 }
 
-                /*if(is_null($labId))
-                {
-                    $hospitalLabId = $this->getLabIdForHospital($hospitalId);
-                }*/
-
-                //dd($patientExaminationDate);
-
                 $ultrasoundExamination = new PatientUltrasoundExamination();
                 $ultrasoundExamination->patient_id = $patientId;
                 $ultrasoundExamination->hospital_id = $hospitalId;
                 $ultrasoundExamination->doctor_id = $doctorId;
-                //$ultrasoundExamination->lab_id = $hospitalLabId;
                 $ultrasoundExamination->examination_date = $patientExaminationDate;
                 $ultrasoundExamination->examination_time = $examinationTime;
                 $ultrasoundExamination->created_by = $patientUltraSoundVM->getCreatedBy();
                 $ultrasoundExamination->modified_by = $patientUltraSoundVM->getUpdatedBy();
                 $ultrasoundExamination->created_at = $patientUltraSoundVM->getCreatedAt();
                 $ultrasoundExamination->updated_at = $patientUltraSoundVM->getUpdatedAt();
-                //$patientBloodExamination = $bloodExamination->save();
                 $ultrasoundExamination->save();
+                //dd($ultrasoundExamination);
 
                 foreach ($ultrasoundExaminations as $examination) {
-                    //dd($bloodExaminations);
-                    //$examinationId = $examination->examinationId;
-                    //$examinationName = $examination->examinationName;
-                    //$pregnancyDate = $pregnancy->pregnancyDate;
                     $ultrasoundExaminationItems = new PatientUltrasoundExaminationItems();
                     $ultrasoundExaminationItems->ultra_sound_id = $examination->examinationId;
-                    //$examinationDate = property_exists($patientDentalVM->getExaminationDate(), 'examinationDate') ? $examinationDate : null;
-
-                    //$dentalExaminationItems->dental_examination_name = property_exists($examination->dentalExaminationName, 'dentalExaminationName') ? $examination->dentalExaminationName : null;
-                    //$dentalExaminationItems->dental_examination_name = (isset($examination->dentalExaminationName)) ? $examination->dentalExaminationName : null;
-
-                    //$dentalExaminationItems->dental_examination_name = $examination->dentalExaminationName;
                     $ultrasoundExaminationItems->is_value_set = $examination->isValueSet;
                     $ultrasoundExaminationItems->created_by = $patientUltraSoundVM->getCreatedBy();
                     $ultrasoundExaminationItems->modified_by = $patientUltraSoundVM->getUpdatedBy();
@@ -1437,11 +1365,9 @@ class LabImpl implements LabInterface
                     $ultrasoundExaminationItems->updated_at = $patientUltraSoundVM->getUpdatedAt();
 
                     $ultrasoundExamination->ultrasoundexaminationitems()->save($ultrasoundExaminationItems);
-
+                    //dd($ultrasoundExaminationItems);
                 }
-
                 $this->setPatientLabTests($patientId, $hospitalId);
-
             } else {
                 throw new UserNotFoundException(null, ErrorEnum::PATIENT_USER_NOT_FOUND, null);
             }
@@ -1955,7 +1881,6 @@ class LabImpl implements LabInterface
             $date = date('Y-m-d');
             $doctorappment = DB::table('doctor_appointment')->where('patient_id', '=', $patient[0])->where('appointment_date', '=', $date)->select('patient_id')->get();
 
-
             if (is_null($doctorappment)) {
                 //$appointments = $patientProfileVM->getAppointment();
                 $appointmentStatus = AppointmentType::APPOINTMENT_OPEN;
@@ -1996,12 +1921,7 @@ class LabImpl implements LabInterface
             if (!is_null($patient)) {
                 //$patientUser = User::find($patientId);
                 //DB::table('patient_family_illness')->where('patient_id', $patientId)->delete();
-                //dd($patientDentalVM->getExaminationDate());
-                //dd('Test');
                 //$examinationDt = property_exists($patientBloodVM, 'examinationDate') ? $examinationDate : null;
-                //dd('After Test');
-                //dd($examinationDt);
-
                 if (!is_null($examinationDate)) {
                     $patientExaminationDate = date('Y-m-d', strtotime($examinationDate));
                 } else {
@@ -2374,35 +2294,15 @@ class LabImpl implements LabInterface
         $status = true;
         $patientExaminationDate = null;
         $patientDentalExamination = null;
-        //$hospitalLabId = null;
 
         try {
-            //dd('test');
             $patientId = $patientDentalVM->getPatientId();
             $doctorId = $patientDentalVM->getDoctorId();
-            //dd($doctorId);
             $hospitalId = $patientDentalVM->getHospitalId();
-            //$labId = $patientDentalVM->getLabId();
-            //$patientUser = User::find($patientId);
 
-            $dentalExaminations = $patientDentalVM->getPatientDentalTests();
+            $dentalExaminations = $patientDentalVM->getExaminations();
             $examinationDate = $patientDentalVM->getExaminationDate();
             $examinationTime = $patientDentalVM->getExaminationTime();
-            //dd($examinationDate);
-
-            /*$doctor = Helper::checkDoctorExists($doctorId);
-
-            if(is_null($doctor))
-            {
-                throw new UserNotFoundException(null, ErrorEnum::USER_NOT_FOUND, null);
-            }
-
-            $hospital = Helper::checkHospitalExists($hospitalId);
-
-            if(is_null($hospital))
-            {
-                throw new UserNotFoundException(null, ErrorEnum::HOSPITAL_USER_NOT_FOUND, null);
-            }*/
 
             $patient = Helper::checkPatientExists($patientId);
             $date = date('Y-m-d');
@@ -2468,7 +2368,6 @@ class LabImpl implements LabInterface
                 $dentalExamination->save();
 
                 foreach ($dentalExaminations as $examination) {
-                    //dd($examination);
                     //$examinationId = $examination->examinationId;
                     //$examinationName = $examination->examinationName;
                     //$pregnancyDate = $pregnancy->pregnancyDate;
@@ -2487,7 +2386,6 @@ class LabImpl implements LabInterface
                     if (!is_null($dentalExaminationItems->dental_examination_name)) {
                         $dentalExamination->dentalexaminationitems()->save($dentalExaminationItems);
                     }
-
                 }
 
                 $this->setPatientLabTests($patientId, $hospitalId);
@@ -2498,14 +2396,14 @@ class LabImpl implements LabInterface
         } catch (QueryException $queryEx) {
             //dd($queryEx);
             $status = false;
-            throw new HospitalException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $queryEx);
+            throw new LabException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $queryEx);
         } catch (UserNotFoundException $userExc) {
             //dd($userExc);
-            throw new HospitalException(null, $userExc->getUserErrorCode(), $userExc);
+            throw new LabException(null, $userExc->getUserErrorCode(), $userExc);
         } catch (Exception $exc) {
             //dd($exc);
             $status = false;
-            throw new HospitalException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $exc);
+            throw new LabException(null, ErrorEnum::PATIENT_DENTAL_TESTS_SAVE_ERROR, $exc);
         }
 
         return $status;
@@ -2774,52 +2672,77 @@ class LabImpl implements LabInterface
                 throw new UserNotFoundException(null, ErrorEnum::PATIENT_USER_NOT_FOUND, null);
             }
 
-
             $latestBloodExamQuery = DB::table('patient_blood_examination as pbe');
             $latestBloodExamQuery->join('patient_blood_examination_item as pbei', 'pbei.patient_blood_examination_id', '=', 'pbe.id');
             $latestBloodExamQuery->join('blood_examination as be', 'be.id', '=', 'pbei.blood_examination_id');
             $latestBloodExamQuery->join('blood_examination as be1', 'be1.id', '=', 'be.parent_id');
             $latestBloodExamQuery->where('pbe.examination_date', '=', $date);
-
-
             $latestBloodExamQuery->where('pbe.patient_id', '=', $patientId);
             $latestBloodExamQuery->where('pbei.is_value_set', '=', 1);
             $latestBloodExamQuery->select('pbe.id as examinationId', 'pbei.id as examinationItemId', 'pbe.patient_id',
                 'pbe.hospital_id', 'be.examination_name', 'pbe.examination_date', 'pbei.test_readings', 'be.default_normal_values', 'be.is_parent', 'be1.examination_name AS parent_examination_name', 'be.units', 'pbe.doctor_id', 'pbe.fee_receipt_id');
             $bloodExaminations = $latestBloodExamQuery->get();
 
-            // dd($latestBloodExamQuery->toSql());
-            //dd($latestComplaintsQuery->toSql());
-
-            //dd($latestComplaints);
-
-
             $latestUrineExamQuery = DB::table('patient_urine_examination as pue');
             $latestUrineExamQuery->join('patient_urine_examination_item as puei', 'puei.patient_urine_examination_id', '=', 'pue.id');
             $latestUrineExamQuery->join('urine_examination as ue', 'ue.id', '=', 'puei.urine_examination_id');
             $latestUrineExamQuery->join('urine_examination as ue1', 'ue1.id', '=', 'ue.parent_id');
             $latestUrineExamQuery->where('pue.examination_date', '=', $date);
-
-
             $latestUrineExamQuery->where('pue.patient_id', '=', $patientId);
             $latestUrineExamQuery->where('puei.is_value_set', '=', 1);
             $latestUrineExamQuery->select('pue.id as examinationId', 'puei.id as examinationItemId',
                 'pue.patient_id', 'ue.examination_name', 'pue.examination_date', 'puei.test_readings', 'ue.normal_default_values', 'ue.is_parent', 'ue1.examination_name as parent_examination_name', 'pue.doctor_id', 'pue.fee_receipt_id');
             $latestUrineExaminations = $latestUrineExamQuery->get();
 
-
             $latestMotionExamQuery = DB::table('patient_motion_examination as pme');
             $latestMotionExamQuery->join('patient_motion_examination_item as pmei', 'pmei.patient_motion_examination_id', '=', 'pme.id');
             $latestMotionExamQuery->join('motion_examination as me', 'me.id', '=', 'pmei.motion_examination_id');
             $latestMotionExamQuery->where('pme.examination_date', '=', $date);
-
             $latestMotionExamQuery->where('pme.patient_id', '=', $patientId);
             $latestMotionExamQuery->where('pmei.is_value_set', '=', 1);
-
             $latestMotionExamQuery->select('pme.id as examinationId', 'pmei.id as examinationItemId',
                 'pme.patient_id', 'me.examination_name', 'pme.examination_date', 'pmei.test_readings', 'pme.doctor_id', 'pme.fee_receipt_id');
             $latestMotionExaminations = $latestMotionExamQuery->get();
 
+            $latestUltrasoundExamQuery = DB::table('patient_ultra_sound as pus');
+            $latestUltrasoundExamQuery->join('patient_ultra_sound_item as pusi', 'pusi.patient_ultra_sound_id', '=', 'pus.id');
+            $latestUltrasoundExamQuery->join('ultra_sound as us', 'us.id', '=', 'pusi.ultra_sound_id');
+            $latestUltrasoundExamQuery->where('pus.examination_date', '=', $date);
+            $latestUltrasoundExamQuery->where('pus.patient_id', '=', $patientId);
+            $latestUltrasoundExamQuery->where('pusi.is_value_set', '=', 1);
+            $latestUltrasoundExamQuery->select('pus.id as examinationId', 'pusi.id as examinationItemId',
+                'pus.patient_id', 'us.examination_name', 'pus.examination_date', 'pusi.test_readings', 'pus.doctor_id', 'pus.fee_receipt_id');
+            $latestUltrasoundExaminations = $latestUltrasoundExamQuery->get();
+
+            $latestScanQuery = DB::table('patient_scan as ps');
+            $latestScanQuery->join('patient_scan_item as psi', 'psi.patient_scan_id', '=', 'ps.id');
+            $latestScanQuery->join('scans as sc', 'sc.id', '=', 'psi.scan_id');
+            $latestScanQuery->where('ps.scan_date', '=', $date);
+            $latestScanQuery->where('ps.patient_id', '=', $patientId);
+            $latestScanQuery->where('psi.is_value_set', '=', 1);
+            $latestScanQuery->select('ps.id as examinationId', 'psi.id as examinationItemId',
+                'ps.patient_id', 'sc.scan_name', 'ps.scan_date', 'psi.test_readings', 'ps.doctor_id', 'ps.fee_receipt_id');
+            $latestScanExaminations = $latestScanQuery->get();
+
+            $latestDentalExamQuery = DB::table('patient_dental_examination as pde');
+            $latestDentalExamQuery->join('patient_dental_examination_item as pdei', 'pdei.patient_dental_examination_id', '=', 'pde.id');
+            $latestDentalExamQuery->join('dental_examination_items as dei', 'dei.id', '=', 'pdei.dental_examination_item_id');
+            $latestDentalExamQuery->where('pde.examination_date', '=', $date);
+            $latestDentalExamQuery->where('pde.patient_id', '=', $patientId);
+            //$latestDentalExamQuery->where('pdei.is_value_set', '=', 1);
+            $latestDentalExamQuery->select('pde.id as examinationId', 'pdei.id as examinationItemId',
+                'pde.patient_id', 'dei.examination_name', 'pde.examination_date', 'pde.doctor_id', 'dei.normal_default_values', 'pde.fee_receipt_id');
+            $latestDentalExaminations = $latestDentalExamQuery->get();
+
+            $latestXrayExamQuery = DB::table('patient_xray_examination as pxe');
+            $latestXrayExamQuery->join('patient_xray_examination_item as pxei', 'pxei.patient_xray_examination_id', '=', 'pxe.id');
+            $latestXrayExamQuery->join('xray_examination as xe', 'xe.id', '=', 'pxei.xray_examination_item_id');
+            $latestXrayExamQuery->where('pxe.examination_date', '=', $date);
+            $latestXrayExamQuery->where('pxe.patient_id', '=', $patientId);
+            //$latestXrayExamQuery->where('pxei.is_value_set', '=', 1);
+            $latestXrayExamQuery->select('pxe.id as examinationId', 'pxei.id as examinationItemId',
+                'pxe.patient_id', 'xe.examination_name', 'pxe.examination_date', 'pxe.doctor_id', 'pxe.fee_receipt_id');
+            $latestXrayExaminations = $latestXrayExamQuery->get();
 
             $patientQuery = DB::table('patient as p')->select('p.id', 'p.patient_id', 'p.name', 'p.email', 'p.pid',
                 'p.telephone', 'p.relationship', 'p.patient_spouse_name as spouseName', 'p.address', 'p.gender', 'p.age');
@@ -2836,38 +2759,44 @@ class LabImpl implements LabInterface
             $D = count($bloodExaminations) > 0 ? $bloodExaminations[0]->doctor_id: null;
             $U = count($latestUrineExaminations) > 0 ? $latestUrineExaminations[0]->doctor_id : null;
             $M = count($latestMotionExaminations) > 0 ? $latestMotionExaminations[0]->doctor_id : null;
-
+            $US = count($latestUltrasoundExaminations) > 0 ? $latestUltrasoundExaminations[0]->doctor_id : null;
+            $SC = count($latestScanExaminations) > 0 ? $latestScanExaminations[0]->doctor_id : null;
+            $DEN = count($latestDentalExaminations) > 0 ? $latestDentalExaminations[0]->doctor_id : null;
+            $X = count($latestXrayExaminations) > 0 ? $latestXrayExaminations[0]->doctor_id : null;
 
             $DID = count($bloodExaminations) > 0 ? $bloodExaminations[0]->fee_receipt_id : null;
             $UID = count($latestUrineExaminations) > 0 ? $latestUrineExaminations[0]->fee_receipt_id : null;
             $MID = count($latestMotionExaminations) > 0 ? $latestMotionExaminations[0]->fee_receipt_id : null;
+            $USID = count($latestUltrasoundExaminations) > 0 ? $latestUltrasoundExaminations[0]->fee_receipt_id : null;
+            $SCID = count($latestScanExaminations) > 0 ? $latestScanExaminations[0]->fee_receipt_id : null;
+            $DENID = count($latestDentalExaminations) > 0 ? $latestDentalExaminations[0]->fee_receipt_id : null;
+            $XID = count($latestXrayExaminations) > 0 ? $latestXrayExaminations[0]->fee_receipt_id : null;
 
             $receiptID = null;
             if ($DID != null) $receiptID = $DID;
             if ($UID != null) $receiptID = $UID;
             if ($MID != null) $receiptID = $MID;
-
+            if ($USID != null) $receiptID = $USID;
+            if ($SCID != null) $receiptID = $SCID;
+            if ($DENID != null) $receiptID = $DENID;
+            if ($XID != null) $receiptID = $XID;
 
             $doctor_id = null;
             if ($D != null) $doctor_id = $D;
             if ($U != null) $doctor_id = $U;
             if ($M != null) $doctor_id = $M;
+            if ($US != null) $doctor_id = $US;
+            if ($SC != null) $doctor_id = $SC;
+            if ($DEN != null) $doctor_id = $DEN;
+            if ($X != null) $doctor_id = $X;
             if ($doctor_id != null) {
                 $doctorinfo = Doctor::find($doctor_id);
-
-                //  dd($doctorinfo);
             }
             $receiptStatus = "notpaid";
             if ($receiptID != null) {
                 $LabDetails = LabFeeReceipt::find($receiptID);
-
                 $receiptStatus = (($LabDetails->total_fees - $LabDetails->paid_amount) == 0) ? "paid" : "notpaid";
-
-
-                // dd($doctorinfo);
             }
-
-            // dd($doctorinfo);
 
             $examinationDates['recieptId'] = $receiptID;
             $examinationDates['recieptStatus'] = $receiptStatus;
@@ -2876,11 +2805,11 @@ class LabImpl implements LabInterface
             $examinationDates['hospitalDetails'] = $hospitalDetails;
             $examinationDates['recentUrineExaminations'] = $latestUrineExaminations;
             $examinationDates['recentMotionExaminations'] = $latestMotionExaminations;
+            $examinationDates['recentUltrasoundExaminations'] = $latestUltrasoundExaminations;
+            $examinationDates['recentScanExaminations'] = $latestScanExaminations;
+            $examinationDates['recentDentalExaminations'] = $latestDentalExaminations;
+            $examinationDates['recentXrayExaminations'] = $latestXrayExaminations;
             $examinationDates['doctorDetails'] = $doctorinfo;
-
-
-            //dd($examinationDates);
-
         } catch (QueryException $queryEx) {
             //dd($queryEx);
             throw new HospitalException(null, ErrorEnum::PATIENT_EXAMINATION_DATES_ERROR, $queryEx);

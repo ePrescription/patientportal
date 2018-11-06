@@ -34,6 +34,13 @@ $time_array = array(
 ?>
 <!-- jQuery 2.1.4 -->
 <script href="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<script>
+    $(window).load(function(){
+        ajaxloadblooddetails();
+    });
+</script>
+
 <script>
 
     $(function () {
@@ -45,7 +52,7 @@ $time_array = array(
             changeMonth: true,
             changeYear: true,
             // showSeconds: true,
-            showMonthAfterYear: true,
+            showMonthAfterYear: true
     };
 
     $("#datepicker2").datetimepicker(pickerOpts);

@@ -10,6 +10,11 @@
         <title>@yield('title')</title>   
 
         <!-- css -->
+        <style>
+            .nav>li>a{
+                padding: 10px 3px !important;
+            }
+        </style>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="plugins/cubeportfolio/css/cubeportfolio.min.css">
@@ -44,11 +49,8 @@
     @if( session('userID') && time()-session('logintime')<300)
     {{ session(['logintime' => time()])}}
     <body id="page-top" data-spy="scroll" data-target=".navbar-custom" onload=@yield('loadfunction', '')>
-
-
-        <div id="wrapper">
-
-            <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div id="wrapper">
+        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
                 <!-- <div class="top-area">
                    <div class="container">
                      <div class="row">
@@ -61,176 +63,128 @@
                      </div>
                    </div>
                  </div>-->
-                <div class="container navigation">
-
-                    <div class="navbar-header page-scroll">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <a class="navbar-brand" href="index">
-                            <img src="img/logo.png" alt="" class="img1" width="150" height="50" />
-                        </a>
-                    </div>
-
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
-                        <ul class="nav navbar-nav">
-
-
-
-                            <li><a href="index">Home</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" <span class="badge custom-badge red pull-right">Appointments</span> <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="appointment?methode=Doctor">Doctor Appointments</a></li>
-                                    <li><a href="labappointment?methode=Lab">Diagnostics Appointments</a></li>
-                                    <li><a href="pharmaciesappointment?methode=Pharmacy">Pharmacy Pickup</a></li>
-
-                                </ul>
-                            </li>
-
-
-
-
-                            <li><a href="secondoption">Second Opinion</a></li>
-                            <li><a href="doctors">Connect to Doctor</a></li>
-
-                            <!-- <li><a href="#">Clinics/Hospitals/Doctors</a></li>                 -->
-                            <li><a href="articles">Feeds</a></li>
-                            <li><a href="askquest">Ask a Question</a></li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" <span class="badge custom-badge red pull-right">Patient Information</span> <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="history">Patient Records</a></li>
-                                    <li><a href="editprofile">Edit Profile</a></li>
-
-                                </ul>
-                            </li>
-
-
-
-
-
-                            <li><a href="logout">Logout</a></li>
-
-
-                        </ul>
-                    </div>
-                    <!-- /.navbar-collapse -->
+            <div class="container navigation">
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="index">
+                        <img src="img/logo.png" alt="" class="img1" width="150" height="50" />
+                    </a>
                 </div>
-                <!-- /.container -->
-            </nav><br><br>
 
-
-           <!-- Section: intro -->
-
-            <!--sliders start-->
-
-
-            <!-- start header -->
-
-            <section id="banner" style="margin-bottom:20px;" >
-
-                <!-- Slider -->
-                <div id="main-slider" class="flexslider">
-                    <ul class="slides">
-                        <li>
-                            <img src="img/subban1.jpg" alt="" />
-                            <div class="flex-caption">
-                                <h3 style="color:blue; font-style: italic">Appointments</h3>
-                                <!--<p>You can trust us</p> -->
-
-                            </div>
-                        </li>
-                        <li>
-                            <img src="img/subban2.jpg" alt="" />
-                            <div class="flex-caption">
-                                <h3 style="color:blue; font-style: italic">Diagnostics</h3>
-                                <!--<p>You can trust us</p> -->
-
-                            </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index">Home </a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" <span class="badge custom-badge red pull-right">Appointments</span> <b class="caret"></b> </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="appointment?methode=Doctor">Doctor Appointments</a></li>
+                                <li><a href="labappointment?methode=Lab">Diagnostics Appointments</a></li>
+                                <li><a href="pharmaciesappointment?methode=Pharmacy">Pharmacy Pickup</a></li>
+                            </ul>
                         </li>
 
-                        <li>
-                            <img src="img/subban3.jpg" alt="" />
-                            <div class="flex-caption">
-                                <h3 style="color:blue; font-style: italic">Pharmacy Pickup</h3>
-                                <!--<p>You can trust us</p> -->
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <img src="img/subban4.jpg" alt="" />
-                            <div class="flex-caption">
-                                <h3 style="color:blue; font-style: italic">Second Opinion</h3>
-                                <!--<p>You can trust us</p> -->
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <img src="img/subban5.jpg" alt="" />
-                            <div class="flex-caption">
-                                <h3 style="color:blue; font-style: italic">Connect to Doctor</h3>
-                                <!--<p>You can trust us</p> -->
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <img src="img/subban6.jpg" alt="" />
-                            <div class="flex-caption">
-                                <h3 style="color:blue; font-style: italic">Feeds</h3>
-                                <!--<p>You can trust us</p> -->
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <img src="img/subban7.jpg" alt="" />
-                            <div class="flex-caption">
-                                <h3 style="color:blue; font-style: italic">Ask a question</h3>
-                                <!--<p>You can trust us</p> -->
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <img src="img/subban8.jpg" alt="" />
-                            <div class="flex-caption">
-                                <h3 style="color:blue; font-style: italic">Patient Records</h3>
-                                <!--<p>You can trust us</p> -->
-
-                            </div>
-                        </li>
-
+                        <li><a href="secondopinion">Second Opinion </a></li>
+                        <li><a href="doctors">Connect to Doctor </a></li>
+                        <!-- <li><a href="#">Clinics/Hospitals/Doctors</a></li>                 -->
+                        <li><a href="articles">Health Bulletin </a></li>
+                        <li><a href="askquest">Ask a Question </a></li>
+                        <li><a href="healthcheckup">Health Checkups </a></li>
+                        <li><a href="history">Patient Records </a></li>
+                        <li><a href="logout">Logout</a></li>
                     </ul>
                 </div>
-                <!-- end slider -->
-            </section>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+        <br><br>
 
 
+        <!-- Section: intro -->
 
-            <!--sliders end-->
+        <!--sliders start-->
 
+        <section id="banner" style="margin-bottom:20px;" >
+            <!-- Slider -->
+            <div id="main-slider" class="flexslider">
+                <ul class="slides">
+                    <li>
+                        <img src="img/subban1.jpg" alt="" />
+                        <div class="flex-caption">
+                            <h3 style="color:blue; font-style: italic">Appointments</h3>
+                            <!--<p>You can trust us</p> -->
+                        </div>
+                    </li>
+                    <li>
+                        <img src="img/subban2.jpg" alt="" />
+                        <div class="flex-caption">
+                            <h3 style="color:blue; font-style: italic">Diagnostics</h3>
+                            <!--<p>You can trust us</p> -->
+                        </div>
+                    </li>
 
+                    <li>
+                        <img src="img/subban3.jpg" alt="" />
+                        <div class="flex-caption">
+                            <h3 style="color:blue; font-style: italic">Pharmacy Pickup</h3>
+                            <!--<p>You can trust us</p> -->
+                        </div>
+                    </li>
 
-            @yield('bodycontent')
+                    <li>
+                        <img src="img/subban4.jpg" alt="" />
+                        <div class="flex-caption">
+                            <h3 style="color:blue; font-style: italic">Second Opinion</h3>
+                            <!--<p>You can trust us</p> -->
+                        </div>
+                    </li>
 
-                 
+                    <li>
+                        <img src="img/subban5.jpg" alt="" />
+                        <div class="flex-caption">
+                            <h3 style="color:blue; font-style: italic">Connect to Doctor</h3>
+                            <!--<p>You can trust us</p> -->
+                        </div>
+                    </li>
 
+                    <li>
+                        <img src="img/subban6.jpg" alt="" />
+                        <div class="flex-caption">
+                            <h3 style="color:blue; font-style: italic">Health Bulletin</h3>
+                            <!--<p>You can trust us</p> -->
+                        </div>
+                    </li>
 
-            <!--services end-->
+                    <li>
+                        <img src="img/subban7.jpg" alt="" />
+                        <div class="flex-caption">
+                            <h3 style="color:blue; font-style: italic">Ask a question</h3>
+                            <!--<p>You can trust us</p> -->
+                        </div>
+                    </li>
 
+                    <li>
+                        <img src="img/subban8.jpg" alt="" />
+                        <div class="flex-caption">
+                            <h3 style="color:blue; font-style: italic">Patient Records</h3>
+                            <!--<p>You can trust us</p> -->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- end slider -->
+        </section>
+        <!--sliders end-->
 
+        @yield('bodycontent')
 
+        <!--services end-->
 
-
-
-            <!-- Section: testimonial -->
+        <!-- Section: testimonial -->
             <section id="testimonial" class="home-section paddingbot-60 parallax" data-stellar-background-ratio="0.5" style="margin-bottom:45px;">
-
                 <div class="carousel-reviews broun-block">
                     <div class="container">
                         <div class="row">
@@ -273,7 +227,6 @@
                                                 </div>
                                                 <div class="person-text rel text-light">
                                                     <img src="img/testimonials/2.jpg" alt="" class="person img-circle" />
-
                                                 </div>
                                             </div>
                                             <div class="col-md-4 col-sm-6 hidden-sm hidden-xs">
@@ -291,11 +244,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-                                        @endforeach
-
-
+                                            @endforeach
 
                                     </div>
 
@@ -309,76 +258,60 @@
                             </div>
                         </div>
                     </div>
+                </div>
             </section>
             <!-- /Section: testimonial -->
 
 
-
-
-
-            <footer>
-
-
-                <div class="sub-footer">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                <div class="wow fadeInLeft" data-wow-delay="0.1s">
-                                    <div class="text-left">
-                                        <p>&copy;Copyright2013-2017 All Rights Reserved Design by Glovision.co</p>
-                                    </div>
+        <footer>
+            <div class="sub-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="wow fadeInLeft" data-wow-delay="0.1s">
+                                <div class="text-left">
+                                    <p>&copy;Copyright2013-2017 All Rights Reserved Design by Glovision.co</p>
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-6 col-lg-6">
-                                <div class="wow fadeInRight" data-wow-delay="0.1s">
-                                    <div class="text-right">
-                                        <div class="credits">
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="wow fadeInRight" data-wow-delay="0.1s">
+                                <div class="text-right">
+                                    <div class="credits">
 
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </footer>
-        </div>
+            </div>
+        </footer>
+    </div>
 
-        <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+    <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 
+    <!-- Core JavaScript Files -->
+    <!-- <script src="js/jquery.min.js"></script>-->
+    <!-- <script src="js/bootstrap.min.js"></script>-->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/jquery.scrollTo.js"></script>
+    <script src="js/jquery.appear.js"></script>
+    <script src="js/stellar.js"></script>
+    <script src="plugins/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/nivo-lightbox.min.js"></script>
+    <script src="js/custom.js"></script>
 
-
-
-        <!-- Core JavaScript Files -->
-         <!-- <script src="js/jquery.min.js"></script>-->
-
-<!-- <script src="js/bootstrap.min.js"></script>-->
-        <script src="js/jquery.easing.min.js"></script>
-        <script src="js/wow.min.js"></script>
-        <script src="js/jquery.scrollTo.js"></script>
-        <script src="js/jquery.appear.js"></script>
-        <script src="js/stellar.js"></script>
-        <script src="plugins/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
-        <script src="js/owl.carousel.min.js"></script>
-        <script src="js/nivo-lightbox.min.js"></script>
-        <script src="js/custom.js"></script>
-
-
-
-
-        <!-- Placed at the end of the document so the pages load faster -->
-     <!--<script src="js/jquery.js"></script>-->
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery.flexslider.js"></script>
-        <script src="js/custom.js"></script>
-
-        <!-- Vendor Scripts -->
-
-
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="js/jquery.js"></script>-->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.flexslider.js"></script>
+    <script src="js/custom.js"></script>
+    <!-- Vendor Scripts -->
     <script src="js/custom1.js"></script>
-
-
     </body>
     @else
     @include('welcome')

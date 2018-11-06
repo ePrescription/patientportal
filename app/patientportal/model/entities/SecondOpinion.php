@@ -25,12 +25,12 @@ class SecondOpinion extends Model
         'doctor_id',
         'hospital_id',
         'patient_id',
-        'speciality_id',
+        'specialty_id',
         'so_priority_id',
         'subject',
         'detailed_description',
         'created_by',
-        'modified_by'
+        'updated_by'
     ];
 
 

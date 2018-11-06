@@ -6,7 +6,7 @@
  */
 ?>
 
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>letter</title>
@@ -148,10 +148,7 @@
     {{ session(['logintime' => time()])}}
     <body class="bg">
 
-
     <!--letter start-->
-
-
     <div class="row">
 
         <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
@@ -165,15 +162,14 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                         <div class="receipt-right">
                             <h5>{{$doctorappointments[0]->hospital_name}}.</h5>
-                            <p>{{$doctorappointments[0]->telephone}} <i class="fa fa-phone"></i></p>
-                            <p>{{$doctorappointments[0]->email}} <i class="fa fa-envelope-o"></i></p>
-                            <p>{{$doctorappointments[0]->hsaddress}} <i class="fa fa-location-arrow"></i></p>
+                            <p>{{$doctorappointments[0]->mobile}} <i class="fa fa-phone"></i></p>
+                            <p>{{$doctorappointments[0]->email_id}} <i class="fa fa-envelope-o"></i></p>
                         </div>
                     </div>
                 </div>
             </div>
 
-                <h1 style="font-size:20px; font-weight:bold;">Dear Sir/Madam,</h1>
+            <h1 style="font-size:20px; font-weight:bold;">Dear Sir/Madam,</h1>
             <div class="row">
                 <div class="receipt-header receipt-header-mid">
                     <div class="receipt-right">
@@ -188,67 +184,20 @@
                                 <td class="col-md-3">{{session('userID')}}</td>
                             </tr>
                             <tr>
-                                <td class="col-md-9">Doctor Name:</td>
-                                <td class="col-md-3">{{ $doctorappointments[0]->name}}
-                                    ({{ $doctorappointments[0]->specialty}})
-                                </td>
+                                <td class="col-md-9">Health Checkup:</td>
+                                <td class="col-md-3">{{ $doctorappointments[0]->package_name}} </td>
                             </tr>
                             <tr>
-                                <td class="col-md-9">Disease details:</td>
-                                <td class="col-md-3">{{ $doctorappointments[0]->brief_history}}</td>
-
-                            </tr>
-
-                            <tr>
-                                <td class="col-md-9">Doctor Review Summary / Points:</td>
-                                <td class="col-md-3"></td>
-
-                            </tr>
-                            {{--<tr>--}}
-                            {{--<td class="col-md-9">Doctor Treatment Recommendations:</td>--}}
-                            {{--<td class="col-md-3">{{ $doctorappointments[0]->answer}}</td>--}}
-
-                            {{--</tr>--}}
-
-                            <tr>
-                                <td class="col-md-9">Date of Request :</td>
+                                <td class="col-md-9">Appointment Date:</td>
                                 <td class="col-md-3">{{ $doctorappointments[0]->appointment_date}}</td>
                             </tr>
-
-                            {{--<tr>--}}
-                            {{--<td class="col-md-9"> Date of Response :</td>--}}
-                            {{--<td class="col-md-3">{{ $doctorappointments[0]->response_date}}</td>--}}
-
-                            {{--</tr>--}}
                             <tr>
-                                <td class="col-md-9">From: Hospital / Nursing Home / Clinic :</td>
+                                <td class="col-md-9"> Hospital:</td>
                                 <td class="col-md-3">{{ $doctorappointments[0]->hospital_name}}</td>
                             </tr>
-                            <tr>
-                                <td class="col-md-9">Subject :</td>
-                                <td class="col-md-3">{{ $doctorappointments[0]->subject}}</td>
-                            </tr>
-
 
                             </tbody>
                         </table>
-                        Uploaded Documents:<br>
-                        @if($doctorappointments[0]->reports !="")
-                            <?php $paths = explode("@@", $doctorappointments[0]->reports); ?>
-                            @foreach($paths as $path)
-
-                                @if($path!= "")
-                                    <a href="public/askquestion/{{$path}}" target="_blank">
-                                        @if(($doctorappointments[0]->document_extension == 'jpg') || ($doctorappointments[0]->document_extension == 'jpeg') || ($doctorappointments[0]->document_extension == 'png') || ($doctorappointments[0]->document_extension == 'JPG') || ($doctorappointments[0]->document_extension == 'JPEG') || ($doctorappointments[0]->document_extension == 'PNG'))
-                                            <img src="public/askquestion/{{$path}}" width="200px" height="200px">
-                                        @else
-                                            <i class="fa fa-download"></i>
-                                        @endif
-                                    </a>
-                                @endif
-
-                            @endforeach
-                        @endif
                     </div>
                 </div>
 
@@ -274,11 +223,7 @@
         </div>
     </div>
 
-
-
     <!--letter end-->
-
-
     </body>
 @else
     @include('welcome')

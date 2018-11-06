@@ -282,7 +282,7 @@ class PatientProfileRequest extends BasePrescriptionRequest
         {
             $rules['email'] = 'email | unique:users,email';
         }*/
-        $rules['dob'] = 'date_format:Y-m-d';
+        //$rules['dob'] = 'date_format:Y-m-d';
        // $rules['doctorId'] = 'required';
        // $rules['hospitalId'] = 'required';
 

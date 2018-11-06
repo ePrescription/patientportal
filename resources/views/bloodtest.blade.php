@@ -36,10 +36,10 @@ $time_array = array(
 <div class="container">
 
 <div class="row">
- <div class="col-sm-6 col-md-offset-2"></div>
-<div class="col-sm-12">
+ <div class="col-sm-7 col-md-offset-2"></div>
+<div class="col-sm-9">
 <div class="panel panel-primary">
-<div class="panel-body" style="width: 100%;">
+<div class="panel-body">
     <style>
         form.display label.control-label{ text-align:left; }
     </style>
@@ -71,7 +71,7 @@ $time_array = array(
     <div class="form-group">
         <label class="col-sm-4 control-label">Test Date</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="javascript:UpdateTestDates(this.value);" />
+            <input type="text" class="form-control" name="examinationDate" id="TestDate" value="{{date('Y-m-d')}}" style="line-height: 20px;" required="required" onchange="changeTimeSlots(this.value);" />
             @if ($errors->has('examinationDate'))<p class="error" style="">{!!$errors->first('examinationDate')!!}</p>@endif
         </div>
         <div class="col-sm-4">
@@ -136,7 +136,7 @@ $time_array = array(
             changeMonth: true,
             changeYear: true,
             // showSeconds: true,
-            showMonthAfterYear: true,
+            showMonthAfterYear: true
         }
         $("#input#TestDate").datetimepicker(pickerOpts);
        // $("#input#TestTIme").datetimepicker(pickerOpts1);
@@ -149,7 +149,6 @@ $time_array = array(
         var dateValue = $("#TestDate").val();
         var hid = $("#hospitalId").val();
         var did = $("#doctorId").val();
-
         if (did != "Select Doctor") {
 
             var new_appointment_date = dateValue;
@@ -199,21 +198,20 @@ $time_array = array(
                 type: "get",
                 data: {"date": dateValue, "time": timeValue, "status": status, "doctorId": did, "hospitalId": hid},
                 success: function (data) {
+                    //alert(data.result['result']);
                     console.log(data);
-
                     if (data.result['result'] == "Doctor Is Not Available") {
                         alert(data.result['result']);
                         var terms = '<option value="">--Choose Time--</option>';
                         $("#examinationTime").html(terms);
                     } else {
-
                         var terms = '<option value="">--Choose Time--</option>';
                         $.each(data.result, function (index, value) {
                             terms += '<option value="' + index + '">' + value + '</option>';
                         });
+                        //alert(terms);
                         $("#examinationTime").html(terms);
                     }
-
                 }
             });
         } else {
@@ -294,10 +292,10 @@ $time_array = array(
             rules: {
 
                 doctorId: {
-                    required: true,
+                    required: true
                 },
                 hospitalId: {
-                    required: true,
+                    required: true
                 },
                 appointmentCategory:{
                     required: true
@@ -316,12 +314,11 @@ $time_array = array(
             // Specify validation error messages
             messages: {
                 doctorId: {
-                    required: "Please Select Doctor Id",
+                    required: "Please Select Doctor Id"
                 },
                 appointmentDate: "Please provide a valid Date",
                 appointmentTime:"Please Select Appointment Time",
                 appointmentCategory:"Please Select Appointment Category ",
-                doctorId: "Please Select DoctorId",
                 hospitalId: "Please select HospitalId",
                 specialist: "Please select specialization"
             },
@@ -355,7 +352,6 @@ $time_array = array(
     });
     window.onload = function () {
         var dateValue = $("#appointmentDate").val();
-
     };
 
     function appointmentTypePatient() {
@@ -438,4 +434,58 @@ $time_array = array(
 
     }
 
-    <!-- container -->
+</script>
+
+<script>
+    function changeTimeSlots(sdate) {
+        var dateValue = $("#TestDate").val();
+        var hid = $("#hospitalId").val();
+        var did = $("#doctorId").val();
+
+        var BASEURL = "{{ URL::to('/') }}/";
+        var status = 1;
+        var callurl = BASEURL + 'rest/api/appointmenttimes';
+
+        var d = new Date();
+
+        var dat = (d.getDate() < 10 ? '0' : '') + d.getDate();
+        var mon1 = d.getMonth() + 1;
+        var mon = (mon1 < 10 ? '0' : '') + mon1;
+        var yr = (d.getFullYear() < 10 ? '0' : '') + d.getFullYear();
+        var todayDate = mon + '/' + dat + '/' + yr;
+        var timeValue = null;
+
+        if(todayDate == dateValue){
+            var h = (d.getHours() < 10 ? '0' : '') + d.getHours();
+            var m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+            var s = (d.getSeconds() < 10 ? '0' : '') + d.getSeconds();
+            var t = h + ":" + m + ":" + s;
+            timeValue = h + ":" + m;
+        }
+        else{
+            timeValue = "00:00";
+        }
+
+        $.ajax({
+            url: callurl,
+            type: "get",
+            data: {"date": dateValue, "time": timeValue, "status": status, "doctorId": did, "hospitalId": hid},
+            success: function (data) {
+                //alert(data.result['result']);
+                console.log(data);
+                if (data.result['result'] == "Doctor Is Not Available") {
+                    alert(data.result['result']);
+                    var terms = '<option value="">--Choose Time--</option>';
+                    $("#examinationTime").html(terms);
+                } else {
+                    var terms = '<option value="">--Choose Time--</option>';
+                    $.each(data.result, function (index, value) {
+                        terms += '<option value="' + index + '">' + value + '</option>';
+                    });
+                    //alert(terms);
+                    $("#examinationTime").html(terms);
+                }
+            }
+        });
+    }
+</script>

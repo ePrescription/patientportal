@@ -85,7 +85,7 @@
                 changeMonth: true,
                 changeYear: true,
                 // showSeconds: true,
-                showMonthAfterYear: true,
+                showMonthAfterYear: true
             };
 
 
@@ -458,11 +458,9 @@
                                         <div class="col-xs-12 col-sm-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Briefnote</label>
-                                                <textarea style="width:100%;" class="name" id="briefnote"
-                                                          name="briefnote" class="form-control" value=""
+                                                <textarea style="width:100%;" id="briefnote"
+                                                          name="briefnote" class="form-control"
                                                           placeholder="Brief Note" required=""></textarea>
-
-
                                                 <div class="validation"></div>
                                             </div>
                                         </div>
@@ -509,7 +507,7 @@
                 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
                 <script>
                     $('#TestDate').datepicker({
-                        dateFormat: "mm/dd/yy",
+                        dateFormat: "mm/dd/yy"
                     });
 
                 </script>
@@ -659,10 +657,10 @@
                     hospital: "required",
                     specialist: "required",
                     doctor: {
-                        required: true,
+                        required: true
                     },
                     expectedtime: {
-                        required: true,
+                        required: true
                         // Specify that email should be validated
                         //by the built-in "email" rule
 
@@ -707,17 +705,17 @@
                     // on the right side
                     hospitalId: "required",
                     doctorId: {
-                        required: true,
+                        required: true
                     },
                     AppointmentType: {
-                        required: true,
+                        required: true
                         // Specify that email should be validated
                         //by the built-in "email" rule
 
                     },
 
                     appointmentTime: {
-                        required: true,
+                        required: true
                     }
 
                 },

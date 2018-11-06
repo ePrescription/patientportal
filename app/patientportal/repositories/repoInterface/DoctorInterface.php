@@ -29,8 +29,14 @@ public function getSingleDoctor($request);
 public function getDoctors();
 public function getTokenIdByHospitalIdandDoctorId($hospitalId,$doctorId,$date,$type);
 public function getHospitalDoctors($hospitalId);
+    public function getHealthCheckupList();
+    public function getLabTestListforHealthCheckup();
+    public function saveHealthCheckup($request);
 
-
+    public function getPatientHealthCheckups();
+    public function getPatientSecondOpinion();
+    public function getPatientHealthRecords();
+    public function savePatientOldDocuments($request);
 
 
 }

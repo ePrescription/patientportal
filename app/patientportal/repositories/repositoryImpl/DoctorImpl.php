@@ -17,18 +17,22 @@ use App\patientportal\modal\PharmacyAppointment;
 use App\patientportal\modal\Role;
 use App\patientportal\model\SecondOpinion;
 use App\patientportal\model\SecondOpinionItems;
+use App\patientportal\model\PatientHealthCheckup;
+use App\patientportal\model\PatientOldDocuments;
 use App\patientportal\modal\Sms;
 use App\User;
 use App\patientportal\repositories\repoInterface\DoctorInterface;
 use App\patientportal\utilities\AppointmentType;
 use App\patientportal\utilities\ErrorEnum\ErrorEnum;
 use App\patientportal\utilities\UserType;
+use Mockery\Exception;
 use App\patientportal\utilities\Exception\UserNotFoundException;
+use App\patientportal\utilities\Exception\HospitalException;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use Mockery\Exception;
 use Numbers_Words;
 use Storage;
 use Carbon\Carbon;
@@ -147,15 +151,15 @@ class DoctorImpl implements DoctorInterface
 
 
         } catch (QueryException $queryEx) {
-            dd($queryEx);
+            //dd($queryEx);
             $status = false;
            // throw new UserNotFoundException($queryEx);
         } catch (UserNotFoundException $userExc) {
-            dd($userExc);
+            //dd($userExc);
             $status = false;
          //   throw new UserNotFoundException($userExc);
         } catch (Exception $exc) {
-            dd($exc);
+            //dd($exc);
             $status = false;
           //  throw new UserNotFoundException($exc);
         }
@@ -194,6 +198,7 @@ class DoctorImpl implements DoctorInterface
         $doctorAppointment->referral_hospital_location = $patientProfileVM->getHospitalLocation();
         $doctorAppointment->fee = $patientProfileVM->getAmount();
         $doctorAppointment->payment_type = $patientProfileVM->getPaymentType();
+        $doctorAppointment->is_from_patient_portal = '1';
         $doctorAppointment->created_by = $patientProfileVM->getCreatedBy();
         $doctorAppointment->modified_by = $patientProfileVM->getUpdatedBy();
         $doctorAppointment->created_at = $patientProfileVM->getCreatedAt();
@@ -439,7 +444,6 @@ class DoctorImpl implements DoctorInterface
 
     public function getAppointment($request)
     {
-
         $doctors = null;
         try {
             session(['methode' => $request->input('methode')]);
@@ -450,9 +454,6 @@ class DoctorImpl implements DoctorInterface
             $totalInfo['specialty']=$specialty;
             $totalInfo['typeoftest']=$typeoftest;
             $totalInfo['hospitals']=$hospitals;
-
-
-
         } catch (Exception $userExc) {
 
             $errorMsg = $userExc->getMessageForCode();
@@ -574,25 +575,44 @@ public function getPharmacyAppointments()
             $bloodDatesQuery->select('pbe.examination_date','h.hospital_id','hospital_name','pbe.examination_time')->orderBy('pbe.examination_date', 'DESC');
             $bloodTestDates = $bloodDatesQuery->distinct()->get();
 
-            // dd($bloodTestDates);
-
             $urineDatesQuery = DB::table('patient_urine_examination as pue')->where('pue.patient_id', '=', $patientId);
             $urineDatesQuery->join('hospital as h ','h.hospital_id','=','pue.hospital_id');
             $urineDatesQuery->select('pue.examination_date','h.hospital_id','hospital_name','pue.examination_time')->orderBy('pue.examination_date', 'DESC');
             $urineTestDates = $urineDatesQuery->distinct()->get();
-            //$urineTestDates = $urineDatesQuery->distinct()->take(2147483647)->skip(1)->get();
 
-            // dd($urineTestDates);
             $motionDatesQuery = DB::table('patient_motion_examination as pme')->where('pme.patient_id', '=', $patientId);
             $motionDatesQuery->join('hospital as h ','h.hospital_id','=','pme.hospital_id');
             $motionDatesQuery->select('pme.examination_date','h.hospital_id','hospital_name','pme.examination_time')->orderBy('pme.examination_date', 'DESC');
             $motionTestDates = $motionDatesQuery->distinct()->get();
 
-            // dd($bloodTestDates);
+            $ultraDatesQuery = DB::table('patient_ultra_sound as pus')->where('pus.patient_id', '=', $patientId);
+            $ultraDatesQuery->join('hospital as h', 'h.hospital_id','=','pus.hospital_id');
+            $ultraDatesQuery->select('pus.examination_date','h.hospital_id','hospital_name','pus.examination_time')->orderBy('pus.examination_date', 'DESC');
+            $ultraSoundTestDates = $ultraDatesQuery->distinct()->get();
+            //dd($ultraSoundTestDates);
+
+            $scanDatesQuery = DB::table('patient_scan as pscan')->where('pscan.patient_id', '=', $patientId);
+            $scanDatesQuery->join('hospital as h', 'h.hospital_id','=','pscan.hospital_id');
+            $scanDatesQuery->select('pscan.scan_date','h.hospital_id','hospital_name','pscan.examination_time')->orderBy('pscan.scan_date', 'DESC');
+            $scanTestDates = $scanDatesQuery->distinct()->get();
+
+            $xrayDatesQuery = DB::table('patient_xray_examination as pxray')->where('pxray.patient_id', '=', $patientId);
+            $xrayDatesQuery->join('hospital as h', 'h.hospital_id','=','pxray.hospital_id');
+            $xrayDatesQuery->select('pxray.examination_date','h.hospital_id','hospital_name','pxray.examination_time')->orderBy('pxray.examination_date', 'DESC');
+            $xrayTestDates = $xrayDatesQuery->distinct()->get();
+
+            $denatlDatesQuery = DB::table('patient_dental_examination as pdental')->where('pdental.patient_id', '=', $patientId);
+            $denatlDatesQuery->join('hospital as h', 'h.hospital_id','=','pdental.hospital_id');
+            $denatlDatesQuery->select('pdental.examination_date','h.hospital_id','hospital_name','pdental.examination_time')->orderBy('pdental.examination_date', 'DESC');
+            $dentalTestDates = $denatlDatesQuery->distinct()->get();
+
             $examinationDates["bloodTestDates"] = $bloodTestDates;
             $examinationDates["urineTestDates"] = $urineTestDates;
             $examinationDates["motionTestDates"] = $motionTestDates;
-
+            $examinationDates["ultraSoundTestDates"] = $ultraSoundTestDates;
+            $examinationDates["scanTestDates"] = $scanTestDates;
+            $examinationDates["xrayTestDates"] = $xrayTestDates;
+            $examinationDates["dentalTestDates"] = $dentalTestDates;
             // dd($examinationDates);
 
             $latestBloodExamQuery = DB::table('patient_blood_examination as pbe');
@@ -615,9 +635,6 @@ public function getPharmacyAppointments()
             $latestBloodExamQuery->select('pbe.id as examinationId', 'pbei.id as examinationItemId', 'pbe.patient_id',
                 'pbe.hospital_id', 'be.examination_name', 'pbe.examination_date');
             $bloodExaminations = $latestBloodExamQuery->get();
-
-
-
         } catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
             $msg = AppendMessage::appendMessage($userExc);
@@ -650,15 +667,12 @@ public function getPharmacyAppointments()
         return $specialty;
     }
 
-    public function saveSecondOpinion($request) {
-
-        //dd($request);
-       $OrgfileName=null;
+    public function saveSecondOpinion($request)
+    {
+        //dd($request->all());
+        $OrgfileName=null;
         $fileType=null;
-
-
         try{
-
             $specialist = $request->get("specialist");
             $doctor1 = $request->get("doctor");
             $hospital = $request->get("hospital");
@@ -668,63 +682,49 @@ public function getPharmacyAppointments()
             $patient_id = session('patient_id');
             $patientname = session('userID');
             $priority = $request->get("expectedtime");
-
-            $SecondOpinion=new SecondOpinion();
-
             $path='';
             $nooffiles=0;
 
-
-
+            $SecondOpinion=new SecondOpinion();
+            //dd($SecondOpinion);
             $SecondOpinion->patient_id = $patient_id;
             $SecondOpinion->specialty_id = $specialist;
             $SecondOpinion->doctor_id = $doctor1;
             $SecondOpinion->hospital_id = $hospital;
             $SecondOpinion->subject = $subject;
             $SecondOpinion->so_priority_id = $priority;
-            //$SecondOpinion->subject = $message;
-            // $askquestion->filepath = $path;
             $SecondOpinion->detailed_description = $message;
             $SecondOpinion->created_by = 'Admin';
             $SecondOpinion->updated_by = 'Admin';
             $SecondOpinion->save();
 
-
-
-
-
-                if ($request->hasFile('image')) {
-
-                    $files= $request->file('image');
-                    foreach ($files as $file){
-                        $randomName = $this->generateUniqueFileName();
-                        $fileType= $file->getClientOriginalExtension();
-                        $OrgfileName=$file->getClientOriginalName();
-                        $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
-                        $path=$path.$filename."@@";
-                        $destinationPath = 'public/askquestion'; // upload path
-                        $extension = $file->getClientOriginalExtension();
-                        $fileName = rand(11111,99999).'.'.$extension; // renaming image
-                        $path = $filename;
-                        // dd($filename.'-------'.$destinationPath);
-                        $file->move($destinationPath, $filename);
-
-
-
-                    }
-
-                    $SecondOpinionItems=new SecondOpinionItems();
-                    $SecondOpinionItems->patient_second_opinion_id=$SecondOpinion->id;
-                    $SecondOpinionItems->document_path=$path;
-                    $SecondOpinionItems->document_filename=$OrgfileName;
-                    $SecondOpinionItems->document_extension=$fileType;
-                    $SecondOpinionItems->document_upload_status="1";
-                    $SecondOpinionItems->created_by = 'Admin';
-                    $SecondOpinionItems->updated_by = 'Admin';
-                    //$AskQuestionDocumentItems->patient_ask_question_id="";
-                    $SecondOpinionItems->save();
-
+            if ($request->hasFile('image')) {
+                $files= $request->file('image');
+                foreach ($files as $file){
+                    $randomName = $this->generateUniqueFileName();
+                    $fileType= $file->getClientOriginalExtension();
+                    $OrgfileName=$file->getClientOriginalName();
+                    $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
+                    $path=$path.$filename."@@";
+                    $destinationPath = 'public/askquestion'; // upload path
+                    $extension = $file->getClientOriginalExtension();
+                    $fileName = rand(11111,99999).'.'.$extension; // renaming image
+                    $path = $filename;
+                    // dd($filename.'-------'.$destinationPath);
+                    $file->move($destinationPath, $filename);
                 }
+
+                $SecondOpinionItems=new SecondOpinionItems();
+                $SecondOpinionItems->patient_second_opinion_id=$SecondOpinion->id;
+                $SecondOpinionItems->document_path=$path;
+                $SecondOpinionItems->document_filename=$OrgfileName;
+                $SecondOpinionItems->document_extension=$fileType;
+                $SecondOpinionItems->document_upload_status="1";
+                $SecondOpinionItems->created_by = 'Admin';
+                $SecondOpinionItems->updated_by = 'Admin';
+                //$AskQuestionDocumentItems->patient_ask_question_id="";
+                $SecondOpinionItems->save();
+            }
 
 
             $dc = Doctor::where('doctor_id', '=', $doctor1)->get();
@@ -732,6 +732,7 @@ public function getPharmacyAppointments()
 
             $did=$doctor1;
             $date=$SecondOpinion->created_at;
+            //dd($date);
             $askquestions=DB::table('patient_second_opinion as pso')
                 ->join('doctor as d','d.doctor_id','=','pso.doctor_id')
                 ->join('hospital as h','h.hospital_id','=','pso.hospital_id')
@@ -739,7 +740,7 @@ public function getPharmacyAppointments()
                 ->where('pso.patient_id','=',session('patient_id'))
                 ->where('pso.doctor_id','=',$did)
                 ->where('pso.created_at','=',$date)
-                ->select('d.name','d.specialty','pso.created_at as appointment_date','pso.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','psoi.document_path as reports','pso.subject')->get();
+                ->select('d.name','d.specialty','pso.created_at as appointment_date','pso.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','psoi.document_path as reports','psoi.document_extension','pso.subject')->get();
 
             //$doctorappointments=\App\DoctorAppointment::join('doctor','doctor.doctor_id','=','doctor_appointment.doctor_id')->join('hospital','hospital.hospital_id','=','doctor_appointment.hospital_id')->where('doctor_appointment.patient_id','=',session('patient_id'))->where('doctor_appointment.id','=',$id)->select('doctor.name','doctor.specialty','doctor_appointment.appointment_date','doctor_appointment.brief_history','hospital.hospital_name','hospital.email','hospital.address as hsaddress','hospital.telephone')->get();
             //return  view("maillayout.doctor_appointment")->with('doctorappointments',$askquestions);
@@ -751,6 +752,7 @@ public function getPharmacyAppointments()
             if($dc[0]->email!=""){
                 $mails[count($mails)]=$dc[0]->email;
             }
+
             if(count($mails)>0){
                 Mail::send('maillayout.ask_appointment', ['doctorappointments' =>  $askquestions], function($msg) use($mails,$questiontype) {
                     $msg->subject($questiontype);
@@ -758,7 +760,6 @@ public function getPharmacyAppointments()
                     $msg->to($mails);
                 });
             }
-            //  dd($mails);
 
             $mblno='';
             if(session('patient_id')!=""){
@@ -767,6 +768,7 @@ public function getPharmacyAppointments()
                     $mblno=$patient[0]['telephone'];
                 }
             }
+
             if ($dc[0]->telephone != "") {
                 $mblno =$mblno.",".$dc[0]->telephone;
             }
@@ -780,21 +782,16 @@ public function getPharmacyAppointments()
                 // dd('Test');
                 Sms::sendMSG($mblno, $msg);
             }
-
-        } catch (Exception $userExc) {
-
+        }
+        catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
-            dd($userExc);
             $msg = AppendMessage::appendMessage($userExc);
-
-
         } catch (Exception $exc) {
             dd($exc);
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
         return "true";
-
     }
 
 
@@ -878,7 +875,7 @@ public function getPharmacyAppointments()
         if($dc[0]->email!=""){
             $mails[count($mails)]=$dc[0]->email;
         }
-      //dd($askquestions[0]->telephone);
+
         if(count($mails)>0){
             Mail::send('maillayout.ask_appointment', ['doctorappointments' =>  $askquestions], function($msg) use($mails,$questiontype) {
                 $msg->subject($questiontype);
@@ -886,7 +883,6 @@ public function getPharmacyAppointments()
                 $msg->to($mails);
             });
         }
-           //  dd($mails);
 
         $mblno='';
         if(session('patient_id')!=""){
@@ -1051,6 +1047,228 @@ public function getPharmacyAppointments()
         }
         //dd($doctors);
         return $doctors;
+    }
+
+    public function getHealthCheckupList()
+    {
+        $healthcheckups = null;
+        try {
+            $query = DB::table('health_packages as hp');
+            $query->where('hp.package_status','=','1');
+            $healthcheckups = $query->get();
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
+
+    public function getLabTestListforHealthCheckup()
+    {
+        $healthcheckups = null;
+        try {
+            $query = DB::table('labtest as lt')->select('lt.*','ltp.package_id');
+            $query->rightjoin('lab_test_package as ltp','ltp.lab_test_id','=','lt.id');
+            $query->leftjoin('health_packages as hp','hp.id','=','ltp.package_id');
+            $query->where('lt.test_status','=','1');
+            $healthcheckups = $query->get();
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
+
+    public function saveHealthCheckup($request)
+    {
+        //dd($request->all());
+        try{
+            $patientName = $request->get("patientName");
+            $referral = $request->get("referral");
+            $hospital = $request->get("hospital");
+            $emailId = $request->get("emailId");
+            $mobile = $request->get("mobile");
+            $date = $request->get("date");
+            $packageId = $request->get("packageId");
+            $patient_id = session('patient_id');
+            $userName = session('userID');
+
+            $healthCheckup = new PatientHealthCheckup();
+            $healthCheckup->package_id = $packageId;
+            $healthCheckup->patient_id = $patient_id;
+            $healthCheckup->patient_name = $patientName;
+            $healthCheckup->referral = $referral;
+            $healthCheckup->hospital_name = $hospital;
+            $healthCheckup->email_id = $emailId;
+            $healthCheckup->mobile = $mobile;
+            $healthCheckup->appointment_date = $date;
+            $healthCheckup->created_by = $userName;
+            $healthCheckup->updated_by = $userName;
+            $healthCheckup->save();
+
+            $checkup=DB::table('patient_health_checkup as phc')
+                ->join('health_packages as hp','hp.id','=','phc.package_id')
+                ->where('phc.patient_id','=',session('patient_id'))
+                ->select('phc.*','hp.package_name')->get();
+
+            $mails=array();
+            if(session('email')!="")   {
+                $mails[count($mails)]=session('email');
+            }
+            $questiontype="HealthCheckup";
+
+            if(count($mails)>0){
+                Mail::send('maillayout.health_checkup_mail', ['doctorappointments' =>  $checkup], function($msg) use($mails,$questiontype) {
+                    $msg->subject($questiontype);
+                    $msg->from(session('email'));
+                    $msg->to($mails);
+                });
+            }
+
+            $mblno='';
+            if(session('patient_id')!=""){
+                $patient=Patient::where('patient_id', '=', session('patient_id'))->get();
+                if($patient[0]['telephone']!=""){
+                    $mblno=$patient[0]['telephone'];
+                }
+            }
+
+            if ($checkup[0]->mobile != "") {
+                $mblno =$mblno.",".$checkup[0]->mobile;
+            }
+
+            if($mblno!=""){
+                $msg="Patient ID:".session('patient_id');
+                $msg=$msg."%0APatient Name:".$checkup[0]->patient_name;
+                $msg=$msg."%0AHospital Name:".$checkup[0]->hospital_name;
+                $msg=$msg."%0AHealth Checkup:".$checkup[0]->package_name;
+                $msg=$msg."%0ADOA:".$checkup[0]->appointment_date;
+                Sms::sendMSG($mblno, $msg);
+            }
+        }
+        catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_SAVE_ERROR, $exc);
+        }
+        return "true";
+    }
+
+    public function getPatientHealthCheckups()
+    {
+        $healthcheckups = null;
+        try {
+            $query = DB::table('patient_health_checkup as phc')
+                ->join('health_packages as hp','hp.id','=','phc.package_id')
+                ->where('phc.patient_id','=',session('patient_id'))
+                ->select('phc.*','hp.package_name');
+            $healthcheckups = $query->paginate(10);
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_CHECKUPS_LIST_ERROR, $exc);
+        }
+        return $healthcheckups;
+    }
+
+    public function getPatientSecondOpinion()
+    {
+        $secondOpinion = null;
+        try {
+            $secondOpinion=DB::table('patient_second_opinion as pso')
+                ->join('doctor as d','d.doctor_id','=','pso.doctor_id')
+                ->join('hospital as h','h.hospital_id','=','pso.hospital_id')
+                ->join('patient_second_opinion_documents as psoi','psoi.patient_second_opinion_id','=','pso.id')
+                ->where('pso.patient_id','=',session('patient_id'))
+                ->select('d.name','d.specialty','pso.created_at as appointment_date','pso.detailed_description as brief_history','h.hospital_name','h.email','h.address as hsaddress','h.telephone','psoi.document_path as reports','pso.subject', 'pso.id')
+                ->paginate(10);
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::SECOND_OPINION_LIST_ERROR, $exc);
+        }
+        return $secondOpinion;
+    }
+
+    public function getPatientHealthRecords()
+    {
+        $secondOpinion = null;
+        try {
+            $secondOpinion=DB::table('patient_old_document as doc')
+                ->where('doc.patient_id','=',session('patient_id'))
+                ->select('doc.*')
+                ->paginate(10);
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_RECORDS_LIST_ERROR, $exc);
+        }
+        return $secondOpinion;
+    }
+
+    public function savePatientOldDocuments($request)
+    {
+        $date = date('Y-m-d');
+        $status = 'true';
+        $oldDocuments = null;
+        $patient_id = session('patient_id');
+        $path = '';
+        try {
+            if ($request->hasFile('oldDocument')) {
+                $file= $request->file('oldDocument');
+                $randomName = $this->generateUniqueFileName();
+                //dd($randomName);
+                $fileType= $file->getClientOriginalExtension();
+                $OrgfileName=$file->getClientOriginalName();
+                $filename=$patient_id.$randomName.'.'.$file->getClientOriginalExtension();
+                $path=$path.$filename."@@";
+                $destinationPath = 'public/olddocument'; // upload path
+                $extension = $file->getClientOriginalExtension();
+                //$fileName = rand(11111,99999).'.'.$extension; // renaming image
+                $path = $filename;
+                $file->move($destinationPath, $filename);
+
+                $oldDocuments=new PatientOldDocuments();
+                $oldDocuments->patient_id=$patient_id;
+                $oldDocuments->document_path=$path;
+                $oldDocuments->document_filename=$OrgfileName;
+                $oldDocuments->document_extension=$fileType;
+                $oldDocuments->document_upload_date=$date;
+                $oldDocuments->document_upload_status="1";
+                $oldDocuments->created_by = 'Admin';
+                $oldDocuments->updated_by = 'Admin';
+                $oldDocuments->save();
+            }
+
+        } catch(HospitalException $hospitalExc)
+        {
+            throw $hospitalExc;
+        }
+        catch(Exception $exc)
+        {
+            throw new HospitalException(null, ErrorEnum::HEALTH_RECORDS_LIST_ERROR, $exc);
+        }
+        return $status;
     }
 
 }

@@ -61,7 +61,7 @@ class PharmaController extends Controller {
 
 
 
-    public function save(Request $request) {
+    public function savePharmaAppointment(Request $request) {
         $status=null;
 
         try{
