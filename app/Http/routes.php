@@ -100,7 +100,7 @@ Route::get('rest/api/hospital/{hospitalId}/doctor/{doctorId}/date/{date}/tokenId
 Route::get('rest/api/appointmenttimes', array('as' => 'hospital.appointmenttimes', 'uses' => 'Doctor\DoctorController@getAppointmentTimes'));
 
 
-
+Route::get('appointmentlist',array('as' => 'doctor.getappointmentlist', 'uses' => 'Doctor\DoctorController@getAppointments'));
 
 
 /* LAB Section Start */
@@ -223,7 +223,7 @@ Route::get('healthCheck', array('as' => 'doctor.getHealthCheckList', 'uses' => '
 
 Route::post('/updateappointment', array('as' => 'doctor.getHealthCheckList', 'uses' => 'Doctor\DoctorController@update'));
 
-
+Route::get('/doctor_appointment_onlinechat', array('as' => 'doctor.onlinechat', 'uses' => 'Doctor\DoctorController@DoctorAppointmentOnlineChat'));
 
 
 Route::get("/loadappointmentdetails",function(\Illuminate\Http\Request $request){

@@ -276,6 +276,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             <th>Appointment Time </th>
             <th>More Details</th>
             {{--<th>Reappointment</th>--}}
+            <th>Chat</th>
             </thead><tbody>
                 @foreach ($doctorappointments as $appointment)
                 <tr><td>{{ $count}}</td>
@@ -286,6 +287,8 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                     <td><a href="doctor_appointmentmsgnew?id={{ $appointment->id }}" target="_blank">Details</a></td>
                     {{--<td><a onclick="openmodle('{{ $appointment->id }}')" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>--}}
                     {{--</td>--}}
+                    <td><a href="doctor_appointment_onlinechat?id={{ $appointment->id }}&room={{session('patient_id')}}" target="_blank">Online Chat</a></td>
+
                 </tr>
                 <?php $count++;?>
                 @endforeach
@@ -323,7 +326,6 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
                     {{--<td>{{ $appointment->hospital_id}}</td>--}}
                     <td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>
                     {{--<td><a href="lab_appointmentmsg/patientId/{{session('patient_id')}}/hospitalId/{{$appointment->hospital_id}}/date/{{ $appointment->examination_date}}" target="_blank">Details</a></td>--}}
-
                 </tr>
                 <?php $count=0;?>
             @endforeach
@@ -556,6 +558,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
 <div id="Opinion" class="tabcontent">
     <div class="container">
         <h5> Second Opinion</h5>
+        {{--
         @if(count($secondOpinion)>0)
             <table class="table table-bordred table-striped"><thead class='th'><th>Doctor Name</th><th>Hospital Name</th><th>Specialty</th><th>Appointment Date </th><th>More Details</th></thead>
                 @foreach ($secondOpinion as $opinion)
@@ -564,12 +567,14 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             </table>
             {{ $secondOpinion ->links() }}
         @endif
+        --}}
     </div>
 </div>
 
 <div id="Checkup" class="tabcontent">
     <div class="container">
         <h5> Health Checkup</h5>
+        {{--
         @if(count($healthcheckups)>0)
             <table class="table table-bordred table-striped"><thead class='th'><th>Health Checkup</th><th>Hospital Name</th><th>Appointment </th><th>More Details</th></thead>
                 @foreach ($healthcheckups as $checkup)
@@ -579,6 +584,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             </table>
             {{ $healthcheckups ->links() }}
         @endif
+        --}}
     </div>
 </div>
 
@@ -592,7 +598,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             </form>
         </div>
         </br>
-
+       {{--
         @if(count($patientDocuments)>0)
             <?php $count=1;?>
             <table class="table table-bordred table-striped"><thead class='th'><th>S.No.</th><th>Document Name</th><th>Uploaded Date</th><th>Download</th></thead>
@@ -603,6 +609,7 @@ table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .ta
             </table>
             {{ $patientDocuments ->links() }}
         @endif
+        --}}
     </div>
 </div>
 

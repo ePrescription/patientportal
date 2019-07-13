@@ -256,7 +256,6 @@ class DoctorController extends Controller
         $appointments=null;
         try{
             $appointments=$this->doctorService->getAppointments();
-
         } catch (Exception $userExc) {
             $errorMsg = $userExc->getMessageForCode();
             $msg = AppendMessage::appendMessage($userExc);
@@ -307,13 +306,39 @@ class DoctorController extends Controller
 
     */
 
+    public function DoctorAppointmentOnlineChat(Request $request){
+
+        $hospitals = array();
+
+        $id = null;
+        $room = null;
+        try
+        {
+            $id = $request->input("id");
+            $room = $request->input("room");
+            $hospitals = Hospital::all();
+
+        } catch (Exception $userExc) {
+            $errorMsg = $userExc->getMessageForCode();
+            $msg = AppendMessage::appendMessage($userExc);
+        } catch (Exception $exc) {
+            //dd($exc);
+            $msg = AppendMessage::appendGeneralException($exc);
+            //error_log($status);
+        }
+        return view('onlinechat')->with('id', $id)->with('room', $room)->with('hospitals', $hospitals);
+    }
+
 
     public function getHistory(){
-        $askquestions=null;
-        $labappointments=null;
-        $pharmacyappointments=null;
-        $examinationDates=null;
-        $doctorappointments=null;
+        $askquestions=array();
+        $labappointments=array();
+        $pharmacyappointments=array();
+        $examinationDates=array();
+        $doctorappointments=array();
+        $secondOpinion=array();
+        $healthcheckups=array();
+        $patientDocuments=array();
 
         try{
             $hospitals = Hospital::all();
@@ -331,8 +356,15 @@ class DoctorController extends Controller
             $msg = AppendMessage::appendGeneralException($exc);
             //error_log($status);
         }
-       // dd($doctorappointments);
-      return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates);
+        /*
+        dd($hospitals);
+        dd($labappointments);
+        dd($askquestions);
+        dd($pharmacyappointments);
+        dd($examinationDates);
+        dd($doctorappointments);
+        */
+        return view('history')->with('hospitals', $hospitals)->with('doctorappointments', $doctorappointments)->with('labappointments', $labappointments)->with('pharmacyappointments', $pharmacyappointments)->with('askquestions', $askquestions)->with('examinationDates',$examinationDates)->with('secondOpinion',$secondOpinion)->with('healthcheckups',$healthcheckups)->with('patientDocuments',$patientDocuments);
     }
 
 
